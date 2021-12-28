@@ -1,0 +1,26 @@
+{% extends "header.html" %}
+
+{% load static %}
+
+{% block header %}
+
+<br>
+<div class="alinha quadro align-middle">
+
+    <img src="{% static "logo_caritas_h.png" %}" />
+
+    <div class="text-center">
+        <h2>Faça o seu login:</h2>
+        <form action="." method="post">
+            {% csrf_token %}
+            <table class="alinha">
+                {{ form.as_table }}
+            </table>
+            <input class="btn btn-primary" type="submit" value="Entrar">
+        </form>
+        <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
+    </div>
+
+</div>
+
+{% endblock %}

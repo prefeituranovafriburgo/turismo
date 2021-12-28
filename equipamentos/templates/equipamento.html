@@ -1,0 +1,30 @@
+{% extends "cab.html" %}
+
+{% load static %}
+
+{% block cab %}
+<br>
+<div class="container">
+
+    <H4>{{ equipamento.nome }}</H4>
+    <H5>Tipo: {{ equipamento.tipo_equipamento }}</H5>
+
+    <p>{{ equipamento.descricao }}</p>
+
+    <img src="{{ equipamento.foto }}"  alt="{{ equipamento.nome }}" title="{{ equipamento.nome }}"/>
+
+    <h4>Ver também</h4>
+
+    {% for v_t in ver_tambem %}
+
+        <a href="{% url 'equipamento' v_t.id %}">{{ v_t.nome }}</a><br>
+
+    {% empty %}
+
+    Não há outros equipamentos do mesmo tipo
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "cab.html" %}
+
+{% load static %}
+{% load qr_code %}
+
+{% block cab %}
+<br>
+<div class="container">
+
+    <div class="row">
+        <div class="col-10">
+            <h3>Equipamento: {{ equipamento.nome }} - {{ equipamento.tipo_equipamento }}</h3>
+        </div>
+
+        <div class="col text-right">
+            <a href="{% url 'inicio' %}" class="btn btn-primary" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Volta
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10">
+            <H5>Endereço: {{ endereco }}</H5>
+        </div>
+    </div>
+
+    {% qr_from_text endereco size="T" %}
+
+    {% qr_from_text endereco size=10 border=6 %}
+
+    <img src="{% qr_url_from_text endereco  %}" alt="Hello World!">
+
+    {% qr_from_text endereco size=8 version=12 %}
+
+    {% qr_from_text endereco size="m" image_format="png" error_correction="L" %}
+
+    <img src="{% qr_url_from_text endereco size=8 version=10 image_format='png' %}" alt="Hello World!">
+
+
+</div>
+
+{% endblock %}

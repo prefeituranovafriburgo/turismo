@@ -1,0 +1,51 @@
+{% extends "cab.html" %}
+
+{% load static %}
+
+{% block cab %}
+<br>
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            Cadastros:
+            <ul>
+                <li><a href="{% url 'senhas:cad_transporte' %}">Acesso de transporte coletivo turístico</a></li>
+                <li><a href="{% url 'senhas:cad_acesso_ponto' %}">Acesso de grupos a pontos turísticos</a></li>
+            </ul>
+
+            Links úteis:
+            <ul>
+                <li><a href="https://www.pmnf.rj.gov.br/turismo/conheca-nova-friburgo" target="_blank">Conheça Nova Friburgo</a></li>
+                <li><a href="https://www.pmnf.rj.gov.br/turismo/roteiros" target="_blank">Roteiros: Diversas opções de passeios, em um cenário de belezas naturais e valores culturais e históricos</a></li>
+                <li><a href="https://novafriburgo.rj.gov.br//uploads/wysiwyg//326a7d03b.jpeg" target="_blank">Mapa Turístico</a></li>
+                <li><a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/FolderTURISMO-NOVA-FRIBURGO.pdf" target="_blank">Folder - Turismo</a></li>
+                <li><a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/GUIAS-DE-TURISMO-RECEPTIVONOVA-FRIBURGO.pdf" target="_blank">Guias de Turismo Receptivo</a></li>
+            </ul>
+        </div>
+
+        <div class="col">
+            Site e redes sociais:
+            <ul>
+                <li><a href="https://www.pmnf.rj.gov.br/turismo/" target="_blank">Página da Secretaria Municipal de Turismo e Marketing</a></li>
+                <li><a href="https://www.facebook.com/SecturNf" target="_blank">Perfil no Facebook da Secretaria Municipal de Turismo e Marketing</a></li>
+                <li><a href="https://www.instagram.com/sectur_nf/" target="_blank">Perfil no Instagram da Secretaria Municipal de Turismo e Marketing</a></li>
+            </ul>
+
+            Fale conosco:
+            <ul>
+                <li><a href="mailto:secturnf@gmail.com">E-Mail: secturnf@gmail.com</a></li>
+                <li><a href="tel:552225228051">Telefone: +(55) (22) 2522-8051</a></li>
+            </ul>
+
+            Conta:
+            <ul>
+                <li><a href="{% url 'contas:cadastro' %}">Meu cadastro</a></li>
+                <li><a href="{% url 'contas:change_password' %}">Alterar senha</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

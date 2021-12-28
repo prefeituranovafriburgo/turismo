@@ -1,0 +1,17 @@
+{% extends "cab.html" %}
+
+{% load static %}
+
+{% block cab %}
+<br>
+<div class="container">
+
+    QRCode:
+    <ul>
+        <li><a href="{% url 'tipos' %}">Tipos de Equipamentos</a></li>
+        <li><a href="{% url 'estatisticas' %}">Estatísticas de Acesso</a></li>
+    </ul>
+
+</div>
+
+{% endblock %}
