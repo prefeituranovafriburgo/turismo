@@ -40,7 +40,7 @@ email_pass = env[6]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(debug)
 
-ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1']
+ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -91,20 +91,28 @@ WSGI_APPLICATION = 'turismo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
+if DEBUG==True:
+    DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-
-        'NAME': db_name,
-        'PORT': '',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / db_name,
         'USER': db_user,
-        'PASSWORD': db_passwd,
-        'HOST': '127.0.0.1',
+        'PASSWORD': db_passwd,        
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
 
+            'NAME': db_name,
+            'PORT': '',
+
+            'USER': db_user,
+            'PASSWORD': db_passwd,
+            'HOST': '127.0.0.1',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

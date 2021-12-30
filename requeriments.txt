@@ -1,0 +1,7 @@
+asgiref==3.4.1
+Django==3.2.10
+django-qr-code==2.3.0
+pytz==2021.3
+segno==1.4.1
+sqlparse==0.4.2
+typing_extensions==4.0.1
