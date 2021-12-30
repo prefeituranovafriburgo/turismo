@@ -1,0 +1,85 @@
+html, body{
+    height: 100%;
+    background-image: url(../images/bg-login.jpg);
+    background-size: cover;
+}
+.container-fluid{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.596);
+
+}
+#header{
+    display: flex;
+    margin: auto auto 1px auto;
+    background-color: #ffffff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px 0px;
+    width: 600px;
+}
+#header .col{
+    display: flex;
+}
+#header img{
+    width: auto;
+    max-height: 150px;
+    margin: auto;
+}
+
+#login-screen{
+    margin: 0px auto auto auto;  
+}
+#login-screen{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+    width: 600px;
+    padding: 50px 200px;
+}
+
+#login-screen img{ 
+    margin-bottom: 30px;
+}
+
+#login-screen h2{ 
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 20px;
+}
+#login-screen form{ 
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+#login-screen form table tr{
+    display: flex;
+    flex-direction: column;
+}
+#login-screen form table tr label{
+    font-size: 10pt;
+    font-weight: 400;
+    margin-bottom: 0px;
+}
+#login-screen form table tr td, input{
+    width: 100%;
+    height: 35px;
+    background-color: white !important;
+    box-shadow: none;
+}
+#login-screen form table tr td input:focus{
+    width: 100%;
+    height: 35px;
+    background-color: white !important;
+    color: -internal-light-dark(rgb(255, 255, 255), white) !important;
+}
+#login-screen form button{
+    margin: 10px auto;
+    width: 100%;
+    background-color: #3B3B3B;
+    border-color: #3B3B3B;;
+    color: white;
+} 
+#login-screen a{
+    font-size: 10pt;
+}

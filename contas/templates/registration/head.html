@@ -5,12 +5,16 @@
         <!-- Meta tags Obrigatórias -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <!-- GOOGLE FONTS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-        <link href="{% static "css/jlb.css" %}" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- CUSTOM CSS -->
+        <link href="{% static 'css/jlb.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
+    
         <title>Turismo Nova Friburgo</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -25,15 +29,17 @@
     </script>
 
     <body class="body">
-        <div class="container-fluid">
-
-            <div class="quadrocab">
-                        <a href="https://novafriburgo.rj.gov.br"><img src="/static/logopmnf.png"  alt="Logo Pmnf" title="Logo Pmnf"  style="margin:28px 0 0 23px;position: relative;left: 10px;"/></a>
-            </div>
-        </div>
-
-        {% block head %}{% endblock %}
-
+        <div class="container-fluid">  
+            <div id="header" class="row">
+                <!-- <div class="col">
+                    <img class="img-fluid" src="/static/logopmnf.png" alt="Logo Pmnf" title="Logo Pmnf"/>
+                </div> -->
+                <div class="col">
+                    <img class="img-fluid" src="{% static 'images/logo-turismo.png' %}" alt="Logo Pmnf Turismo" title="Logo Pmnf Turismo"/>
+                </div>
+            </div>          
+            {% block conteudo %}{% endblock %}
+        </div>    
         <!-- JavaScript (Opcional) -->
         <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
