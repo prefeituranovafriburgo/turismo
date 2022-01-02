@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <!-- Meta tags Obrigatórias -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- GOOGLE FONTS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- CUSTOM CSS -->
+        <link href="{% static 'css/jlb.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/cadastrar.css' %}" rel="stylesheet" type="text/css">
+    
+        <title>Turismo Nova Friburgo</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+
+    <SCRIPT LANGUAGE="JavaScript">
+        {% if messages %}
+            {% for message in messages %}
+                console.log("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <body class="body">
+        <div class="container-fluid pt-2">  
+            <div id="header" class="row">
+                <div class="col">
+                    <img class="img-fluid" src="{% static 'images/logo-turismo2.png' %}" alt="Logo Pmnf Turismo" title="Logo Pmnf Turismo"/>                    
+                </div>
+            </div>   
+                <div id="login-screen">    
+                    <h2>CADASTRO</h2>
+                    <form method="POST" id="formulario" data-cidades-url="/contas/ajax/load_cidades/" novalidate>
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-3">            
+                                <label for="id_nome">Nome:</label>
+                                <input class="form-control" type="text" name="nome" maxlength="60" required id="id_nome">
+                            </div>
+                            <div class="form-group col-md-2">              
+                                <label for="id_cpf">CPF:</label>
+                                <input class="form-control" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf">            
+                            </div>
+                            <div class="form-group col-md-2"> 
+                                <label for="id_cadastur">Cadastur:</label>
+                                <input class="form-control" type="text" name="cadastur" maxlength="14" required id="id_cadastur">
+                            </div>
+                            <div class="form-group col-md-3"> 
+                                <label for="id_email">Email:</label>
+                                <input class="form-control" type="text" name="email" maxlength="200" required id="id_email">
+                            </div>
+                            <div class="form-group col-md-2"> 
+                                <label for="id_celular">Celular:</label>
+                                <input class="form-control" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)"
+                                        maxlength="15" required id="id_celular">
+                            </div>
+                        </div>
+                        <div class="form-row">                            
+                            <div class="form-group col-md-2"> 
+                                <label for="id_telefone">Telefone:</label>
+                                <input class="form-control" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
+                                        maxlength="14" id="id_telefone">
+                            </div>
+                            <div class="form-group col-md-2"> 
+                                <label for="id_estado">Estado:</label>
+                                <select class="form-control" name="estado" class="selEstado" required id="id_estado">
+                                    <option value="" selected></option>                                                        
+                                    {% for estado in estados %}
+                                    <option value="{{estado.id}}">{{estado}}</option>                                                        
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4"> 
+                                <label for="id_cidade">Cidade:</label>
+                                <select class="form-control" name="cidade" required id="id_cidade">
+                                    <option value="" selected></option>   
+                                    {% for cidade in cidades %}
+                                    <option value="{{cidade.id}}">{{cidade}}</option>                                                        
+                                    {% endfor %}                                                     
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">                             
+                                <label for="id_senha">Senha:</label>
+                                <input type="password" name="senha" required id="id_senha">
+                            </div>
+                            <div class="form-group col-md-2">                             
+                                <label for="id_senha_confirma">Confirme senha:</label>
+                                <input type="password" name="senha_confirma" required id="id_senha_confirma">
+                            </div>
+                        </div>
+                        <div class="form-row">                            
+
+                        </table>    
+                        <button class="btn btn-primary" type="submit">
+                            Cadastrar
+                        </button>
+
+                    </form>
+                    <a href="{% url 'login' %}">Voltar</a>                    
+                </div>
+            </div>    
+            <!-- JavaScript (Opcional) -->
+            <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        </body>
+    </html>

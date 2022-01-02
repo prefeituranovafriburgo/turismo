@@ -23,9 +23,7 @@ def cadastrar(request):
     if request.method == 'POST':
         form = CadastrarForm(request.POST)
         if form.is_valid():
-
             cidade = Cidade.objects.get(id=request.POST.get('cidade'))
-
             try:
                 user = User.objects.create_user(request.POST.get('email'), request.POST.get('email'), request.POST.get('senha'))
 
@@ -69,17 +67,18 @@ def cadastrar(request):
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
-    else:
+    else:        
         form = CadastrarForm()
-    return render(request, 'contas/cadastrar.html', { 'form': form })
+    estados=Estado.objects.all()
+    cidades=Cidade.objects.all()
+    return render(request, 'contas/cadastrar2.html', { 'form': form, 'estados': estados, 'cidades': cidades })
 
 
 
 def cadastro(request):
 
     user = request.user
-    usuario = Usuario.objects.get(user=user)
-
+    usuario = Usuario.objects.get(user=user)    
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=usuario)
 
