@@ -78,6 +78,7 @@ def cadastrar(request):
 def cadastro(request):
 
     user = request.user
+    
     usuario = Usuario.objects.get(user=user)    
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=usuario)

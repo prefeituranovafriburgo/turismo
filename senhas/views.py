@@ -10,7 +10,7 @@ from .forms import ViagemForm
 
 @login_required
 def inicio(request):
-    return render(request, 'senhas/inicio.html')
+    return render(request, 'senhas/index.html')
 
 
 @login_required
