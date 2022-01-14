@@ -16,6 +16,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,7 +41,7 @@ email_pass = env[6]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(debug)
 
-ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1']
+ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1', 'localhost', '192.168.1.108']
 
 
 # Application definition
@@ -91,20 +92,28 @@ WSGI_APPLICATION = 'turismo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
+if DEBUG==True:
+    DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-
-        'NAME': db_name,
-        'PORT': '',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / db_name,
         'USER': db_user,
-        'PASSWORD': db_passwd,
-        'HOST': '127.0.0.1',
+        'PASSWORD': db_passwd,        
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
 
+            'NAME': db_name,
+            'PORT': '',
+
+            'USER': db_user,
+            'PASSWORD': db_passwd,
+            'HOST': '127.0.0.1',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -145,7 +154,8 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
+# STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'

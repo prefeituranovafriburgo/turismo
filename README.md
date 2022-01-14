@@ -15,12 +15,18 @@ seguinte conteúdo:
 
 ----------------------------------
 nome_banco_de_dados
+
 usuário_banco_de_dados
+
 senha_banco_de_dados
+
 secret_key_do_arquivo_settings.py
+
 True
+
 turismo@sme.novafriburgo.rj.gov.br
-<senhaemail>
+
+senhaemail
 ----------------------------------
 
 Explicação do arquivo acima:
