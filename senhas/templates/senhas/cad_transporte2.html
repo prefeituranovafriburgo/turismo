@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <!-- Meta tags Obrigatórias -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- GOOGLE FONTS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- FONTAWESOME -->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <!-- CUSTOM CSS -->
+        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">
+        
+        <title>Turismo Nova Friburgo</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+
+    <SCRIPT LANGUAGE="JavaScript">
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <body>
+        <div class="container-fluid h-100">
+            <div id="header" class="row">
+                    <div class="col">
+                        <div id="logo">
+                            <a href="/">
+                                <img src="/static/images/logo.png"  alt="Logo Pmnf" title="Logo Pmnf"/>
+                            </a>
+                        </div>
+                        <div id="nav" class="my-auto d-flex">                            
+                            <!-- <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a> -->
+                            {% if user.username %}                                                                   
+                                            <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <h6 class="text-bold my-auto">Olá,<b> {{ user.first_name }}</b>!</h6>
+                                                <span class="dropdown-toggle ml-3"></span>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="/contas/cadastro"><i class="fas fa-users-cog"></i> Meu cadastro</a>
+                                                <a class="dropdown-item" href="/contas/change_password"><i class="fas fa-key"></i> Alterar senha</a>
+                                                <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                            </div>                                                                                                                 
+                            {% endif %}
+                        </div>                        
+                    <!-- <div class="col-7">
+                        <h3>Secretaria Municipal de Turismo e Marketing</h3>
+                        <h3>Secretaria Municipal de Ciência, Tecnologia,<br>Inovação e Educação Profissionalizante e Superior</h3>
+                    </div> -->
+                </div>                
+            </div>            
+            <div id="main" class="row w-100">
+                <div class="container pt-5 mt-5">
+                    <div class="row">
+                        <div class="col">
+                            <h3>Viagens registradas:</h3>
+                        </div>
+                
+                        <div class="col text-right">
+                            <a href="{% url 'senhas:viagem_inclui' %}" class="btn btn-primary" role="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill mb-1 mr-1" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                                NOVA VIAGEM
+                            </a>
+                        </div>
+                
+                    </div>
+                
+                    <table  class="table table-striped table-bordered">
+                
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Dt. Chegada</th>
+                                <th>Dt. Saída</th>
+                                <th>Veículo</th>
+                                <th>Dt. Inclusão</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                
+                            {% for v in viagens %}
+                                <tr>
+                                    <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }}</a></td>
+                                    <td>{{ v.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
+                                    <td>{{ v.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
+                                    <td>{{ v.tipo_veiculo }}</td>
+                                    <td>{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
+                                </tr>
+                            {% endfor %}
+                
+                        </tbody>
+                
+                    </table>
+                </div>
+            </div>                   
+        </div>      
+        <!-- JavaScript (Opcional) -->        
+    </body>
+</html>

@@ -121,11 +121,17 @@ def cadastro(request):
     else:
         form = CadastroForm(instance=usuario)
 
-        form.fields['email'].initial = user.email
-        form.fields['nome'].initial = user.first_name
-        form.fields['estado'].initial = usuario.cidade.estado
-        form.fields['cidade'].initial = usuario.cidade
-    return render(request, 'contas/cadastro.html', { 'form': form })
+    context={
+        'email': user.email,
+        'nome': user.first_name,
+        'cadastur': usuario.cadastur,
+        'cpf': usuario.cpf,
+        'celular': usuario.celular,
+        'telefone': usuario.telefone,
+        'estado': usuario.cidade.estado,
+        'cidade': usuario.cidade
+    }        
+    return render(request, 'contas/cadastro2.html', context)
 
 
 def load_cidades(request):

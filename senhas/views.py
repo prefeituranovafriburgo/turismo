@@ -14,16 +14,15 @@ def inicio(request):
 
 
 @login_required
-def cad_transporte(request):
-
+def cad_transporte(request):    
     viagens = Viagem.objects.filter(user=request.user)
-
-    return render(request, 'senhas/cad_transporte.html', { 'viagens': viagens })
+    return render(request, 'senhas/cad_transporte2.html', { 'viagens': viagens })
 
 
 @login_required
 def viagem_inclui(request):
     if request.method == 'POST':
+        print(request.POST)
         form = ViagemForm(request.POST)
 
         if form.is_valid():
@@ -59,8 +58,8 @@ def viagem_inclui(request):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm()
-
-    return render(request, 'senhas/viagem_inclui.html', { 'form': form })
+    print(form)
+    return render(request, 'senhas/viagem_inclui2.html', { 'form': form })
 
 
 @login_required
