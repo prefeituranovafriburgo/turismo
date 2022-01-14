@@ -15,13 +15,17 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 from contas.forms import CadastrarForm, CadastroForm
+from contas.functions import validations
 from contas.models import Cidade, Usuario, Estado
 
 # Create your views here.
 
 def cadastrar(request):
-    if request.method == 'POST':
+    validation={'cpf': {'state': True},'cadastur': {'state': True},'email': {'state': True}, 
+                'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True}}
+    if request.method == 'POST':        
         form = CadastrarForm(request.POST)
+        validation=validations(request.POST)
         if form.is_valid():
             cidade = Cidade.objects.get(id=request.POST.get('cidade'))
             try:
@@ -71,7 +75,8 @@ def cadastrar(request):
         form = CadastrarForm()
     estados=Estado.objects.all()
     cidades=Cidade.objects.all()
-    return render(request, 'contas/cadastrar2.html', { 'form': form, 'estados': estados, 'cidades': cidades })
+    print(validation)
+    return render(request, 'contas/cadastrar2.html', { 'form': form, 'estados': estados, 'cidades': cidades, 'validations': validation })
 
 
 

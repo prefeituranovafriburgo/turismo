@@ -86,3 +86,67 @@ def validate_CNPJ(value):
         raise ValidationError(error_messages['invalid'])
 
     return orig_value
+
+#VALIDATIONS FOR EDUARDO SALARINI
+def validations(request):    
+    validate={}
+    validate['cpf']=validateCPF(request['cpf'])
+    validate['cadastur']=validateCadastur(request['cadastur'])
+    validate['email']=validateEMAIL(request['email'])
+    validate['celular']=validateCelular(request['celular'])
+    validate['telefone']=validateTelefone(request['telefone'])
+    validate['senha']=validatePassword(request['senha'], request['senha_confirma'])
+    return validate
+
+def validateCadastur(cadastur):
+    if len(cadastur)!=8:
+        return {'state': False, 'msg': 'Cadastur inválido'}
+    return {'state': True, 'msg': ''}
+
+def validateCPF(cpf_):      
+    #  Obtém os números do CPF e ignora outros caracteres
+    cpf = [int(char) for char in cpf_ if char.isdigit()]
+    print(cpf)
+    #  Verifica se o CPF tem 11 dígitos
+    if len(cpf) != 11:
+        return {'state': False, 'msg': 'CPF inválido'}
+    #  Verifica se o CPF tem todos os números iguais, ex: 111.111.111-11
+    #  Esses CPFs são considerados inválidos mas passam na validação dos dígitos
+    #  Antigo código para referência: if all(cpf[i] == cpf[i+1] for i in range (0, len(cpf)-1))
+    if cpf == cpf[::-1]:
+        return {'state': False, 'msg': 'CPF inválido'}
+    #  Valida os dois dígitos verificadores
+    for i in range(9, 11):
+        value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
+        digit = ((value * 10) % 11) % 10
+        if digit != cpf[i]:
+            return {'state': False, 'msg': 'CPF inválido'}
+    return {'state': True, 'msg': '', 'cpf': ''.join([str(_) for _ in cpf])}
+
+def validateEMAIL(email):
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if(re.fullmatch(regex, email)):
+        return {'state': True, 'msg': ''}
+    return {'state': False, 'msg': 'Email inválido'}
+
+def validateCelular(cel):
+    celular=[int(char) for char in cel if char.isdigit()]
+    if len(celular)!=11:
+        return {'state': False, 'msg': 'Número de celular inválido.'}        
+    return {'state': True, 'msg': ''}   
+
+def validateTelefone(tel):
+    telefone=[int(char) for char in tel if char.isdigit()]
+    if len(telefone)!=11:
+        return {'state': False, 'msg': 'Número de telefone inválido.'}        
+    return {'state': True, 'msg': ''}   
+
+def validatePassword(senha, senha2):
+    if senha==senha2:
+        if not len(senha)>=8:
+            return {'state': False, 'msg': 'A senha precisa ter pelo menos 8 caracteres.'}        
+        return {'state': True, 'msg': ''}
+    
+    return {'state': False, 'msg': 'As senhas não coincidem.'}        
+
+
