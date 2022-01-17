@@ -26,6 +26,10 @@
                 console.log("{{ message }}");
             {% endfor %}
         {% endif %}
+
+        function validar(event){
+            event.target.classList.remove("is-invalid");
+        }
     </script>
 
     <body class="body">
@@ -42,32 +46,35 @@
                         <div class="form-row">
                             <div class="form-group col-md-3">            
                                 <label for="id_nome">Nome:</label>
-                                <input class="form-control" type="text" name="nome" maxlength="60" required id="id_nome">
+                                <input class="form-control {% if not validations.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="60" required id="id_nome">
+                                <div class="invalid-feedback">
+                                    {{validations.nome.msg}}
+                                </div> 
                             </div>
                             <div class="form-group col-md-2">              
                                 <label for="id_cpf">CPF:</label>
-                                <input class="form-control {% if not validations.cpf.state %}is-invalid{% endif %}" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf">            
+                                <input class="form-control {% if not validations.cpf.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf">            
                                 <div class="invalid-feedback">
                                     {{validations.cpf.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-2"> 
                                 <label for="id_cadastur">Cadastur:</label>
-                                <input class="form-control {% if not validations.cadastur.state %}is-invalid{% endif %}" type="text" name="cadastur" maxlength="14" required id="id_cadastur">
+                                <input class="form-control {% if not validations.cadastur.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur" maxlength="14" required id="id_cadastur">
                                 <div class="invalid-feedback">
                                     {{validations.cadastur.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-3"> 
                                 <label for="id_email">Email:</label>
-                                <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" type="text" name="email" maxlength="200" required id="id_email">
+                                <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="email" maxlength="200" required id="id_email">
                                 <div class="invalid-feedback">
                                     {{validations.email.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-2"> 
                                 <label for="id_celular">Celular:</label>
-                                <input class="form-control {% if not validations.celular.state %}is-invalid{% endif %}" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)"
+                                <input class="form-control {% if not validations.celular.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)"
                                         maxlength="15" required id="id_celular">
                                 <div class="invalid-feedback">
                                     {{validations.celular.msg}}
@@ -77,7 +84,7 @@
                         <div class="form-row">                            
                             <div class="form-group col-md-2"> 
                                 <label for="id_telefone">Telefone:</label>
-                                <input class="form-control {% if not validations.telefone.state %}is-invalid{% endif %}" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
+                                <input class="form-control {% if not validations.telefone.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
                                         maxlength="14" id="id_telefone">
                                 <div class="invalid-feedback">
                                     {{validations.telefone.msg}}
@@ -103,11 +110,11 @@
                             </div>
                             <div class="form-group col-md-2">                             
                                 <label for="id_senha">Senha:</label>
-                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" type="password" name="senha" required id="id_senha">
+                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha" required id="id_senha">
                             </div>
                             <div class="form-group col-md-2">                             
                                 <label for="id_senha_confirma">Confirme senha:</label>
-                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" type="password" name="senha_confirma" required id="id_senha_confirma">
+                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha_confirma" required id="id_senha_confirma">
                                 <div class="invalid-feedback">
                                     {{validations.senha.msg}}
                                 </div> 

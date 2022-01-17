@@ -241,14 +241,20 @@
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_tipo_veiculo">Tipo veiculo:</label>
-                                        <select class="form-control" name="tipo_veiculo" required id="id_tipo_veiculo">
+                                        <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" name="tipo_veiculo" required id="id_tipo_veiculo">
                                             <option value="" selected>---------</option>                        
                                             <option value="1">Onibus</option>                            
                                         </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.veiculo.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_quant_passageiros">Quant passageiros:</label>
-                                        <input class="form-control" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros">
+                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros">
+                                        <div class="invalid-feedback">
+                                            {{validation.quant_passageiros.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-4 d-flex flex-column">                        
                                         <label for="id_empresa_transporte">Empresa transporte:</label>
@@ -261,16 +267,22 @@
                                             <!-- <ul class="errorlist">
                                                 <li>Este campo é obrigatório.</li>
                                             </ul> -->
-                                            <input class="form-control" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
+                                            <input class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
                                                 required id="id_cnpj_empresa_transporte">
+                                            <div class="invalid-feedback">
+                                                {{validation.cnpj_empresa_transporte.msg}}
+                                            </div>
                                     </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa transporte:</label>                            
                                     <!-- <ul class="errorlist">
                                         <li>Este campo é obrigatório.</li>
                                     </ul> -->
-                                    <input class="form-control" type="text" name="cadastur_empresa_transporte" maxlength="14" required
+                                    <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cadastur_empresa_transporte" maxlength="14" required
                                         id="id_cadastur_empresa_transporte">
+                                    <div class="invalid-feedback">
+                                        {{validation.cadastur_empresa_transporte.msg}}
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="form-row mt-4 justify-content-center py-3">

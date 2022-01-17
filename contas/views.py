@@ -21,7 +21,7 @@ from contas.models import Cidade, Usuario, Estado
 # Create your views here.
 
 def cadastrar(request):
-    validation={'cpf': {'state': True},'cadastur': {'state': True},'email': {'state': True}, 
+    validation={'nome': {'state': True},'cpf': {'state': True},'cadastur': {'state': True},'email': {'state': True}, 
                 'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True}}
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)

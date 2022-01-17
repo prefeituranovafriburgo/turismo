@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from contas.functions import validationsViagem
 
 from contas.views import sair
-from senhas.models import Viagem, Viagem_Turismo
+from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
 from .forms import ViagemForm
 
 # Create your views here.
@@ -21,8 +22,13 @@ def cad_transporte(request):
 
 @login_required
 def viagem_inclui(request):
+    validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
+                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
+    print(validation) 
     if request.method == 'POST':
         print(request.POST)
+        validation=validationsViagem(request.POST)
+        
         form = ViagemForm(request.POST)
 
         if form.is_valid():
@@ -58,8 +64,9 @@ def viagem_inclui(request):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm()
-    print(form)
-    return render(request, 'senhas/viagem_inclui2.html', { 'form': form })
+    veiculos=Tipo_Veiculo.objects.all()
+    print(validation)
+    return render(request, 'senhas/viagem_inclui2.html', { 'form': form, 'validation': validation, 'veiculos': veiculos })
 
 
 @login_required
