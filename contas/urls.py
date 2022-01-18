@@ -14,5 +14,6 @@ urlpatterns = [
     path('cadastro', views.cadastro, name='cadastro'),
     #
     path('ajax/load_cidades/', views.load_cidades, name = 'ajax_load_cidades'),
+    path('ajax/load_estados/', views.load_estados, name = 'ajax_load_estados'),
 
 ]

@@ -152,7 +152,6 @@ def validateCadastur(cadastur):
 def validateCPF(cpf_):      
     #  Obtém os números do CPF e ignora outros caracteres
     cpf = [int(char) for char in cpf_ if char.isdigit()]
-    print(cpf)
     #  Verifica se o CPF tem 11 dígitos
     if len(cpf) != 11:
         return {'state': False, 'msg': 'CPF inválido.'}
