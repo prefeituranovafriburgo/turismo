@@ -17,9 +17,11 @@
         <!-- FONTAWESOME -->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         <!-- CUSTOM CSS -->
-        <link href="{% static 'css/header.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">
+        {% block css %}        
+        {% endblock %}
         
-        <title>Turismo Nova Friburgo</title>
+        <title>{% block title %}Turismo Nova Friburgo 2{% endblock %}</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
@@ -35,36 +37,32 @@
     <body class="body">
         <div class="container-fluid">
             <div id="header" class="row">
-                    <div class="col">
-                        <div>
-                            <a href="https://novafriburgo.rj.gov.br">
-                                <img src="/static/logopmnf.png"  alt="Logo Pmnf" title="Logo Pmnf"/>
-                            </a>
-                        </div>
-                        <div id="nav" class="my-auto d-flex">
-                            <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a>
-                            {% if user.username %}
-                            <div class="dropdown">
-                                <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <h6 class="text-bold my-auto"><i class="fas fa-user mr-2"></i>{{ user.username }}</h6>
-                                    <span class="dropdown-toggle ml-3"></span>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/contas/cadastro"><i class="fas fa-users-cog"></i> Meu cadastro</a>
-                                    <a class="dropdown-item" href="/contas/change_password"><i class="fas fa-key"></i> Alterar senha</a>
-                                    <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                                </div>
-                              </div>                            
-                            {% endif %}
-                        </div>
-                    <!-- <div class="col-7">
-                        <h3>Secretaria Municipal de Turismo e Marketing</h3>
-                        <h3>Secretaria Municipal de Ciência, Tecnologia,<br>Inovação e Educação Profissionalizante e Superior</h3>
-                    </div> -->
-
-        
-            </div>
-        </div>
+                <div class="col">
+                    <div id="logo">
+                        <a href="/">
+                            <img src="/static/images/logo.png"  alt="Logo Pmnf" title="Logo Pmnf"/>
+                        </a>
+                    </div>
+                    <div id="nav" class="my-auto d-flex">                            
+                        <!-- <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a> -->
+                        {% if user.username %}                                                                   
+                                        <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <h6 class="text-bold my-auto">Olá,<b> {{ user.first_name }}</b>!</h6>
+                                            <span class="dropdown-toggle ml-3"></span>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="/contas/cadastro"><i class="fas fa-users-cog"></i> Meu cadastro</a>
+                                            <a class="dropdown-item" href="/contas/change_password"><i class="fas fa-key"></i> Alterar senha</a>
+                                            <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                        </div>                                                                                                                 
+                        {% endif %}
+                    </div>
+                <!-- <div class="col-7">
+                    <h3>Secretaria Municipal de Turismo e Marketing</h3>
+                    <h3>Secretaria Municipal de Ciência, Tecnologia,<br>Inovação e Educação Profissionalizante e Superior</h3>
+                </div> -->
+            </div>                
+        </div> 
 
         {% block cab %}{% endblock %}
 
