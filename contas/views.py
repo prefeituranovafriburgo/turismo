@@ -59,7 +59,7 @@ def cadastrar(request):
                 if erro[0] == '(1062':
                     messages.error(request, 'Erro: Usuário já existe.')
                 else:
-                    # Se teve erro:
+                    # Se teve erro:                    
                     print('Erro: ', form.errors)
                     erro_tmp = str(form.errors)
                     erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
@@ -74,8 +74,7 @@ def cadastrar(request):
     else:        
         form = CadastrarForm()
     estados=Estado.objects.all()
-    cidades=Cidade.objects.all()
-    print(validation)
+    cidades=Cidade.objects.all()       
     return render(request, 'contas/cadastrar2.html', { 'form': form, 'estados': estados, 'cidades': cidades, 'validations': validation })
 
 
@@ -135,19 +134,24 @@ def cadastro(request):
         'telefone': usuario.telefone,
         'estado': usuario.cidade.estado,
         'cidade': usuario.cidade
-    }        
+    }      
     return render(request, 'contas/cadastro2.html', context)
 
 
-def load_cidades(request):
-
+def load_cidades(request):    
     if not request.GET.get('id'):
+        
         return render(request, 'contas/ret_cidades.html', {})
 
     estado_id = request.GET.get('id')
     cidades = Cidade.objects.filter(estado = estado_id).order_by('nome')
 
+
     return render(request, 'contas/ret_cidades.html', {'cidades' : cidades})
+
+def load_estados(request):   
+    estados = Estado.objects.all().order_by('nome')
+    return render(request, 'contas/ret_estado.html', {'estados' : estados})
 
 
 
