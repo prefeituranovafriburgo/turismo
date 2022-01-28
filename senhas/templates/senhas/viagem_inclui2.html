@@ -30,7 +30,7 @@
                                     <div class="form-group col-md-3 mr-5 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5 my-auto">Dt chegada:</label>
                                         <div class="d-flex">
-                                            <select class="form-control w-auto mr-1" name="dt_Chegada_day" id="id_dt_Chegada_day">
+                                            <select class="form-control w-auto mr-1" name="dt_Chegada_day" id="id_dt_Chegada_day" required>
                                                 <option value="" selected>---</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -64,7 +64,7 @@
                                                 <option value="30">30</option>
                                                 <option value="31">31</option>
                                             </select>           
-                                            <select class="form-control w-auto mr-1" name="dt_Chegada_month" id="id_dt_Chegada_month">
+                                            <select class="form-control w-auto mr-1" name="dt_Chegada_month" id="id_dt_Chegada_month" required>
                                                 <option value="" selected>---</option>
                                                 <option value="1">Janeiro</option>
                                                 <option value="2">Fevereiro</option>
@@ -79,7 +79,7 @@
                                                 <option value="11">Novembro</option>
                                                 <option value="12">Dezembro</option>
                                             </select>                                    
-                                            <select class="form-control w-auto" name="dt_Chegada_year" id="id_dt_Chegada_year">
+                                            <select class="form-control w-auto" name="dt_Chegada_year" id="id_dt_Chegada_year" required>
                                                 <option value="" selected>---</option>                                        
                                                 <option value="2022">2022</option>
                                                 <option value="2023">2023</option>
@@ -162,8 +162,8 @@
                                         <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
                                         <div class="d-flex" >
                                             <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input" checked id="customSwitch1">
-                                                <label class="custom-control-label" for="customSwitch1">Sim</label>                                              
+                                                <input onchange="hospedados(event)" value="false" type="checkbox" class="custom-control-input" id="customSwitch1">
+                                                <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
                                             </div>
                                                 <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
                                                 <span class="my-auto ml-2">Sim</span> -->
@@ -173,11 +173,11 @@
 
                                 <div class="form-row mt-4 justify-content-center" id="hospedar">
                                     <div class="form-group col-md-4 d-flex flex-column">                        
-                                        <label for="id_hotel" class="mr-3 my-auto">Hotel:</label>
+                                        <label for="id_hotel" class="mr-3 my-auto">Hotel que ficarão hospedados:</label>
                                         <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel">
                                     </div>
                                     <div class="form-group col-md-5 pl-5 d-flex flex-column">                        
-                                        <label for="id_restaurante" class="my-auto mr-3">Restaurante:</label>
+                                        <label for="id_restaurante" class="my-auto mr-3">Restaurante de sua preferência:</label>
                                         <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_restaurante">
                                     </div>
                                 </div>
@@ -207,9 +207,6 @@
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cnpj_empresa_transporte">CNPJ:</label>
-                                            <!-- <ul class="errorlist">
-                                                <li>Este campo é obrigatório.</li>
-                                            </ul> -->
                                             <input class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
                                                 required id="id_cnpj_empresa_transporte">
                                             <div class="invalid-feedback">
@@ -218,15 +215,54 @@
                                     </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa transporte:</label>                            
-                                    <!-- <ul class="errorlist">
-                                        <li>Este campo é obrigatório.</li>
-                                    </ul> -->
+                               
                                     <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cadastur_empresa_transporte" maxlength="14" required
                                         id="id_cadastur_empresa_transporte">
                                     <div class="invalid-feedback">
                                         {{validation.cadastur_empresa_transporte.msg}}
                                     </div>
                                     </div>
+                                    <div class="form-group col-md-3 ml-5 d-flex flex-column">                        
+                                        <label class="my-auto" for="ponto_turisticos">Visita a pontos turisticos?</label>
+                                        <div class="d-flex" >
+                                            <div class="custom-control custom-switch">
+                                                <input onchange="pontosturisticos(event)" value="false" type="checkbox" class="custom-control-input" id="ponto_turisticos">
+                                                <label id="labelSwitch2" class="custom-control-label" for="ponto_turisticos">Não</label>                                              
+                                            </div>
+
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-row mt-4 justify-content-center" id="pontosTuristicos">
+                                    <div class="form-group col-md-3 d-flex flex-column">                        
+                                        <label for="id_hotel" class="mr-3 my-auto">Nome do guia:</label>
+                                        <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel">
+                                    </div>
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_restaurante" class="my-auto mr-3">Cadastur do guia:</label>
+                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_restaurante">
+                                    </div>
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_restaurante" class="my-auto mr-3">Celular:</label>
+                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_restaurante">
+                                    </div>
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_restaurante" class="my-auto mr-3">Telefone:</label>
+                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_restaurante">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-4 justify-content-center" id="pontosTuristicos2">
+                                    <div class="form-group col-md-8 d-flex flex-column">   
+                                        <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
+                                        <select name="pontos_turisticos" id="id_pontos_turisticos" multiple>
+                                            {% for ponto in pontos %}
+                                            <option value="{{id}}">{{ponto}}</option>
+                                            {% endfor %}
+                                                                                     
+                                        </select>
+                                        <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
+                                    </div>
+                                    
                                 </div>
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-9 d-flex flex-column"> 
@@ -267,8 +303,33 @@
                 </script>
                 
                 
-                <SCRIPT LANGUAGE="JavaScript">
-                
+                <SCRIPT LANGUAGE="JavaScript">  
+
+                    function hospedados(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch').innerText='Não';
+                            document.getElementById('hospedar').style.display='none';
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch').innerText='Sim';
+                            document.getElementById('hospedar').style.display='flex';
+                        }                        
+                    }
+
+                    function pontosturisticos(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch2').innerText='Não';
+                            document.getElementById('pontosTuristicos').style.display='none';
+                            document.getElementById('pontosTuristicos2').style.display='none';
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch2').innerText='Sim';
+                            document.getElementById('pontosTuristicos').style.display='flex';
+                            document.getElementById('pontosTuristicos2').style.display='flex';
+                        }                        
+                    }
                 
                     function mostracidade(){
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view

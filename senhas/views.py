@@ -5,6 +5,7 @@ from contas.functions import validationsViagem
 
 from contas.views import sair
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
+from .models import Pontos_Turisticos
 from .forms import ViagemForm
 
 # Create your views here.
@@ -22,17 +23,19 @@ def cad_transporte(request):
 
 @login_required
 def viagem_inclui(request):
+    
+    # Essa variavel VALIDATION é iniciada aqui para não haver conflito 
+    # enquanto não existir uma requisição POST
     validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
                 'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
-    print(validation) 
+
     if request.method == 'POST':
-        print(request.POST)
+        #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation=validationsViagem(request.POST)
         
         form = ViagemForm(request.POST)
 
         if form.is_valid():
-
             try:
                 form_aux = form.save(commit=False)
                 form_aux.user = request.user
@@ -64,9 +67,18 @@ def viagem_inclui(request):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm()
+
+    #Pegando as devidas informações para os selects do formulario abaixo
     veiculos=Tipo_Veiculo.objects.all()
-    print(validation)
-    return render(request, 'senhas/viagem_inclui2.html', { 'form': form, 'validation': validation, 'veiculos': veiculos })
+    pontosTuristicos= Pontos_Turisticos.objects.all()
+    #Incluindo as informações coletas no contexto para uso no Template
+    context={ 
+        'form': form, 
+        'validation': validation, 
+        'veiculos': veiculos, 
+        'pontos': pontosTuristicos 
+    }
+    return render(request, 'senhas/viagem_inclui2.html', context)
 
 
 @login_required
