@@ -294,3 +294,31 @@ footer{
     margin: auto;
     height: 40px;
 }
+
+#hospedar{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+
+#pontosTuristicos{
+    display: none;
+    padding-top: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+
+
+#pontosTuristicos2{
+    display: none;
+    margin-top: 0 !important;    
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
