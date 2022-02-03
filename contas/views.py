@@ -82,7 +82,6 @@ def cadastrar(request):
 def cadastro(request):
 
     user = request.user
-    print(user)
     usuario = Usuario.objects.get(user=user)
 
     if request.method == 'POST':
