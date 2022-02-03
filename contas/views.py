@@ -11,12 +11,12 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 
-# from .models import *
 from django.contrib.auth.models import User
 
 from contas.forms import CadastrarForm, CadastroForm
 from contas.functions import validations
 from contas.models import Cidade, Usuario, Estado
+from senhas.templatetags.template_filters import formata_cpf
 
 # Create your views here.
 
@@ -82,8 +82,8 @@ def cadastrar(request):
 def cadastro(request):
 
     user = request.user
+    usuario = Usuario.objects.get(user=user)
 
-    usuario = Usuario.objects.get(user=user)    
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=usuario)
 
@@ -125,6 +125,15 @@ def cadastro(request):
     else:
         form = CadastroForm(instance=usuario)
 
+        form.fields['email'].initial = user.email
+        form.fields['nome'].initial = user.first_name
+        form.fields['estado'].initial = usuario.cidade.estado
+        form.fields['cidade'].initial = usuario.cidade
+#        form.fields['cpf_aux'].initial = formata_cpf(usuario.cpf)
+        print('cpf:', form.fields['cpf'].initial)
+        form.fields['celular'].initial = usuario.celular
+        form.fields['telefone'].initial = usuario.telefone
+    """
     context={
         'email': user.email,
         'nome': user.first_name,
@@ -134,8 +143,12 @@ def cadastro(request):
         'telefone': usuario.telefone,
         'estado': usuario.cidade.estado,
         'cidade': usuario.cidade
-    }      
+    }
     return render(request, 'contas/cadastro2.html', context)
+    """
+
+    return render(request, 'contas/cadastro.html', { 'form': form })
+
 
 
 def load_cidades(request):    

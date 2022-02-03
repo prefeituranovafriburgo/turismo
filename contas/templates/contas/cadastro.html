@@ -25,6 +25,7 @@
 
     <form method="POST" id="formulario" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
         {% csrf_token %}
+
         <table  class="table table-striped table-bordered">
             {{ form.as_table }}
         </table>
