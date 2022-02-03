@@ -2,116 +2,115 @@
 {% load static %}
 {% block css %}
 {% endblock %}
-{% block cab %}           
-            <div id="main" class="row w-100 my-auto">
+{% block cab %}
+    <div id="main" class="row w-100 my-auto">
 
-                <div class="col-7 d-flex">                                           
-                    <div class="row mx-auto cards">
-                        <div id="card-bus" class="m-auto">
-                            <div class="card-context">                                
-                                <span class="btn btn-light">Transporte turístico</span>
-                                <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-primary">
-                                    Cadastrar
-                                </a>
-                            </div>
-                        </div>
-                        <div id="card-ponto" class="m-auto">
-                            <div class="card-context">                                
-                                <span class="btn btn-light">Grupo turísticos</span>
-                                <a href="{% url 'senhas:cad_acesso_ponto' %}" class="btn btn-primary">
-                                    Cadastrar
-                                </a>
-                            </div>
-                        </div>
-                    </div>                    
+        <div class="col-7 d-flex">                                           
+            <div class="row mx-auto cards">
+                <div id="card-bus" class="m-auto">
+                    <div class="card-context">                                
+                        <span class="btn btn-light">Transporte turístico</span>
+                        <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-primary">
+                            Cadastrar
+                        </a>
+                    </div>
                 </div>
+                <div id="card-ponto" class="m-auto">
+                    <div class="card-context">                                
+                        <span class="btn btn-light">Grupo turísticos</span>
+                        <a href="{% url 'senhas:cad_acesso_ponto' %}" class="btn btn-primary">
+                            Cadastrar
+                        </a>
+                    </div>
+                </div>
+            </div>                    
+        </div>
 
-                <div class="lateral col p-0">
-                    <div class="row teste">
-                        <div id="conheca" class="col">
-                            <a href="https://www.pmnf.rj.gov.br/turismo/conheca-nova-friburgo" target="_blank">
-                                <span>
-                                    Conheça</br>Nova Friburgo
-                                </span>
-                            </a>
-                        </div>
-                        <div id="roteiros" class="col">
-                            <a href="https://www.pmnf.rj.gov.br/turismo/roteiros" target="_blank">
-                                <span>
-                                    Roteiros de passeios 
-                                </span>       
-                            </a>                   
-                        </div>
-                        <div id="mapa" class="col">
-                            <a href="https://novafriburgo.rj.gov.br//uploads/wysiwyg//326a7d03b.jpeg" target="_blank">   
-                                <span>
-                                    Mapa Turístico
-                                </span> 
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row teste">
-                        <div id="folder" class="col">
-                            <a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/FolderTURISMO-NOVA-FRIBURGO.pdf" target="_blank">
-                                <span>
-                                    Folder de Turismo
-                                </span>
-                            </a>
-                        </div>
-                        <div id="guia" class="col">
-                            <a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/GUIAS-DE-TURISMO-RECEPTIVONOVA-FRIBURGO.pdf" target="_blank">
-                                <span>
-                                    Guias de Turismo
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row hidden">
-                        <div id="contato" class="col p-5">
-                            <h1>Contato</h1>
-                            <ul class="m-auto">
-                                <li>Email: <a href="mailto:secturnf@gmail.com">secturnf@gmail.com</a></li>
-                                <li>Telefone:<a href="tel:552225228051"> +(55) (22) 2522-8051</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row hidden">
-                        <div class="col rede-social pt-5">
-                            <a href="https://www.facebook.com/SecturNf" target="_blank">
-                                <img src="{% static 'images/facebook.png' %}" alt="">
-                            </a>
-                            <a href="https://www.instagram.com/sectur_nf/" target="_blank">
-                                <img src="{% static 'images/instagram.png' %}" alt="">
-                            </a>               
-                            <a id="brasao" class="rounded-circle" href="https://www.pmnf.rj.gov.br/turismo/" target="_blank">
-                                <img id="brasao-img" class="rounded-circle" src="{% static 'images/brasao.png' %}" alt="">
-                            </a>                   
-                        </div>
-                    </div>
+        <div class="lateral col p-0">
+            <div class="row teste">
+                <div id="conheca" class="col">
+                    <a href="https://www.pmnf.rj.gov.br/turismo/conheca-nova-friburgo" target="_blank">
+                        <span>
+                            Conheça</br>Nova Friburgo
+                        </span>
+                    </a>
+                </div>
+                <div id="roteiros" class="col">
+                    <a href="https://www.pmnf.rj.gov.br/turismo/roteiros" target="_blank">
+                        <span>
+                            Roteiros de passeios 
+                        </span>       
+                    </a>                   
+                </div>
+                <div id="mapa" class="col">
+                    <a href="https://novafriburgo.rj.gov.br//uploads/wysiwyg//326a7d03b.jpeg" target="_blank">   
+                        <span>
+                            Mapa Turístico
+                        </span> 
+                    </a>
                 </div>
             </div>
-            <div class="row show">
+            <div class="row teste">
+                <div id="folder" class="col">
+                    <a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/FolderTURISMO-NOVA-FRIBURGO.pdf" target="_blank">
+                        <span>
+                            Folder de Turismo
+                        </span>
+                    </a>
+                </div>
+                <div id="guia" class="col">
+                    <a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/GUIAS-DE-TURISMO-RECEPTIVONOVA-FRIBURGO.pdf" target="_blank">
+                        <span>
+                            Guias de Turismo
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="row hidden">
                 <div id="contato" class="col p-5">
                     <h1>Contato</h1>
-                    <ul>
+                    <ul class="m-auto">
                         <li>Email: <a href="mailto:secturnf@gmail.com">secturnf@gmail.com</a></li>
                         <li>Telefone:<a href="tel:552225228051"> +(55) (22) 2522-8051</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="row show">
-                <div class="col rede-social pb-4">
+            <div class="row hidden">
+                <div class="col rede-social pt-5">
                     <a href="https://www.facebook.com/SecturNf" target="_blank">
                         <img src="{% static 'images/facebook.png' %}" alt="">
                     </a>
                     <a href="https://www.instagram.com/sectur_nf/" target="_blank">
                         <img src="{% static 'images/instagram.png' %}" alt="">
-                    </a> 
+                    </a>               
                     <a id="brasao" class="rounded-circle" href="https://www.pmnf.rj.gov.br/turismo/" target="_blank">
                         <img id="brasao-img" class="rounded-circle" src="{% static 'images/brasao.png' %}" alt="">
                     </a>                   
-                </div>                               
                 </div>
             </div>
-        </div>      
+        </div>
+    </div>
+    <div class="row show">
+        <div id="contato" class="col p-5">
+            <h1>Contato</h1>
+            <ul>
+                <li>Email: <a href="mailto:secturnf@gmail.com">secturnf@gmail.com</a></li>
+                <li>Telefone:<a href="tel:552225228051"> +(55) (22) 2522-8051</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row show">
+        <div class="col rede-social pb-4">
+            <a href="https://www.facebook.com/SecturNf" target="_blank">
+                <img src="{% static 'images/facebook.png' %}" alt="">
+            </a>
+            <a href="https://www.instagram.com/sectur_nf/" target="_blank">
+                <img src="{% static 'images/instagram.png' %}" alt="">
+            </a> 
+            <a id="brasao" class="rounded-circle" href="https://www.pmnf.rj.gov.br/turismo/" target="_blank">
+                <img id="brasao-img" class="rounded-circle" src="{% static 'images/brasao.png' %}" alt="">
+            </a>                   
+        </div>                               
+        </div>
+    </div>
 {% endblock %}
