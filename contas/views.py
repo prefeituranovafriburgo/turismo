@@ -75,7 +75,7 @@ def cadastrar(request):
         form = CadastrarForm()
     estados=Estado.objects.all()
     cidades=Cidade.objects.all()       
-    return render(request, 'contas/cadastrar2.html', { 'form': form, 'estados': estados, 'cidades': cidades, 'validations': validation })
+    return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'cidades': cidades, 'validations': validation })
 
 
 
