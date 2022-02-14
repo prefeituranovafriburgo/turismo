@@ -41,7 +41,7 @@ class Usuario(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-    cadastur = models.CharField(unique=True, max_length=14)
+    # cadastur = models.CharField(unique=True, max_length=14)
     celular = models.CharField(max_length=11)
     telefone = models.CharField(max_length=10, blank=True, null=True)
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT)

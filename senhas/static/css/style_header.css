@@ -303,6 +303,22 @@ footer{
     padding-bottom: 20px;
     background-color: rgba(59, 132, 192, 0.212);
 }
+#drestaurante{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+#dOutros{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
 
 #pontosTuristicos{
     display: none;

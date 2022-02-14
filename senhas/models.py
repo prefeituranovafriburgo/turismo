@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from contas.functions import validate_CPF, validate_CNPJ
+from contas.functions import validate_CPF, validate_CNPJ, validate_CADASTUR
 
 # Create your models here.
 
@@ -71,7 +71,7 @@ class Viagem(models.Model):
     quant_passageiros = models.PositiveSmallIntegerField()
     empresa_transporte = models.CharField(max_length=120)
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
-    cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
+    cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CADASTUR])
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 

@@ -30,17 +30,29 @@ def viagem_inclui(request):
                 'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
 
     if request.method == 'POST':
-        #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation=validationsViagem(request.POST)
-        
+        print(request.POST)
         form = ViagemForm(request.POST)
-
-        if form.is_valid():
+        #Aqui a VALIDATION toma novos valores de acordo com o FORM
+        validation, valido=validationsViagem(request.POST)
+                                
+        if valido:
+            print(validation['cnpj_empresa_transporte']['cnpj'])
+            print(request.POST['tipo_veiculo'])
             try:
-                form_aux = form.save(commit=False)
-                form_aux.user = request.user
-                form_aux.save()
-
+                viagem=Viagem(user=request.user, 
+                       dt_Chegada=request.POST['dt_chegada'],
+                       dt_Saida=request.POST['dt_saida'],
+                       ficarao_hospedados=True,
+                       hotel=request.POST['hotel'],
+                       restaurante=request.POST['restaurante'],
+                       tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+                       quant_passageiros=request.POST['quant_passageiros'],
+                       empresa_transporte=request.POST['empresa_transporte'],
+                       cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj'],
+                       cadastur_empresa_transporte=request.POST['cadastur_empresa_transporte'],
+                       obs=request.POST['obs'])
+                
+                viagem.save()                
                 messages.success(request, 'Viagem cadastrada.')
                 return redirect('senhas:cad_transporte')
 
@@ -64,6 +76,7 @@ def viagem_inclui(request):
 
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
+            print(form.error_class)
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm()
