@@ -24,14 +24,13 @@ def cad_transporte(request):
 
 @login_required
 def viagem_inclui(request, tipo):
-    print(tipo)
     # Essa variavel VALIDATION é iniciada aqui para não haver conflito 
     # enquanto não existir uma requisição POST
     validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
                 'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
 
     if request.method == 'POST':
-        print(request.POST)        
+        # print(request.POST)        
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST)
@@ -65,7 +64,6 @@ def viagem_inclui(request, tipo):
                     ) 
                     viagem_turismo.save()
                     for ponto in request.POST.getlist('pontos_turisticos'):
-                        print(ponto)
                         viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
                     viagem_turismo.save()                    
                 else:
@@ -120,7 +118,6 @@ def viagem(request, id):
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
         pontos_turisticos=viagem_turismo.pontos_turisticos.all()
-        print(pontos_turisticos)
     except:
         viagem_turismo = None
         pontos_turisticos= None
