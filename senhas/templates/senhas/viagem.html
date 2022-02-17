@@ -102,7 +102,11 @@
         </tr>
         <tr>
             <th>Pontos Turísticos:</th>
-            <td>{{ viagem_turismo.pontos_turisticos }}</td>
+            <td>
+                {%for ponto_turistico in pontos_turisticos %}
+                {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
+                {% endfor %}
+            </td>
         </tr>
 
         {% endif %}

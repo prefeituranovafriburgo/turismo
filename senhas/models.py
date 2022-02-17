@@ -61,6 +61,7 @@ class Viagem(models.Model):
     def __str__(self):
         return '%s - %s - %s' % (self.user, self.dt_Chegada, self.dt_Saida)
 
+    senha=models.CharField(max_length=10, blank=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     dt_Chegada = models.DateField('Data Chegada')
     dt_Saida = models.DateField('Data Saída')

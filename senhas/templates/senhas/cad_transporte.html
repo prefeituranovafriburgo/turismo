@@ -11,7 +11,7 @@
                         </div>
                 
                         <div class="col text-right">
-                            <a href="{% url 'senhas:viagem_inclui' %}" class="btn btn-primary" role="button">
+                            <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary" role="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill mb-1 mr-1" viewBox="0 0 16 16">
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                 </svg>
@@ -26,6 +26,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Senha</th>
                                 <th>Dt. Chegada</th>
                                 <th>Dt. Saída</th>
                                 <th>Veículo</th>
@@ -38,6 +39,7 @@
                             {% for v in viagens %}
                                 <tr>
                                     <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }}</a></td>
+                                    <td class="d-flex">{{ v.senha }} <a class="mx-auto" href="#"><i class="fad fa-print"></i></a></td>
                                     <td>{{ v.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ v.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ v.tipo_veiculo }}</td>
