@@ -128,7 +128,7 @@ def viagem(request, id):
 @login_required
 def viagem_altera(request, id):
     from datetime import date
-
+    tipo=''
     viagem = Viagem.objects.get(id=id)
 
     if date.today() > viagem.dt_Saida:
@@ -143,7 +143,7 @@ def viagem_altera(request, id):
 
     if request.method == 'POST':
         form = ViagemForm(request.POST, instance=viagem)
-
+        
         if form.is_valid():
 #            cidade = Cidade.objects.get(id=request.POST.get('cidade'))
 
@@ -177,8 +177,34 @@ def viagem_altera(request, id):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm(instance=viagem)
+        pontosTuristicos_selecionados_=[]
+        if viagem.senha[0]=='t':
+            tipo='turismo'
+            viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)            
+            for u in viagem_turismo.pontos_turisticos.all():
+                pontosTuristicos_selecionados_.append(u)
+        elif viagem.senha[0]=='c':
+            tipo='compras'
+            viagem_turismo={}
+    veiculos=Tipo_Veiculo.objects.all()
+    pontosTuristicos= Pontos_Turisticos.objects.all()
 
-    return render(request, 'senhas/viagem_inclui.html', { 'form': form })
+        
+    
+    
+    #Incluindo as informações coletas no contexto para uso no Template
+    context={ 
+        'form': form, 
+        'viagem': viagem,
+        'viagem_turismo': viagem_turismo,
+        'pontos_selecionados': pontosTuristicos_selecionados_,
+        'veiculos': veiculos, 
+        'pontos': pontosTuristicos,
+        'tipo': tipo
+    }
+    
+    
+    return render(request, 'senhas/viagem_inclui.html', context)
 
 
 @login_required

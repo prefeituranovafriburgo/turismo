@@ -22,21 +22,21 @@
                 
                     </div>
                 
-                
+                    
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                        
                                 
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5 my-auto">Dt chegada:</label>
-                                        <div class="d-flex">
-                                            <input class="form-control" type="date" id="diaa" name="dt_chegada">
+                                        <div class="d-flex">                                            
+                                            <input class="form-control" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}">
                                         </div>
                                     </div>                                                            
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Saida_day" class="my-auto mr-5">Dt saida:</label>
                                         <div class="d-flex">
-                                            <input class="form-control" type="date" id="diaa" name="dt_saida">
+                                            <input class="form-control" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2"> 
@@ -55,12 +55,12 @@
                                 <div class="form-row mt-4 px-3 justify-content-center py-3">                                    
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_empresa_transporte">Empresa de transporte:</label>
-                                        <input class="form-control" type="text" name="empresa_transporte" maxlength="120" required id="id_empresa_transporte">
+                                        <input class="form-control" type="text" name="empresa_transporte" maxlength="120" required id="id_empresa_transporte" value="{{viagem.empresa_transporte}}">
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_cnpj_empresa_transporte">CNPJ:</label>
                                             <input class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
-                                                required id="id_cnpj_empresa_transporte">
+                                                required id="id_cnpj_empresa_transporte" value="{{viagem.cnpj_empresa_transporte}}">
                                             <div class="invalid-feedback">
                                                 {{validation.cnpj_empresa_transporte.msg}}
                                             </div>
@@ -68,7 +68,7 @@
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
                                         <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cadastur_empresa_transporte" maxlength="14" required
-                                        id="id_cadastur_empresa_transporte">
+                                        id="id_cadastur_empresa_transporte" value="{{viagem.cadastur_empresa_transporte}}">
                                         <div class="invalid-feedback">
                                             {{validation.cadastur_empresa_transporte.msg}}
                                         </div>
@@ -76,9 +76,9 @@
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_tipo_veiculo">Tipo veiculo:</label>
                                         <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" name="tipo_veiculo" required id="id_tipo_veiculo">
-                                            <option value="" selected>---------</option>                        
+                                            <option value="">---------</option>                        
                                             {% for veiculo in veiculos %}
-                                            <option value="{{veiculo.id}}">{{veiculo.nome}}</option>                            
+                                            <option value="{{veiculo.id}}" {% if veiculo.nome == viagem.tipo_veiculo.nome %}selected{% endif %}>{{veiculo.nome}}</option>                            
                                             {% endfor %}
                                         </select>
                                         <div class="invalid-feedback">
@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_quant_passageiros">Quant passageiros:</label>
-                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros">
+                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
                                         <div class="invalid-feedback">
                                             {{validation.quant_passageiros.msg}}
                                         </div>
@@ -97,19 +97,19 @@
                                 <div class="form-row pt-4 px-3" >
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Nome do guia de turismo:</label>
-                                        <input class="form-control" type="text" name="nome_guia"  maxlength="120">
+                                        <input class="form-control" type="text" name="nome_guia"  maxlength="120" value="{{viagem_turismo.nome_guia}}">
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_guia"  class="my-auto mr-3">Cadastur do guia:</label>
-                                        <input class="form-control w-100" type="text" name="cadastur_guia" maxlength="120">
+                                        <input class="form-control w-100" type="text" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_celular" class="my-auto mr-3">Celular:</label>
-                                        <input class="form-control w-100" type="text" name="celular" maxlength="120" >
+                                        <input class="form-control w-100" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_telefone" class="my-auto mr-3">Telefone:</label>
-                                        <input class="form-control w-100" type="text" name="telefone"  maxlength="120">
+                                        <input class="form-control w-100" type="text" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
                                     </div>
                                 </div>
                                 <div class="form-row mt-4 px-3" >
@@ -117,7 +117,7 @@
                                         <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
                                         <select onchange="checkOutros(event)" name="pontos_turisticos" id="id_pontos_turisticos" multiple>
                                             {% for ponto in pontos %}
-                                            <option value="{{ponto}}">{{ponto}}</option>
+                                            <option value="{{ponto}}" {%if ponto in pontos_selecionados %}selected{% endif %}>{{ponto}}</option>
                                             {% endfor %}
                                             <option value="Outros">Outros</option>
                                                                                      
@@ -170,7 +170,7 @@
                                 <div class="form-row mt-4 px-3 py-3">
                                     <div class="form-group col-md-12 d-flex flex-column"> 
                                         <label for="id_obs">Observação:</label>
-                                        <textarea class="form-group" name="obs" cols="40" rows="3" maxlength="2000" id="id_obs"></textarea>
+                                        <textarea class="form-group" name="obs" cols="40" rows="3" maxlength="2000" id="id_obs">{{viagem.obs}}</textarea>
                                     </div>
                                 </div>      
                                 <div class="form-row mt-4 justify-content-center py-3">
@@ -208,7 +208,6 @@
                 
                 <SCRIPT LANGUAGE="JavaScript">  
                     function checkOutros(event){
-                        console.log(event.target.value)
                         if (event.target.value=='Outros'){                            
                             document.getElementById('dOutros').style.display='flex';
                         }else{
@@ -267,15 +266,13 @@
 
                     function mostracidade(event){
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        estadoId = event.target.value;
-                        console.log(estadoId)
+                        estadoId = event.target.value;                        
                         $.ajax({ 
                             url: url,
                             data: {
                                 'id':estadoId,
                             },
-                            success: function(data) {
-                                console.log('teste')
+                            success: function(data) {                               
                                 $("#id_cidade").html(data);
                             }
                         });
