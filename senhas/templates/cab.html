@@ -43,9 +43,10 @@
                         <a href="{% url 'senhas:inicio' %}">
                             <img src="{% static "images/logo.png" %}"  alt="Logo Pmnf" title="Logo Pmnf"/>
                         </a>
-                    </div>
+                    </div>                    
                     <div id="nav" class="my-auto d-flex">
                         <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a>
+                        <a href="{% url 'senhas:cad_transporte' %}" class="btn" role="button"><i class="fad fa-bus-alt mr-2"></i>Minhas Viagens </a>
                         {% if user.username %}
                             <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <h6 class="text-bold my-auto">Olá,<b> {{ user.first_name }}</b>!</h6>

@@ -28,7 +28,13 @@ def DV_maker(v):
         return 11 - v
     return 0
 
-
+def validate_CADASTUR(value):
+    if len(value)!=8:
+        raise ValidationError(error_messages['invalid cadastur'])   
+    return value[:]
+    
+    
+    
 def validate_CPF(value):
     """
     Value can be either a string in the format XXX.XXX.XXX-XX or an
@@ -66,6 +72,7 @@ def validate_CNPJ(value):
     :type value: object
     """
     value = str(value)
+    print('erro ->',value)
     if value in EMPTY_VALUES:
         return u''
     if not value.isdigit():
@@ -87,7 +94,7 @@ def validate_CNPJ(value):
     value = value[:-1] + str(new_2dv)
     if value[-2:] != orig_dv:
         raise ValidationError(error_messages['invalid'])
-
+    print('erro ->', orig_value)
     return orig_value
 
 #VALIDATIONS FOR EDUARDO SALARINI
@@ -95,7 +102,7 @@ def validations(request):
     validate={}
     validate['nome']=validateNOME(request['nome'])
     validate['cpf']=validateCPF(request['cpf'])
-    validate['cadastur']=validateCadastur(request['cadastur'])
+    # validate['cadastur']=validateCadastur(request['cadastur'])
     validate['email']=validateEMAIL(request['email'])
     validate['celular']=validateCelular(request['celular'])
     validate['telefone']=validateTelefone(request['telefone'])
@@ -108,7 +115,9 @@ def validationsViagem(request):
     validate['quant_passageiros']=validatePassageiros(request['quant_passageiros'])
     validate['cadastur_empresa_transporte']=validateCadastur(request['cadastur_empresa_transporte'])
     validate['cnpj_empresa_transporte']=validateCNPJ(request['cnpj_empresa_transporte'])
-    return validate
+    if validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
+        return validate, True    
+    return validate, False
 
 def validateCNPJ(cnpj_):
     cnpj = [int(char) for char in cnpj_ if char.isdigit()]
@@ -125,7 +134,7 @@ def validateCNPJ(cnpj_):
         dv = sum(map(lambda x: int(x[1]) * x[0], cnpj_enum)) * 10 % 11
         if cnpj_r[i - 1:i] != str(dv % 10):
             return {'state': False, 'msg': 'CNPJ invalido.'}
-    return {'state': True, 'msg': ''}
+    return {'state': True, 'msg': '', 'cnpj': cnpj}
 
 def validatePassageiros(passageiros):
     if len(passageiros)<1 or passageiros=='':
@@ -182,6 +191,7 @@ def validateCelular(cel):
 
 def validateTelefone(tel):
     telefone=[int(char) for char in tel if char.isdigit()]
+    print(telefone)
     if len(telefone)!=11:
         return {'state': False, 'msg': 'Número de telefone inválido.'}        
     return {'state': True, 'msg': ''}   

@@ -58,13 +58,6 @@
                                     {{validations.cpf.msg}}
                                 </div> 
                             </div>
-                            <div class="form-group col-md-2"> 
-                                <label for="id_cadastur">Cadastur:</label>
-                                <input class="form-control {% if not validations.cadastur.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur" maxlength="14" required id="id_cadastur">
-                                <div class="invalid-feedback">
-                                    {{validations.cadastur.msg}}
-                                </div> 
-                            </div>
                             <div class="form-group col-md-3"> 
                                 <label for="id_email">Email:</label>
                                 <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="email" maxlength="200" required id="id_email">
@@ -80,8 +73,6 @@
                                     {{validations.celular.msg}}
                                 </div> 
                             </div>
-                        </div>
-                        <div class="form-row">                            
                             <div class="form-group col-md-2"> 
                                 <label for="id_telefone">Telefone:</label>
                                 <input class="form-control {% if not validations.telefone.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
@@ -90,6 +81,9 @@
                                     {{validations.telefone.msg}}
                                 </div> 
                             </div>
+                        </div>
+                        <div class="form-row">                            
+                        
                             <div class="form-group col-md-2"> 
                                 <label for="id_estado">Estado:</label>
                                 <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">

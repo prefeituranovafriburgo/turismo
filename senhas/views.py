@@ -7,6 +7,7 @@ from contas.views import sair
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
 from .models import Pontos_Turisticos
 from .forms import ViagemForm
+from .functions import get_random_string
 
 # Create your views here.
 
@@ -22,25 +23,52 @@ def cad_transporte(request):
 
 
 @login_required
-def viagem_inclui(request):
-    
+def viagem_inclui(request, tipo):
     # Essa variavel VALIDATION é iniciada aqui para não haver conflito 
     # enquanto não existir uma requisição POST
     validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
                 'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
 
     if request.method == 'POST':
-        #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation=validationsViagem(request.POST)
-        
+        # print(request.POST)        
         form = ViagemForm(request.POST)
-
-        if form.is_valid():
+        #Aqui a VALIDATION toma novos valores de acordo com o FORM
+        validation, valido=validationsViagem(request.POST)
+                                
+        if valido:            
             try:
-                form_aux = form.save(commit=False)
-                form_aux.user = request.user
-                form_aux.save()
-
+                viagem=Viagem(                    
+                    user=request.user, 
+                    dt_Chegada=request.POST['dt_chegada'],
+                    dt_Saida=request.POST['dt_saida'],
+                    ficarao_hospedados=True,
+                    hotel=request.POST['hotel'],
+                    restaurante=request.POST['restaurante'],
+                    tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+                    quant_passageiros=request.POST['quant_passageiros'],
+                    empresa_transporte=request.POST['empresa_transporte'],
+                    cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj'],
+                    cadastur_empresa_transporte=request.POST['cadastur_empresa_transporte'],
+                    obs=request.POST['obs'])                
+                viagem.save()    
+                          
+                if tipo=='turismo':
+                    viagem.senha='t'+get_random_string()+str(viagem.id)+get_random_string()+'/22NF' 
+                    viagem.save()
+                    viagem_turismo=Viagem_Turismo(
+                        viagem=viagem,
+                        nome_guia=request.POST['nome_guia'],
+                        cadastur_guia=request.POST['cadastur_guia'],
+                        celular=request.POST['celular'],
+                        telefone=request.POST['telefone'],                        
+                    ) 
+                    viagem_turismo.save()
+                    for ponto in request.POST.getlist('pontos_turisticos'):
+                        viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
+                    viagem_turismo.save()                    
+                else:
+                    viagem.senha='c'+get_random_string()+str(viagem.id)+get_random_string()+'/22NF' 
+                    viagem.save()
                 messages.success(request, 'Viagem cadastrada.')
                 return redirect('senhas:cad_transporte')
 
@@ -76,7 +104,8 @@ def viagem_inclui(request):
         'form': form, 
         'validation': validation, 
         'veiculos': veiculos, 
-        'pontos': pontosTuristicos 
+        'pontos': pontosTuristicos,
+        'tipo': tipo
     }
     return render(request, 'senhas/viagem_inclui.html', context)
 
@@ -88,16 +117,18 @@ def viagem(request, id):
 
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
+        pontos_turisticos=viagem_turismo.pontos_turisticos.all()
     except:
         viagem_turismo = None
+        pontos_turisticos= None
 
-    return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo })
+    return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
 
 
 @login_required
 def viagem_altera(request, id):
     from datetime import date
-
+    tipo=''
     viagem = Viagem.objects.get(id=id)
 
     if date.today() > viagem.dt_Saida:
@@ -112,7 +143,7 @@ def viagem_altera(request, id):
 
     if request.method == 'POST':
         form = ViagemForm(request.POST, instance=viagem)
-
+        
         if form.is_valid():
 #            cidade = Cidade.objects.get(id=request.POST.get('cidade'))
 
@@ -146,8 +177,34 @@ def viagem_altera(request, id):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = ViagemForm(instance=viagem)
+        pontosTuristicos_selecionados_=[]
+        if viagem.senha[0]=='t':
+            tipo='turismo'
+            viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)            
+            for u in viagem_turismo.pontos_turisticos.all():
+                pontosTuristicos_selecionados_.append(u)
+        elif viagem.senha[0]=='c':
+            tipo='compras'
+            viagem_turismo={}
+    veiculos=Tipo_Veiculo.objects.all()
+    pontosTuristicos= Pontos_Turisticos.objects.all()
 
-    return render(request, 'senhas/viagem_inclui.html', { 'form': form })
+        
+    
+    
+    #Incluindo as informações coletas no contexto para uso no Template
+    context={ 
+        'form': form, 
+        'viagem': viagem,
+        'viagem_turismo': viagem_turismo,
+        'pontos_selecionados': pontosTuristicos_selecionados_,
+        'veiculos': veiculos, 
+        'pontos': pontosTuristicos,
+        'tipo': tipo
+    }
+    
+    
+    return render(request, 'senhas/viagem_inclui.html', context)
 
 
 @login_required

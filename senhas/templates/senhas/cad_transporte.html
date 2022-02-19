@@ -3,6 +3,28 @@
 {% block css %}
 {% endblock %}
 {% block cab %}          
+            <div id="menu_transporte" onclick="closePopUp()">
+                <div class="col d-flex">                                           
+                    <div class="row mx-auto cards">
+                        <div id="card-ponto" class="ml-auto my-auto">
+                            <div class="card-context">                                
+                                <span class="btn btn-light">TRANSPORTE PARA <br>EXCURSÕES TURÍSTICAS</span>
+                                <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
+                                    Cadastrar
+                                </a>
+                            </div>
+                        </div>
+                        <div id="card-bus" class="mr-auto my-auto">
+                            <div class="card-context">                                
+                                <span class="btn btn-light">Transporte exclusivo <br>para REALIZAR Compras</span>
+                                <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
+                                    Cadastrar
+                                </a>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
             <div id="main" class="row w-100">
                 <div class="container pt-5 mt-5">
                     <div class="row">
@@ -11,12 +33,12 @@
                         </div>
                 
                         <div class="col text-right">
-                            <a href="{% url 'senhas:viagem_inclui' %}" class="btn btn-primary" role="button">
+                            <button class="btn btn-primary" onclick="openPopUp()" role="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill mb-1 mr-1" viewBox="0 0 16 16">
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                 </svg>
                                 NOVA VIAGEM
-                            </a>
+                            </button>
                         </div>
                 
                     </div>
@@ -26,6 +48,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Senha</th>
                                 <th>Dt. Chegada</th>
                                 <th>Dt. Saída</th>
                                 <th>Veículo</th>
@@ -37,7 +60,14 @@
                 
                             {% for v in viagens %}
                                 <tr>
-                                    <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }}</a></td>
+                                    <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }} </a></td>
+                                    <td class="d-flex">
+                                        <span class="mx-auto">{{ v.senha }}</span> 
+                                        <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.id %}">
+                                            <i class="fad fa-print"></i>
+                                            <span class="tooltiptext">Imprimir documento</span>
+                                        </a>                                                                                      
+                                    </td>
                                     <td>{{ v.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ v.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ v.tipo_veiculo }}</td>
@@ -50,5 +80,13 @@
                     </table>
                 </div>
             </div>                   
-        </div>   
+        </div>
+        <script>
+            function openPopUp(){
+                document.getElementById("menu_transporte").style.display='flex'
+            }
+            function closePopUp(){
+                document.getElementById("menu_transporte").style.display='none'
+            }
+        </script>   
 {% endblock %}

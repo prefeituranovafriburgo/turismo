@@ -14,7 +14,7 @@ class CadastrarForm(ModelForm):
     senha = forms.CharField(label = 'Senha:', widget=forms.PasswordInput)
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
 
-    field_order = ['nome', 'cpf', 'cadastur', 'email', 'celular', 'telefone', 'estado', 'cidade']
+    field_order = ['nome', 'cpf', 'email', 'celular', 'telefone', 'estado', 'cidade']
 
     class Meta:
         model = Usuario
@@ -63,7 +63,7 @@ class CadastroForm(ModelForm):
     telefone = forms.CharField(label = "Telefone",required=False, max_length=14, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,itelefone)", 'onload' : 'mascara(this,itelefone)'}))
     estado = forms.ModelChoiceField(queryset=Estado.objects.all(), widget = forms.Select(attrs={'class': "selEstado"}))
 
-    field_order = ['nome', 'cpf', 'cadastur', 'email', 'celular', 'telefone', 'estado', 'cidade']
+    field_order = ['nome', 'cpf', 'email', 'celular', 'telefone', 'estado', 'cidade']
 
     class Meta:
         model = Usuario

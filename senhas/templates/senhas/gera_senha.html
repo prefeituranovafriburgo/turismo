@@ -1,107 +1,153 @@
-{% load template_filters %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% load template_filters %}
 
 {% load static %}
 
-<style type="text/css">
-    .watermark {
-        width: 800px;
-        height: 800px;
-        display: block;
-        position: relative;
-      }
-      
-      .watermark::after {
-        content: "";
-       background:url({% static "marcadagua.jpg" %});
-        opacity: 1.0;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: absolute;
-        z-index: -1;   
-      }
-</style>
-
-<img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>
-<br>
-<div class="container">
-    <div class="watermark">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style type="text/css">
+            body{
+                -webkit-print-color-adjust:exact;
+            }
+            .watermark {
+                width: 800px;
+                height: 800px;
+                display: block;
+                position: relative;
+                background-image: url({% static 'marcadagua.jpg' %});
+                background-size: cover;
+                -webkit-print-color-adjust:exact;
+              }
+              
+              .watermark::after {                
+                opacity: 1.0;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                position: absolute;
+                z-index: -1;   
+                -webkit-print-color-adjust:exact;
+              }
+              /* .marca-dagua{
+                opacity: 0.4;
+                position: absolute;             
+                width: 800px;                
+                z-index: -2;                
+              } */
+              table, tr, td, th{
+                  color-adjust:exact !important;
+                  background-color: transparent !important;
+                  -webkit-print-color-adjust:exact !important;
+              }
+              
+    </style>
+</head>
+<body class="container-fluid d-flex flex-column">
     <div class="row">
-        <div class="col">
-            <h3 class="text-center">SENHA DE ACESSO:</h3>
+        <div class="col d-flex">
+            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>
         </div>
-        <h1>{{ viagem.id }}/{% now "y" %}NF</h1>
     </div>
+    <br>
+    <div class="container m-auto d-flex flex-column">
+        <!-- <img class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt=""> -->
+        <div class="watermark m-auto">
 
-    <table  class="table table-striped table-bordered">
+            <div class="row">
+                <div class="col">
+                    <h3 class="text-center">SENHA DE ACESSO:</h3>
+                    <br>
+                    <h1 class="text-center">{{ viagem.id }}/{% now "y" %}NF</h1>
+                    <br>
+                    <br>
+                </div>                
+            </div>
 
-        <tr>
-            <th>Data de entrada:</th>
-            <th>Data de saída:</th>
-        </tr>
-            <td>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
-            <td>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
-        </tr>
-        <tr>
-            <th>Veículo</th>
-            <td>{{ viagem.tipo_veiculo }}</td>
-        </tr>
-        <tr>
-            <th>Quant. Passageiros</th>
-            <td>{{ viagem.quant_passageiros }}</td>
-        </tr>
-        <tr>
-            <th>Empresa de Transporte</th>
-            <td>{{ viagem.empresa_transporte }}</td>
-        </tr>
-        <tr>
-            <th>CNPJ da Empresa de Transporte</th>
-            <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
-        </tr>
-        <tr>
-            <th>Cadastur da Empresa de Transporte</th>
-            <td>{{ viagem.cadastur_empresa_transporte }}</td>
-        </tr>
+            <table  class="table table-borderless">
 
-        <!-- Viatem/Turismo -->
+                <tr>
+                    <th class="text-center">Data de entrada:</th>
+                    <th class="text-center">Data de saída:</th>
+                </tr>
+                    <td class="text-center">{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="text-center">{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right"></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th class="text-right">Veículo</th>
+                    <td>{{ viagem.tipo_veiculo }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">Quant. Passageiros</th>
+                    <td>{{ viagem.quant_passageiros }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">Empresa de Transporte</th>
+                    <td>{{ viagem.empresa_transporte }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">CNPJ da Empresa de Transporte</th>
+                    <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">Cadastur da Empresa de Transporte</th>
+                    <td>{{ viagem.cadastur_empresa_transporte }}</td>
+                </tr>
 
-        {% if viagem_turismo %}
+                <!-- Viatem/Turismo -->
 
-        <tr>
-            <th>Nome do Guia:</th>
-            <td>{{ viagem_turismo.nome_guia }}</td>
-        </tr>
-        <tr>
-            <th>Cadastur do Guia:</th>
-            <td>{{ viagem_turismo.cadastur_guia }}</td>
-        </tr>
-        <tr>
-            <th>Celular do Guia:</th>
-            <td>{{ viagem_turismo.celular }}</td>
-        </tr>
-        <tr>
-            <th>Telefone do Guia:</th>
-            <td>{{ viagem_turismo.telefone }}</td>
-        </tr>
-        <tr>
-            <th>Pontos Turísticos:</th>
-            <td>{{ viagem_turismo.pontos_turisticos }}</td>
-        </tr>
+                {% if viagem_turismo %}
 
-        {% endif %}
+                <tr>
+                    <th>Nome do Guia:</th>
+                    <td>{{ viagem_turismo.nome_guia }}</td>
+                </tr>
+                <tr>
+                    <th>Cadastur do Guia:</th>
+                    <td>{{ viagem_turismo.cadastur_guia }}</td>
+                </tr>
+                <tr>
+                    <th>Celular do Guia:</th>
+                    <td>{{ viagem_turismo.celular }}</td>
+                </tr>
+                <tr>
+                    <th>Telefone do Guia:</th>
+                    <td>{{ viagem_turismo.telefone }}</td>
+                </tr>
+                <tr>
+                    <th>Pontos Turísticos:</th>
+                    <td>{{ viagem_turismo.pontos_turisticos }}</td>
+                </tr>
 
-    </table>
+                {% endif %}
 
-    <img src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>
-</div>
-
-</div>
-
+            </table>            
+            <div class="row">
+                <div class="col d-flex pt-5">
+                    <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>    
+                </div>
+            </div>
+        </div>
+        
+    </div>
 <SCRIPT LANGUAGE="JavaScript">
     window.print();
     setTimeout(function(){
         window.close();
     },2000);
 </SCRIPT>
+</body>
+</html>

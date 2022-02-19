@@ -21,7 +21,7 @@ from senhas.templatetags.template_filters import formata_cpf
 # Create your views here.
 
 def cadastrar(request):
-    validation={'nome': {'state': True},'cpf': {'state': True},'cadastur': {'state': True},'email': {'state': True}, 
+    validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
                 'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True}}
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)
@@ -39,7 +39,7 @@ def cadastrar(request):
                 usuario = Usuario(
                     user=user,
                     cpf=form.cleaned_data['cpf'],
-                    cadastur=form.cleaned_data['cadastur'],
+                    # cadastur=form.cleaned_data['cadastur'],
                     celular=form.cleaned_data['celular'],
                     telefone=form.cleaned_data['telefone'],
                     cidade=cidade,
@@ -82,6 +82,7 @@ def cadastrar(request):
 def cadastro(request):
 
     user = request.user
+    print(user)
     usuario = Usuario.objects.get(user=user)
 
     if request.method == 'POST':
