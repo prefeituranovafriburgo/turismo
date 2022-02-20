@@ -74,6 +74,8 @@ class Viagem(models.Model):
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
     cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CADASTUR])
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
+    estado_origem = models.CharField(max_length=120)
+    cidade_origem = models.CharField(max_length=120)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
 

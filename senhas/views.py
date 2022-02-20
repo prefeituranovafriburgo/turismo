@@ -105,7 +105,8 @@ def viagem_inclui(request, tipo):
         'validation': validation, 
         'veiculos': veiculos, 
         'pontos': pontosTuristicos,
-        'tipo': tipo
+        'tipo': tipo,
+        'titulo': 'CADASTRAR'
     }
     return render(request, 'senhas/viagem_inclui.html', context)
 
@@ -127,6 +128,9 @@ def viagem(request, id):
 
 @login_required
 def viagem_altera(request, id):
+    validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
+                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
+
     from datetime import date
     tipo=''
     viagem = Viagem.objects.get(id=id)
@@ -195,12 +199,14 @@ def viagem_altera(request, id):
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
         'form': form, 
+        'validation': validation,
         'viagem': viagem,
         'viagem_turismo': viagem_turismo,
         'pontos_selecionados': pontosTuristicos_selecionados_,
         'veiculos': veiculos, 
         'pontos': pontosTuristicos,
-        'tipo': tipo
+        'tipo': tipo,
+        'titulo': 'ALTERAR'
     }
     
     
