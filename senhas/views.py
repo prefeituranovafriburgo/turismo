@@ -8,7 +8,7 @@ from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
 from .models import Pontos_Turisticos
 from .forms import ViagemForm
 from .functions import get_random_string
-
+import time
 # Create your views here.
 
 @login_required
@@ -27,13 +27,14 @@ def viagem_inclui(request, tipo):
     # Essa variavel VALIDATION é iniciada aqui para não haver conflito 
     # enquanto não existir uma requisição POST
     validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
-                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
+                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, 
+                'cadastur_guia':  {'state': True}, 'telefone':  {'state': True}, 
+                'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''}} 
 
-    if request.method == 'POST':
-        # print(request.POST)        
+    if request.method == 'POST':               
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation, valido=validationsViagem(request.POST)
+        validation, valido=validationsViagem(request.POST, tipo)
                                 
         if valido:            
             try:
@@ -93,6 +94,38 @@ def viagem_inclui(request, tipo):
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
+        veiculos=Tipo_Veiculo.objects.all()
+        pontosTuristicos= Pontos_Turisticos.objects.all()
+    #Incluindo as informações coletas no contexto para uso no Template
+        viagem_turismo=False
+        if tipo=='turismo':
+            viagem_turismo={
+                'nome_guia': request.POST['nome_guia'], 
+                'cadastur_guia': request.POST['cadastur_guia'],
+                'celular': request.POST['celular'],
+                'telefone': request.POST['telefone']
+            }        
+        context={ 
+            'form': form, 
+            'validation': validation, 
+            'veiculos': veiculos, 
+            'pontos': pontosTuristicos,
+            'tipo': tipo,
+            'titulo': 'CADASTRAR',
+            'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
+                       'dt_Saida2': request.POST['dt_saida'],
+                    #    'estado_origem': request.POST['estado'],
+                    #    'cidade_origem': request.POST['cidade'],
+                       'empresa_transporte': request.POST['empresa_transporte'],
+                       'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
+                       'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
+                       'quant_passageiros': request.POST['quant_passageiros'],
+                       'obs': request.POST['obs']
+                    },                      
+            'viagem_turismo': viagem_turismo,
+            'pontos_selecionados': request.POST.getlist('pontos_turisticos')
+        }
+        return render(request, 'senhas/viagem_inclui.html', context)
     else:
         form = ViagemForm()
 
@@ -129,8 +162,9 @@ def viagem(request, id):
 @login_required
 def viagem_altera(request, id):
     validation={'veiculo': {'state': True},'quant_passageiros': {'state': True}, 
-                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, }  
-
+                'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, 
+                'cadastur_guia':  {'state': True}, 'telefone':  {'state': True}, 
+                'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''}} 
     from datetime import date
     tipo=''
     viagem = Viagem.objects.get(id=id)
@@ -197,6 +231,7 @@ def viagem_altera(request, id):
     
     
     #Incluindo as informações coletas no contexto para uso no Template
+    # Estado.objects.get()
     context={ 
         'form': form, 
         'validation': validation,
@@ -206,7 +241,9 @@ def viagem_altera(request, id):
         'veiculos': veiculos, 
         'pontos': pontosTuristicos,
         'tipo': tipo,
-        'titulo': 'ALTERAR'
+        'titulo': 'ALTERAR',
+        'estado': viagem.estado_origem,
+        'cidade': viagem.cidade_origem
     }
     
     

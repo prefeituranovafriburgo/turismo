@@ -13,7 +13,7 @@ from itertools import cycle
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
-
+import time
 
 
 error_messages = {
@@ -109,16 +109,46 @@ def validations(request):
     validate['senha']=validatePassword(request['senha'], request['senha_confirma'])    
     return validate
 
-def validationsViagem(request):  
+def validationsViagem(request, tipo):  
     validate={}
     validate['veiculo']=validateVeiculo(request['tipo_veiculo'])
     validate['quant_passageiros']=validatePassageiros(request['quant_passageiros'])
     validate['cadastur_empresa_transporte']=validateCadastur(request['cadastur_empresa_transporte'])
     validate['cnpj_empresa_transporte']=validateCNPJ(request['cnpj_empresa_transporte'])
+    if tipo=='turismo':
+        validate['celular']=validateCelular(request['celular'])
+        validate['telefone']=validateTelefone(request['telefone'])
+        validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
+    validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
+    
     if validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
-        return validate, True    
+        if tipo=='turismo':
+            if validate['cadastur_guia']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
+                return validate, True    
+        else:        
+            return validate, True    
     return validate, False
 
+def validateDates(chegada, saida):
+    if chegada=='' and saida=='':
+        return {'state_chegada': False, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.', 'msg_saida': 'Data de saida invalida.'}
+    try:
+        chegada_=time.strptime(chegada, "%Y-%m-%d")
+    except:
+        return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
+    try:
+        saida_=time.strptime(saida, "%Y-%m-%d")
+    except:
+        return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
+    
+    agora = time.localtime() # get struct_time
+    if chegada_ <= agora:
+        return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
+    if chegada_ > saida_:
+        return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    return {'state_chegada': True, 'state_saida': True, 'msg': ''}
+    
+    
 def validateCNPJ(cnpj_):
     cnpj = [int(char) for char in cnpj_ if char.isdigit()]
     if len(cnpj) != 14:

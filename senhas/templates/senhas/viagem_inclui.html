@@ -17,9 +17,9 @@
                                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                                 </svg>
                                 VOLTAR
-                            </a>
+                            </a>                            
                         </div>
-                
+                        
                     </div>
                 
                     
@@ -28,15 +28,17 @@
                                 
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Chegada_day" class="w-auto mr-5 my-auto">Dt chegada:</label>
-                                        <div class="d-flex">                                            
-                                            <input class="form-control" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}">
+                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada: {{viagem.dt_Chegada}}</label>                                                                     
+                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_chegada}}
                                         </div>
                                     </div>                                                            
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Saida_day" class="my-auto mr-5">Dt saida:</label>
-                                        <div class="d-flex">
-                                            <input class="form-control" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}">
+                                        <label for="id_dt_Saida_day" class="mr-5">Dt saida:</label>
+                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_saida}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2"> 
@@ -94,22 +96,31 @@
                                     </div>           
                                 </div>
                                 {% if tipo == 'turismo' %}
-                                <div class="form-row pt-4 px-3" >
+                                <div class="form-row px-3 py-3" >
                                     <div class="form-group col-md-3 d-flex flex-column">                        
-                                        <label for="id_hotel" class="mr-3 my-auto">Nome do guia de turismo:</label>
+                                        <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
                                         <input class="form-control" type="text" name="nome_guia"  maxlength="120" value="{{viagem_turismo.nome_guia}}">
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_guia"  class="my-auto mr-3">Cadastur do guia:</label>
-                                        <input class="form-control w-100" type="text" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
+                                        <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
+                                        <input class="form-control w-100 {%if not validation.cadastur_guia.state %}is-invalid{% endif %}" type="text" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.cadastur_guia.msg}}
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_celular" class="my-auto mr-3">Celular:</label>
-                                        <input class="form-control w-100" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
+                                    <div class="form-group col-md-2 d-flex flex-column">                                                                
+                                        <label for="id_celular" class="mr-3" >Celular:</label>
+                                        <input class="form-control w-100 {%if not validation.celular.state %}is-invalid{% endif %}" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.celular.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_telefone" class="my-auto mr-3">Telefone:</label>
-                                        <input class="form-control w-100" type="text" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
+                                        <input class="form-control w-100 {%if not validation.telefone.state %}is-invalid{% endif %}" type="text" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.telefone.msg}}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row mt-4 px-3" >
