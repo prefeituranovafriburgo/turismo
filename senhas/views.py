@@ -4,6 +4,7 @@ from django.contrib import messages
 from contas.functions import validationsViagem
 
 from contas.views import sair
+from contas.models import Estado, Cidade
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
 from .models import Pontos_Turisticos
 from .forms import ViagemForm
@@ -30,7 +31,8 @@ def viagem_inclui(request, tipo):
                 'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True}, 
                 'cadastur_guia':  {'state': True}, 'telefone':  {'state': True}, 
                 'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''}} 
-
+    
+    estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':               
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
@@ -104,7 +106,15 @@ def viagem_inclui(request, tipo):
                 'cadastur_guia': request.POST['cadastur_guia'],
                 'celular': request.POST['celular'],
                 'telefone': request.POST['telefone']
-            }        
+            }  
+        try:
+            estado=Estado.objects.get(id=request.POST['estado'])      
+        except:
+            estado=''
+        try:
+            cidade=Cidade.objects.get(id=request.POST['cidade'])
+        except:
+            cidade=''
         context={ 
             'form': form, 
             'validation': validation, 
@@ -112,6 +122,9 @@ def viagem_inclui(request, tipo):
             'pontos': pontosTuristicos,
             'tipo': tipo,
             'titulo': 'CADASTRAR',
+            'estado_': estado,
+            'estados': estados,  
+            'cidade': cidade,
             'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
                        'dt_Saida2': request.POST['dt_saida'],
                     #    'estado_origem': request.POST['estado'],
@@ -121,7 +134,7 @@ def viagem_inclui(request, tipo):
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
                        'obs': request.POST['obs']
-                    },                      
+                    },                                  
             'viagem_turismo': viagem_turismo,
             'pontos_selecionados': request.POST.getlist('pontos_turisticos')
         }
@@ -130,7 +143,7 @@ def viagem_inclui(request, tipo):
         form = ViagemForm()
 
     #Pegando as devidas informações para os selects do formulario abaixo
-    veiculos=Tipo_Veiculo.objects.all()
+    veiculos=Tipo_Veiculo.objects.all()    
     pontosTuristicos= Pontos_Turisticos.objects.all()
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
@@ -139,7 +152,9 @@ def viagem_inclui(request, tipo):
         'veiculos': veiculos, 
         'pontos': pontosTuristicos,
         'tipo': tipo,
-        'titulo': 'CADASTRAR'
+        'titulo': 'CADASTRAR',
+        'estado_': '',        
+        'estados': estados,        
     }
     return render(request, 'senhas/viagem_inclui.html', context)
 
@@ -152,6 +167,7 @@ def viagem(request, id):
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
         pontos_turisticos=viagem_turismo.pontos_turisticos.all()
+        print(pontos_turisticos)
     except:
         viagem_turismo = None
         pontos_turisticos= None
@@ -227,9 +243,9 @@ def viagem_altera(request, id):
     veiculos=Tipo_Veiculo.objects.all()
     pontosTuristicos= Pontos_Turisticos.objects.all()
 
-        
-    
-    
+    estado=Estado.objects.get(nome=viagem.estado_origem)
+    estados = Estado.objects.all().order_by('nome')
+    cidade=Cidade.objects.get(nome=viagem.cidade_origem)
     #Incluindo as informações coletas no contexto para uso no Template
     # Estado.objects.get()
     context={ 
@@ -242,8 +258,9 @@ def viagem_altera(request, id):
         'pontos': pontosTuristicos,
         'tipo': tipo,
         'titulo': 'ALTERAR',
-        'estado': viagem.estado_origem,
-        'cidade': viagem.cidade_origem
+        'estado_': estado,
+        'estados': estados,
+        'cidade': cidade        
     }
     
     

@@ -28,7 +28,7 @@
                                 
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada: {{viagem.dt_Chegada}}</label>                                                                     
+                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
                                         <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
                                         <div class="invalid-feedback">
                                             {{validation.chegada_saida.msg_chegada}}
@@ -44,13 +44,16 @@
                                     <div class="form-group col-md-2"> 
                                         <label for="id_estado">Estado de origem:</label>
                                         <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
-                                           
+                                            <option value="" {%if estado_ == '' %}selected{% endif %}></option>
+                                            {% for estado in estados %}
+                                            <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
                                         <select class="form-control" name="cidade" required id="id_cidade">
-                                                                                      
+                                            <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                     </div>                                                             
                                 </div>                               
@@ -350,7 +353,7 @@
                         v_obj.value=v_fun(v_obj.value)
                     }
                     window.onload = function() {
-                      mostraestado();
+                    //   mostraestado();
                     };
                 
                 </script>                
