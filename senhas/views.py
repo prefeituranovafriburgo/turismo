@@ -10,6 +10,7 @@ from .models import Pontos_Turisticos
 from .forms import ViagemForm
 from .functions import get_random_string
 import time
+import pickle
 # Create your views here.
 
 @login_required
@@ -132,6 +133,11 @@ def viagem_inclui(request, tipo):
                 restaurante_reservado=True
         except:
             restaurante_reservado=False
+        pontos_selecionados=[]
+        for u in request.POST.getlist('pontos_turisticos'):
+            pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
+        print(request.POST.getlist('pontos_turisticos'))
+        print(pontos_selecionados)
         context={ 
             'form': form, 
             'validation': validation, 
@@ -157,7 +163,7 @@ def viagem_inclui(request, tipo):
                        'hotel': request.POST['hotel']
                     },                                  
             'viagem_turismo': viagem_turismo,
-            'pontos_selecionados': request.POST.getlist('pontos_turisticos')
+            'pontos_selecionados': pontos_selecionados
         }
         return render(request, 'senhas/viagem_inclui.html', context)
     else:
@@ -257,6 +263,7 @@ def viagem_altera(request, id):
             tipo='turismo'
             viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)            
             for u in viagem_turismo.pontos_turisticos.all():
+                print(type(u))
                 pontosTuristicos_selecionados_.append(u)
         elif viagem.senha[0]=='c':
             tipo='compras'
@@ -269,6 +276,7 @@ def viagem_altera(request, id):
     cidade=viagem.cidade_origem
     #Incluindo as informações coletas no contexto para uso no Template
     # Estado.objects.get()
+    print(pontosTuristicos_selecionados_)
     context={ 
         'form': form, 
         'validation': validation,
