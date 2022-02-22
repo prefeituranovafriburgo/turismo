@@ -23,6 +23,7 @@ from senhas.templatetags.template_filters import formata_cpf
 def cadastrar(request):
     validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
                 'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True}}
+    estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)
         validation=validations(request.POST)
@@ -71,18 +72,41 @@ def cadastrar(request):
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
+            
+            try:
+                estado=Estado.objects.get(id=request.POST['estado'])
+            except:
+                estado=''
+            try:
+                cidade=Cidade.objects.get(id=request.POST['cidade'])
+            except:
+                cidade=''
+            print(estado, cidade)
+            estados = Estado.objects.all().order_by('nome')
+            context={
+                'form': form,
+                'validations': validation,
+                'nome':request.POST['nome'],
+                'cpf': request.POST['cpf'],
+                'email':request.POST['email'],
+                'celular':request.POST['celular'],
+                'telefone':request.POST['telefone'],
+                'estado_':estado,
+                'cidade': cidade,
+                'estados': estados
+            }
+            print('teste')
+            return render(request, 'contas/cadastrar.html', context)
     else:        
         form = CadastrarForm()
-    estados=Estado.objects.all()
-    cidades=Cidade.objects.all()       
-    return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'cidades': cidades, 'validations': validation })
+    estados=Estado.objects.all()           
+    return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'validations': validation })
 
 
 
 def cadastro(request):
 
-    user = request.user
-    print(user)
+    user = request.user    
     usuario = Usuario.objects.get(user=user)
 
     if request.method == 'POST':
@@ -123,17 +147,19 @@ def cadastro(request):
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
+           
     else:
+        
         form = CadastroForm(instance=usuario)
 
-        form.fields['email'].initial = user.email
-        form.fields['nome'].initial = user.first_name
-        form.fields['estado'].initial = usuario.cidade.estado
-        form.fields['cidade'].initial = usuario.cidade
-#        form.fields['cpf_aux'].initial = formata_cpf(usuario.cpf)
-        print('cpf:', form.fields['cpf'].initial)
-        form.fields['celular'].initial = usuario.celular
-        form.fields['telefone'].initial = usuario.telefone
+#         form.fields['email'].initial = user.email
+#         form.fields['nome'].initial = user.first_name
+#         form.fields['estado'].initial = usuario.cidade.estado
+#         form.fields['cidade'].initial = usuario.cidade
+# #        form.fields['cpf_aux'].initial = formata_cpf(usuario.cpf)
+#         print('cpf:', form.fields['cpf'].initial)
+#         form.fields['celular'].initial = usuario.celular
+#         form.fields['telefone'].initial = usuario.telefone
     """
     context={
         'email': user.email,

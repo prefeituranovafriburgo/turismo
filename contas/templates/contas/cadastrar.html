@@ -40,34 +40,34 @@
                 </div>
             </div>   
                 <div id="login-screen">    
-                    <h2>CADASTRO</h2>
+                    <h2>CADASTRO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
                         <div class="form-row">
                             <div class="form-group col-md-3">            
                                 <label for="id_nome">Nome:</label>
-                                <input class="form-control {% if not validations.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="60" required id="id_nome">
+                                <input class="form-control {% if not validations.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="60" required id="id_nome" value="{{nome}}">
                                 <div class="invalid-feedback">
                                     {{validations.nome.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-2">              
                                 <label for="id_cpf">CPF:</label>
-                                <input class="form-control {% if not validations.cpf.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf">            
+                                <input class="form-control {% if not validations.cpf.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf" value="{{cpf}}">            
                                 <div class="invalid-feedback">
                                     {{validations.cpf.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-3"> 
                                 <label for="id_email">Email:</label>
-                                <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="email" maxlength="200" required id="id_email">
+                                <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="email" maxlength="200" required id="id_email" value="{{email}}">
                                 <div class="invalid-feedback">
                                     {{validations.email.msg}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-2"> 
                                 <label for="id_celular">Celular:</label>
-                                <input class="form-control {% if not validations.celular.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)"
+                                <input class="form-control {% if not validations.celular.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)" value="{{celular}}"
                                         maxlength="15" required id="id_celular">
                                 <div class="invalid-feedback">
                                     {{validations.celular.msg}}
@@ -76,7 +76,7 @@
                             <div class="form-group col-md-2"> 
                                 <label for="id_telefone">Telefone:</label>
                                 <input class="form-control {% if not validations.telefone.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
-                                        maxlength="14" id="id_telefone">
+                                        value="{{telefone}}" maxlength="14" id="id_telefone">
                                 <div class="invalid-feedback">
                                     {{validations.telefone.msg}}
                                 </div> 
@@ -87,13 +87,16 @@
                             <div class="form-group col-md-2"> 
                                 <label for="id_estado">Estado:</label>
                                 <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
-                                   
+                                    <option value="" {%if estado_ == '' %}selected{% endif %}></option>
+                                    {% for estado in estados %}
+                                    <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group col-md-4"> 
                                 <label for="id_cidade">Cidade:</label>
                                 <select class="form-control" name="cidade" required id="id_cidade">
-                                                                              
+                                    <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-2">                             
@@ -213,7 +216,7 @@
                     v_obj.value=v_fun(v_obj.value)
                 }
                 window.onload = function() {
-                    mostraestado();
+                    // mostraestado();
                 };
             </script>  
             <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->

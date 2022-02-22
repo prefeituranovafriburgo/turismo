@@ -215,16 +215,18 @@ def validateEMAIL(email):
 
 def validateCelular(cel):
     celular=[int(char) for char in cel if char.isdigit()]
-    if len(celular)!=11:
-        return {'state': False, 'msg': 'Número de celular inválido.'}        
-    return {'state': True, 'msg': ''}   
+    print(len(celular))
+    if len(celular)==11:
+        return {'state': True, 'msg': ''}   
+    return {'state': False, 'msg': 'Número de celular inválido.'}        
+    
 
 def validateTelefone(tel):
     telefone=[int(char) for char in tel if char.isdigit()]
     print(telefone)
-    if len(telefone)!=11:
-        return {'state': False, 'msg': 'Número de telefone inválido.'}        
-    return {'state': True, 'msg': ''}   
+    if len(telefone)==10:        
+        return {'state': True, 'msg': ''}   
+    return {'state': False, 'msg': 'Número de telefone inválido.'}        
 
 def validatePassword(senha, senha2):
     if senha==senha2:
