@@ -44,14 +44,20 @@ def viagem_inclui(request, tipo):
                 if request.POST['ficarao_hospedados']:
                     fh=True
             except:
-                fh=False            
+                fh=False      
             try:
+                if request.POST['restaurante_reservado']:
+                    rr=True
+            except:
+                rr=False       
+            try:                
                 viagem=Viagem(                    
                     user=request.user, 
                     dt_Chegada=request.POST['dt_chegada'],
                     dt_Saida=request.POST['dt_saida'],
                     ficarao_hospedados=fh,
                     hotel=request.POST['hotel'],
+                    restaurante_reservado=rr,
                     restaurante=request.POST['restaurante'],
                     tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
                     quant_passageiros=request.POST['quant_passageiros'],
@@ -68,6 +74,7 @@ def viagem_inclui(request, tipo):
                     viagem.save()
                     viagem_turismo=Viagem_Turismo(
                         viagem=viagem,
+                        outros=request.POST['outros'],
                         nome_guia=request.POST['nome_guia'],
                         cadastur_guia=request.POST['cadastur_guia'],
                         celular=request.POST['celular'],
@@ -223,17 +230,54 @@ def viagem_altera(request, id):
 
 
     if request.method == 'POST':
-        form = ViagemForm(request.POST, instance=viagem)
-        
-        if form.is_valid():
-#            cidade = Cidade.objects.get(id=request.POST.get('cidade'))
-
+        form = ViagemForm(request.POST)
+        print(request.POST['estado'])
+        #Aqui a VALIDATION toma novos valores de acordo com o FORM
+        validation, valido=validationsViagem(request.POST, tipo)                                       
+        if valido:     
             try:
-
-                form.save()
-
+                if request.POST['ficarao_hospedados']:
+                    fh=True
+            except:
+                fh=False  
+            try:
+                if request.POST['restaurante_reservado']:
+                    rr=True
+            except:
+                rr=False           
+            try:                                  
+                viagem.user=request.user
+                viagem.dt_Chegada=request.POST['dt_chegada']
+                viagem.dt_Saida=request.POST['dt_saida']
+                viagem.ficarao_hospedados=fh
+                viagem.hotel=request.POST['hotel']
+                viagem.restaurante_reservado=rr
+                viagem.restaurante=request.POST['restaurante']
+                viagem.tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo'])
+                viagem.quant_passageiros=request.POST['quant_passageiros']
+                viagem.empresa_transporte=request.POST['empresa_transporte']
+                viagem.cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj']
+                viagem.cadastur_empresa_transporte=request.POST['cadastur_empresa_transporte']
+                viagem.obs=request.POST['obs']
+                viagem.estado_origem=Estado.objects.get(id=request.POST['estado'])
+                viagem.cidade_origem=Cidade.objects.get(id=request.POST['cidade'])
+                viagem.save()    
+                          
+                if tipo=='turismo':                    
+                    viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)
+                    
+                    viagem_turismo.outros=request.POST['outros']
+                    viagem_turismo.nome_guia=request.POST['nome_guia']
+                    viagem_turismo.cadastur_guia=request.POST['cadastur_guia']
+                    viagem_turismo.celular=request.POST['celular']
+                    viagem_turismo.telefone=request.POST['telefone']
+                    
+                    viagem_turismo.save()
+                    for ponto in request.POST.getlist('pontos_turisticos'):
+                        viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
+                    viagem_turismo.save()                                    
                 messages.success(request, 'Viagem alterada.')
-                return redirect('/viagem/' + str(id))
+                return redirect('senhas:cad_transporte')
 
             except Exception as e:
                 print('e:', e)
@@ -256,18 +300,18 @@ def viagem_altera(request, id):
                     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
-    else:
-        form = ViagemForm(instance=viagem)
-        pontosTuristicos_selecionados_=[]
-        if viagem.senha[0]=='t':
-            tipo='turismo'
-            viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)            
-            for u in viagem_turismo.pontos_turisticos.all():
-                print(type(u))
-                pontosTuristicos_selecionados_.append(u)
-        elif viagem.senha[0]=='c':
-            tipo='compras'
-            viagem_turismo={}
+    
+    form = ViagemForm(instance=viagem)
+    pontosTuristicos_selecionados_=[]
+    if viagem.senha[0]=='t':
+        tipo='turismo'
+        viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)            
+        for u in viagem_turismo.pontos_turisticos.all():
+            print(type(u))
+            pontosTuristicos_selecionados_.append(u)
+    elif viagem.senha[0]=='c':
+        tipo='compras'
+        viagem_turismo={}
     veiculos=Tipo_Veiculo.objects.all()
     pontosTuristicos= Pontos_Turisticos.objects.all()
 
@@ -275,8 +319,7 @@ def viagem_altera(request, id):
     estados = Estado.objects.all().order_by('nome')
     cidade=viagem.cidade_origem
     #Incluindo as informações coletas no contexto para uso no Template
-    # Estado.objects.get()
-    print(pontosTuristicos_selecionados_)
+    # Estado.objects.get()    
     context={ 
         'form': form, 
         'validation': validation,
