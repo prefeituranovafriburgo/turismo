@@ -71,8 +71,7 @@ def validate_CNPJ(value):
     group of 14 characters.
     :type value: object
     """
-    value = str(value)
-    print('erro ->',value)
+    value = str(value)    
     if value in EMPTY_VALUES:
         return u''
     if not value.isdigit():
@@ -93,8 +92,7 @@ def validate_CNPJ(value):
     new_2dv = DV_maker(new_2dv % 11)
     value = value[:-1] + str(new_2dv)
     if value[-2:] != orig_dv:
-        raise ValidationError(error_messages['invalid'])
-    print('erro ->', orig_value)
+        raise ValidationError(error_messages['invalid'])    
     return orig_value
 
 #VALIDATIONS FOR EDUARDO SALARINI
@@ -123,7 +121,7 @@ def validationsViagem(request, tipo):
     
     if validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
-            if validate['cadastur_guia']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
+            if validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
                 return validate, True    
         else:        
             return validate, True    
@@ -214,19 +212,17 @@ def validateEMAIL(email):
     return {'state': False, 'msg': 'Email inválido.'}
 
 def validateCelular(cel):
-    celular=[int(char) for char in cel if char.isdigit()]
-    print(len(celular))
+    celular=[int(char) for char in cel if char.isdigit()]    
     if len(celular)==11:
         return {'state': True, 'msg': ''}   
     return {'state': False, 'msg': 'Número de celular inválido.'}        
     
 
 def validateTelefone(tel):
-    telefone=[int(char) for char in tel if char.isdigit()]
-    print(telefone)
+    telefone=[int(char) for char in tel if char.isdigit()]    
     if len(telefone)==10:        
         return {'state': True, 'msg': ''}   
-    return {'state': False, 'msg': 'Número de telefone inválido.'}        
+    return {'state': False, 'msg': 'Número de telefone inválido.'}          
 
 def validatePassword(senha, senha2):
     if senha==senha2:

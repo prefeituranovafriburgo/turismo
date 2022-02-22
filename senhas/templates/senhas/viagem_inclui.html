@@ -150,8 +150,8 @@
                                     <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
                                         <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
                                         <div class="d-flex" >
-                                            <div class="custom-control custom-switch">
-                                                <input onchange="hospedados(event)" value="false" type="checkbox" class="custom-control-input" id="customSwitch1">
+                                            <div class="custom-control custom-switch">                                                
+                                                <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
                                                 <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
                                             </div>
                                                 <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
@@ -162,7 +162,7 @@
                                         <label class="my-auto" for="restaurante">Possui restaurante de preferência?</label>
                                         <div class="d-flex" >
                                             <div class="custom-control custom-switch">
-                                                <input onchange="drestaurante(event)" value="false" type="checkbox" class="custom-control-input" id="restaurante">
+                                                <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
                                                 <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
                                             </div>
 
@@ -172,13 +172,13 @@
                                 <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
                                     <div class="form-group justify-content-center col-md-4 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Hotel que ficarão hospedados:</label>
-                                        <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel">
+                                        <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel" value="{{viagem.hotel}}">
                                     </div>                                    
                                 </div>
                                 <div class="form-row pt-2 px-3 justify-content-center" id="drestaurante">                                    
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_drestaurante" class="my-auto mr-3">Restaurante de sua preferência:</label>
-                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_drestaurante">
+                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_drestaurante" value="{{viagem.restaurante}}">
                                     </div>
                                 </div>                                
                                 <div class="form-row mt-4 px-3 py-3">
@@ -200,7 +200,20 @@
                 
                 <!--
                 -->
-                
+                {% if viagem.ficarao_hospedados %}
+                <script>
+                    document.getElementById('hospedar').style.display='flex';
+                    document.getElementById('customSwitch1').value='true';
+                    document.getElementById('labelSwitch').innerText='Sim';
+                </script>
+                {% endif %}
+                {% if viagem.restaurante_reservado %}
+                <script>
+                    document.getElementById('drestaurante').style.display='flex';
+                    document.getElementById('restaurante').value='true';
+                    document.getElementById('labelSwitch2').innerText='Sim';
+                </script>
+                {% endif %}
                 <script>
                     $('.selEstado').change(function mostracidade () {
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view

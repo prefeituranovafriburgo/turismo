@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from contas.functions import validate_CPF, validate_CNPJ, validate_CADASTUR
+from contas.models import Cidade, Estado
 
 # Create your models here.
 
@@ -67,6 +68,7 @@ class Viagem(models.Model):
     dt_Saida = models.DateField('Data Saída')
     ficarao_hospedados = models.BooleanField(default=False, verbose_name='Ficarão Hospedados?')
     hotel = models.CharField(max_length=120, blank=True, null=True)
+    restaurante_reservado= models.BooleanField(default=False, verbose_name='Restaurante reservado?')
     restaurante = models.CharField(max_length=120, blank=True, null=True)
     tipo_veiculo = models.ForeignKey(Tipo_Veiculo, on_delete=models.PROTECT)
     quant_passageiros = models.PositiveSmallIntegerField()
@@ -74,8 +76,8 @@ class Viagem(models.Model):
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
     cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CADASTUR])
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
-    estado_origem = models.CharField(max_length=120)
-    cidade_origem = models.CharField(max_length=120)
+    estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
+    cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
 

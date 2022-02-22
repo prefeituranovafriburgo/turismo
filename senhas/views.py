@@ -33,26 +33,33 @@ def viagem_inclui(request, tipo):
                 'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''}} 
     
     estados = Estado.objects.all().order_by('nome')
-    if request.method == 'POST':               
+    if request.method == 'POST':                   
         form = ViagemForm(request.POST)
+        print(request.POST['estado'])
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation, valido=validationsViagem(request.POST, tipo)
-                                
-        if valido:            
+        validation, valido=validationsViagem(request.POST, tipo)                                       
+        if valido:     
+            try:
+                if request.POST['ficarao_hospedados']:
+                    fh=True
+            except:
+                fh=False            
             try:
                 viagem=Viagem(                    
                     user=request.user, 
                     dt_Chegada=request.POST['dt_chegada'],
                     dt_Saida=request.POST['dt_saida'],
-                    ficarao_hospedados=True,
+                    ficarao_hospedados=fh,
                     hotel=request.POST['hotel'],
                     restaurante=request.POST['restaurante'],
                     tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
                     quant_passageiros=request.POST['quant_passageiros'],
                     empresa_transporte=request.POST['empresa_transporte'],
                     cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj'],
-                    cadastur_empresa_transporte=request.POST['cadastur_empresa_transporte'],
-                    obs=request.POST['obs'])                
+                    cadastur_empresa_transporte=request.POST['cadastur_empresa_transporte'],                    
+                    obs=request.POST['obs'],
+                    estado_origem=Estado.objects.get(id=request.POST['estado']),
+                    cidade_origem=Cidade.objects.get(id=request.POST['cidade']))
                 viagem.save()    
                           
                 if tipo=='turismo':
@@ -115,6 +122,16 @@ def viagem_inclui(request, tipo):
             cidade=Cidade.objects.get(id=request.POST['cidade'])
         except:
             cidade=''
+        try: 
+            if request.POST['ficarao_hospedados']:
+                ficarao_hospedados=True
+        except:
+            ficarao_hospedados=False
+        try: 
+            if request.POST['restaurante_reservado']:
+                restaurante_reservado=True
+        except:
+            restaurante_reservado=False
         context={ 
             'form': form, 
             'validation': validation, 
@@ -133,7 +150,11 @@ def viagem_inclui(request, tipo):
                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
-                       'obs': request.POST['obs']
+                       'obs': request.POST['obs'],
+                       'ficarao_hospedados': ficarao_hospedados,
+                       'restaurante_reservado': restaurante_reservado,
+                       'restaurante': request.POST['restaurante'],
+                       'hotel': request.POST['hotel']
                     },                                  
             'viagem_turismo': viagem_turismo,
             'pontos_selecionados': request.POST.getlist('pontos_turisticos')
@@ -243,9 +264,9 @@ def viagem_altera(request, id):
     veiculos=Tipo_Veiculo.objects.all()
     pontosTuristicos= Pontos_Turisticos.objects.all()
 
-    estado=Estado.objects.get(nome=viagem.estado_origem)
+    estado=viagem.estado_origem
     estados = Estado.objects.all().order_by('nome')
-    cidade=Cidade.objects.get(nome=viagem.cidade_origem)
+    cidade=viagem.cidade_origem
     #Incluindo as informações coletas no contexto para uso no Template
     # Estado.objects.get()
     context={ 
