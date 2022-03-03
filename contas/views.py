@@ -160,11 +160,10 @@ def cadastro(request):
 #         print('cpf:', form.fields['cpf'].initial)
 #         form.fields['celular'].initial = usuario.celular
 #         form.fields['telefone'].initial = usuario.telefone
-    """
+    
     context={
         'email': user.email,
-        'nome': user.first_name,
-        'cadastur': usuario.cadastur,
+        'nome': user.first_name,        
         'cpf': usuario.cpf,
         'celular': usuario.celular,
         'telefone': usuario.telefone,
@@ -172,9 +171,7 @@ def cadastro(request):
         'cidade': usuario.cidade
     }
     return render(request, 'contas/cadastro2.html', context)
-    """
-
-    return render(request, 'contas/cadastro.html', { 'form': form })
+    # return render(request, 'contas/cadastro.html', { 'form': form })
 
 
 

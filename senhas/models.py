@@ -74,7 +74,7 @@ class Viagem(models.Model):
     quant_passageiros = models.PositiveSmallIntegerField()
     empresa_transporte = models.CharField(max_length=120)
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
-    cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CADASTUR])
+    cadastur_empresa_transporte = models.CharField(max_length=14)
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
     estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
     cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)

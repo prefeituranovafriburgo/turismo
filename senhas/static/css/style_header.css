@@ -33,7 +33,20 @@ html, body{
     background-repeat: no-repeat;
     padding: 0;
 }
+#main .cards #card-bus2{
+    width: 700px;
+    height: 100%;
+    margin-right: 5px;
+   
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
 
+    background-image: url(../images/bus.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
 #main .cards #card-ponto{
     width: 350px;
     height: 100%;

@@ -86,18 +86,24 @@
                         
                             <div class="form-group col-md-2"> 
                                 <label for="id_estado">Estado:</label>
-                                <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                <select class="form-control {% if not validations.estado.state %}is-invalid{% endif %}" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                     <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                     {% for estado in estados %}
                                     <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
                                     {% endfor %}
                                 </select>
+                                <div class="invalid-feedback">
+                                    {{validations.estado.msg}}
+                                </div> 
                             </div>
                             <div class="form-group col-md-4"> 
                                 <label for="id_cidade">Cidade:</label>
-                                <select class="form-control" name="cidade" required id="id_cidade">
+                                <select class="form-control {% if not validations.cidade.state %}is-invalid{% endif %}" name="cidade" required id="id_cidade">
                                     <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>
                                 </select>
+                                <div class="invalid-feedback">
+                                    {{validations.cidade.msg}}
+                                </div> 
                             </div>
                             <div class="form-group col-md-2">                             
                                 <label for="id_senha">Senha:</label>

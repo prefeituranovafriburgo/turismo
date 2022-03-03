@@ -1,114 +1,142 @@
-<!DOCTYPE html>
+{% extends "cab.html" %}
 {% load static %}
-<html lang="pt-br">
-    <head>
-        <!-- Meta tags Obrigatórias -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- GOOGLE FONTS -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <!-- FONTAWESOME -->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <!-- CUSTOM CSS -->
-        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">
-        
-        <title>Turismo Nova Friburgo</title>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    </head>
-
-    <SCRIPT LANGUAGE="JavaScript">
-        {% if messages %}
-            {% for message in messages %}
-                alert("{{ message }}");
-            {% endfor %}
-        {% endif %}
-    </script>
-
-    <body>
-        <div class="container-fluid h-100">
-            <div id="header" class="row">
-                    <div class="col">
-                        <div id="logo">
-                            <a href="/">
-                                <img src="/static/images/logo.png"  alt="Logo Pmnf" title="Logo Pmnf"/>
-                            </a>
-                        </div>
-                        <div id="nav" class="my-auto d-flex">                            
-                            <!-- <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a> -->
-                            {% if user.username %}                                                                   
-                                            <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <h6 class="text-bold my-auto">Olá,<b> {{ user.first_name }}</b>!</h6>
-                                                <span class="dropdown-toggle ml-3"></span>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="/contas/cadastro"><i class="fas fa-users-cog"></i> Meu cadastro</a>
-                                                <a class="dropdown-item" href="/contas/change_password"><i class="fas fa-key"></i> Alterar senha</a>
-                                                <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                                            </div>                                                                                                                 
-                            {% endif %}
-                        </div>                        
-                    <!-- <div class="col-7">
-                        <h3>Secretaria Municipal de Turismo e Marketing</h3>
-                        <h3>Secretaria Municipal de Ciência, Tecnologia,<br>Inovação e Educação Profissionalizante e Superior</h3>
-                    </div> -->
-                </div>                
-            </div>            
+{% block cab %}    
             <div id="main" class="row w-100">
-                <div class="container pt-5 mt-5">
-                    <div class="form-row mt-4 justify-content-center" id="hospedar">
-                        <div class="form-group col-md-3 d-flex flex-column">                        
-                            <label for="id_nome">Nome:</label>
+                <div class="container pt-4">
+                    <div class="row d-flex">
+                        <div class="col-md-5 mx-auto">
+                            <h3 class="mx-auto">Alteração de Cadastro:</h3>
+                        </div>
+                    </div>
+                    <div class="form-column mt-4 justify-content-center">                        
+                        <div class="form-group col-md-5 d-flex mx-auto">                                                    
+                            <label style="width: 130px;" for="id_nome">Nome:</label>
                             <input class="form-control" type="text" name="nome" value="{{nome}}" maxlength="60" required id="id_nome">
                         </div>
-                        <div class="form-group col-md-3 d-flex flex-column">    
-                            <label for="id_cpf">CPF:</label>   
+                        <div class="form-group col-md-5 d-flex mx-auto">    
+                            <label style="width: 130px" for="id_cpf">CPF:</label>   
                             <input class="form-control" type="text" name="cpf" value="{{cpf}}" onkeydown="mascara(this,icpf)" maxlength="14" required
                                     id="id_cpf">                                            
                         </div>
-                        <div class="form-group col-md-3 d-flex flex-column">
-                            <label for="id_cadastur">Cadastur:</label>
-                            <input class="form-control" type="text" name="cadastur" value="{{cadastur}}" maxlength="14" required id="id_cadastur">
-                        </div>
-                        <div class="form-group col-md-3 d-flex flex-column">
-                            <label for="id_email">Email:</label>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_email">Email:</label>
                             <input class="form-control" type="text" name="email" value="{{email}}" maxlength="200" required id="id_email">
                         </div>
                     </div>
 
-                    <div class="form-row mt-4 justify-content-center" id="hospedar">
-                        <div class="form-group col-md-3 d-flex flex-column">  
-                            <label for="id_celular">Celular:</label>
+                    <div class="form-column mt-4 justify-content-center">
+                        <div class="form-group col-md-5 d-flex mx-auto">  
+                            <label style="width: 130px" for="id_celular">Celular:</label>
                             <input class="form-control" type="text" name="celular" value="{{celular}}" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)" maxlength="15" required id="id_celular">
                         </div>
-                        <div class="form-group col-md-3 d-flex flex-column">
-                            <label for="id_telefone">Telefone:</label>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_telefone">Telefone:</label>
                             <input class="form-control" type="text" name="telefone" value="{{telefone}}" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)" maxlength="14" id="id_telefone">
                         </div>
-                        <div class="form-group col-md-3 d-flex flex-column">
-                            <label for="id_estado">Estado:</label>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_estado">Estado:</label>
                             <select class="form-control" name="estado" class="selEstado" required id="id_estado">
                                 <option value="{{estado}}">{{estado}}</option>
                                 </select>
                         </div>
-                        <div class="form-group col-md-3 d-flex flex-column">
-                            <label for="id_cidade">Cidade:</label>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_cidade">Cidade:</label>
                             <select class="form-control" name="cidade" required id="id_cidade">
-                                <option value="qualquer">abc</option>
-                                <option value="{{cidade}}" selected>{{cidade}}</option>
+                                <option value="{{cidade}}" selected>{{cidade.nome}}</option>
                                 </select>
+                        </div>                        
+                    </div>
+                    <div class="row d-flex">
+                        <div class="col-md-5 mx-auto d-flex">
+                            <button class="btn btn-primary ml-auto">Alterar</button>
                         </div>
                     </div>
                 </div>
             </div>                   
         </div>      
-        <!-- JavaScript (Opcional) -->        
-    </body>
-</html>
+        <!-- JavaScript (Opcional) -->    
+        <SCRIPT LANGUAGE="JavaScript">
+
+
+            function mostracidade(){
+                var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+        
+                var cidadeId = formulario.cidade.value;
+                var estadoId = formulario.estado.value;
+                $.ajax({ 
+                    url: url,
+                    data: {
+                        'id':estadoId,
+                    },
+                    success: function(data) {
+                        $("#id_cidade").html(data);
+                        document.getElementById('id_cidade').value=cidadeId;
+                    }
+                });
+        
+            };
+        
+            // mostracidade();
+        
+            function leech(v){
+                v=v.replace(/o/gi,"0")
+                v=v.replace(/i/gi,"1")
+                v=v.replace(/z/gi,"2")
+                v=v.replace(/e/gi,"3")
+                v=v.replace(/a/gi,"4")
+                v=v.replace(/s/gi,"5")
+                v=v.replace(/t/gi,"7")
+                return v
+            }
+        
+            function open_popup(url){
+                newwindow = window.open(url,'{{title}}', 'height = 400,width = 600');
+                if(window.focus) {newwindow.focus()}
+                return false;
+            }
+        
+            function data(v){
+                v=v.replace(/\D/g,"")                //Remove tudo o que nao e digito
+                v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                                                        //de novo (para o segundo bloco de numeros)
+                return v
+            }
+            function icpf(v){
+                v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                        //de novo (para o segundo bloco de numeros)
+                v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+                return v
+            }
+            function itelefone(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function icep(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/(\d{2})(\d)/,"$1.$2")    //Coloca hifen entre o quarto e o quinto digitos
+                v=v.replace(/(\d{3})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function icelular(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function mascara(o,f){
+                v_obj=o
+                v_fun=f
+                setTimeout("execmascara()",1)
+            }
+        
+            function execmascara(){
+                v_obj.value=v_fun(v_obj.value)
+            }
+        
+        </script>    
+{% endblock %}

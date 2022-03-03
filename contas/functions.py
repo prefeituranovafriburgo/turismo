@@ -104,7 +104,9 @@ def validations(request):
     validate['email']=validateEMAIL(request['email'])
     validate['celular']=validateCelular(request['celular'])
     validate['telefone']=validateTelefone(request['telefone'])
-    validate['senha']=validatePassword(request['senha'], request['senha_confirma'])    
+    validate['senha']=validatePassword(request['senha'], request['senha_confirma'])  
+    validate['estado']=validateNotBlank(request['estado'])
+    validate['cidade']=validateNotBlank(request['cidade'])  
     return validate
 
 def validationsViagem(request, tipo):  
@@ -113,15 +115,19 @@ def validationsViagem(request, tipo):
     validate['quant_passageiros']=validatePassageiros(request['quant_passageiros'])
     validate['cadastur_empresa_transporte']=validateCadastur(request['cadastur_empresa_transporte'])
     validate['cnpj_empresa_transporte']=validateCNPJ(request['cnpj_empresa_transporte'])
+    validate['estado']=validateNotBlank(request['estado'])
+    validate['cidade']=validateNotBlank(request['cidade'])
+    validate['empresa_transporte']=validateNotBlank(request['empresa_transporte'])
     if tipo=='turismo':
+        validate['nome_guia']=validateNotBlank(request['nome_guia'])
         validate['celular']=validateCelular(request['celular'])
         validate['telefone']=validateTelefone(request['telefone'])
         validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
     validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
     
-    if validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
+    if validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
-            if validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
+            if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
                 return validate, True    
         else:        
             return validate, True    
@@ -182,9 +188,12 @@ def validateNOME(nome):
 
     return 'teste'
 def validateCadastur(cadastur):
-    if len(cadastur)!=8:
+    cadastur_ = [int(char) for char in cadastur if char.isdigit()]
+    cadastur=''.join([str(_) for _ in cadastur_])
+    print(cadastur)
+    if len(cadastur_)<8:
         return {'state': False, 'msg': 'Cadastur inválido.'}
-    return {'state': True, 'msg': ''}
+    return {'state': True, 'msg': '', 'cadastur': cadastur}
 
 def validateCPF(cpf_):      
     #  Obtém os números do CPF e ignora outros caracteres
@@ -233,3 +242,7 @@ def validatePassword(senha, senha2):
     return {'state': False, 'msg': 'Senhas não coincidem.'}        
 
 
+def validateNotBlank(value):
+    if not value=='':        
+        return {'state': True, 'msg': '.'}        
+    return {'state': False, 'msg': 'Preencha o campo.'}        

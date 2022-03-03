@@ -23,9 +23,9 @@
                 height: 800px;
                 display: block;
                 position: relative;
-                background-image: url({% static 'marcadagua.jpg' %});
+                /* background-image: url({% static 'marcadagua.jpg' %});
                 background-size: cover;
-                -webkit-print-color-adjust:exact;
+                -webkit-print-color-adjust:exact; */
               }
               
               .watermark::after {                
@@ -67,7 +67,7 @@
                 <div class="col">
                     <h3 class="text-center">SENHA DE ACESSO:</h3>
                     <br>
-                    <h1 class="text-center">{{ viagem.id }}/{% now "y" %}NF</h1>
+                    <h1 class="text-center">{{ viagem.senha}}</h1>
                     <br>
                     <br>
                 </div>                
@@ -112,24 +112,26 @@
                 {% if viagem_turismo %}
 
                 <tr>
-                    <th>Nome do Guia:</th>
+                    <th class="text-right">Nome do Guia:</th>
                     <td>{{ viagem_turismo.nome_guia }}</td>
                 </tr>
                 <tr>
-                    <th>Cadastur do Guia:</th>
+                    <th class="text-right">Cadastur do Guia:</th>
                     <td>{{ viagem_turismo.cadastur_guia }}</td>
                 </tr>
                 <tr>
-                    <th>Celular do Guia:</th>
-                    <td>{{ viagem_turismo.celular }}</td>
+                    <th class="text-right">Celular do Guia:</th>
+                    <td id="celular">{{ viagem_turismo.celular }}</td>
                 </tr>
                 <tr>
-                    <th>Telefone do Guia:</th>
-                    <td>{{ viagem_turismo.telefone }}</td>
+                    <th class="text-right">Telefone do Guia:</th>
+                    <td id="telefone">{{ viagem_turismo.telefone }}</td>
                 </tr>
                 <tr>
-                    <th>Pontos Turísticos:</th>
-                    <td>{{ viagem_turismo.pontos_turisticos }}</td>
+                    <th class="text-right">Pontos Turísticos:</th>
+                    <td>{%for ponto_turistico in pontos_turisticos %}
+                        {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
+                        {% endfor %}</td>
                 </tr>
 
                 {% endif %}
@@ -144,6 +146,10 @@
         
     </div>
 <SCRIPT LANGUAGE="JavaScript">
+    window.onload = function (){
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
+        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+    }
     window.print();
     setTimeout(function(){
         window.close();

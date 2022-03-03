@@ -35,20 +35,24 @@
             <th>Dt. Saída</th>
             <td>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
         </tr>
-        <tr>
+        <!-- <tr>
             <th>Ficarão Hospedados?</th>
             <td>{% if viagem.ficarao_hospedados %}Sim{% else %}Não{% endif %}</td>
-        </tr>
-        {% if viagem.hotel %}
+        </tr> -->
+        {% if viagem.ficarao_hospedados %}
             <tr>
                 <th>Hotel</th>
                 <td>{{ viagem.hotel }}</td>
             </tr>
         {% endif %}
-        {% if viagem.restaurante %}
+        <!-- <tr>
+            <th>Fizeram reserva em restaurante?</th>
+            <td>{% if viagem.restaurante_reservado %}Sim{% else %}Não{% endif %}</td>
+        </tr> -->
+        {% if viagem.restaurante_reservado %}
             <tr>
-                <th>Restaurante Reservado?</th>
-                <td>{{ viagem.restauranre }}</td>
+                <th>Restaurante</th>
+                <td>{{ viagem.restaurante }}</td>
             </tr>
         {% endif %}
         <tr>
