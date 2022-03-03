@@ -60,7 +60,7 @@
                 
                             {% for v in viagens %}
                                 <tr>
-                                    <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }} </a></td>
+                                    <td><a href="{% url 'senhas:viagem' v.id %}"><i class="fas fa-edit m-auto"></i> </a></td>
                                     <td class="d-flex">
                                         <span class="mx-auto">{{ v.senha }}</span> 
                                         <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.id %}">

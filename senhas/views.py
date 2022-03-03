@@ -233,8 +233,7 @@ def viagem_altera(request, id):
     if request.method == 'POST':
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation, valido=validationsViagem(request.POST, tipo)  
-        print(validation)                                     
+        validation, valido=validationsViagem(request.POST, tipo)                                   
         if valido:     
             try:
                 if request.POST['ficarao_hospedados']:
