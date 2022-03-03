@@ -163,6 +163,7 @@ def viagem_inclui(request, tipo):
                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
+                       'tipo_veiculo': Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
                        'obs': request.POST['obs'],
                        'ficarao_hospedados': ficarao_hospedados,
                        'restaurante_reservado': restaurante_reservado,

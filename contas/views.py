@@ -22,7 +22,8 @@ from senhas.templatetags.template_filters import formata_cpf
 
 def cadastrar(request):
     validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
-                'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True}}
+                'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True},
+                'cidade':{'state': True}, 'estado':{'state': True}}
     estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)
@@ -151,23 +152,15 @@ def cadastro(request):
     else:
         
         form = CadastroForm(instance=usuario)
-
-#         form.fields['email'].initial = user.email
-#         form.fields['nome'].initial = user.first_name
-#         form.fields['estado'].initial = usuario.cidade.estado
-#         form.fields['cidade'].initial = usuario.cidade
-# #        form.fields['cpf_aux'].initial = formata_cpf(usuario.cpf)
-#         print('cpf:', form.fields['cpf'].initial)
-#         form.fields['celular'].initial = usuario.celular
-#         form.fields['telefone'].initial = usuario.telefone
-    
     context={
         'email': user.email,
         'nome': user.first_name,        
         'cpf': usuario.cpf,
         'celular': usuario.celular,
         'telefone': usuario.telefone,
-        'estado': usuario.cidade.estado,
+        'estados': Estado.objects.all(),
+        'cidades': Cidade.objects.filter(estado=Estado.objects.get(nome=usuario.cidade.estado)),
+        'estado_': usuario.cidade.estado,
         'cidade': usuario.cidade
     }
     return render(request, 'contas/cadastro2.html', context)
@@ -202,7 +195,7 @@ def change_password(request):
             messages.success(request, 'Senha alterada.')
             return redirect('contas:change_password')
         else:
-            messages.error(request, 'Corrigir o erro apresentado.')
+            messages.error(request, 'Você deve cumprir todos os requisitos para alterar sua senha.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', { 'form': form })
@@ -213,7 +206,7 @@ def password_reset_request(request):
 		password_reset_form = PasswordResetForm(request.POST)
 		if password_reset_form.is_valid():
 			data = password_reset_form.cleaned_data['email']
-			associated_users = User.objects.filter(Q(email=data))
+			associated_users = User.objects.filter(email=data)
 			if associated_users.exists():
 				for user in associated_users:
 					subject = "Password Reset Requested"
@@ -232,7 +225,7 @@ def password_reset_request(request):
 						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
-					return redirect ("/password_reset/done/")
+					return redirect ("password_reset_done")
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="registration/password_reset.html", context={"password_reset_form":password_reset_form})
 
