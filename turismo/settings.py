@@ -41,7 +41,7 @@ email_pass = env[6]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(debug)
 
-ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1', 'localhost', '192.168.1.108', '192.168.15.179']
+ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1', '127.0.1.1', 'localhost', '192.168.1.109']
 
 
 # Application definition
