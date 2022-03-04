@@ -10,9 +10,9 @@ urlpatterns = [
     path('cad_transporte/', views.cad_transporte, name='cad_transporte'),
     path('cad_acesso_ponto/', views.cad_acesso_ponto, name='cad_acesso_ponto'),
     path('cad_viagem/<str:tipo>', views.viagem_inclui, name='viagem_inclui'),
-    path('viagem/<int:id>', views.viagem, name='viagem'),
-    path('viagem_altera/<int:id>', views.viagem_altera, name='viagem_altera'),
+    path('viagem/<str:id>', views.viagem, name='viagem'),
+    path('viagem_altera/<str:id>', views.viagem_altera, name='viagem_altera'),
     #
-    path('gera_senha/<int:id>', views.gera_senha, name='gera_senha'),
+    path('gera_senha/<str:id>', views.gera_senha, name='gera_senha'),
 
 ]

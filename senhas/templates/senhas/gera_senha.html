@@ -10,15 +10,21 @@
 
 {% load static %}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <style type="text/css">
-            body{
+            body{              
                 -webkit-print-color-adjust:exact;
             }
+            .row{
+                width: 100%;
+                display: flex;
+            }
+            .col{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
             .watermark {
+                padding-top: 60px;
                 width: 800px;
                 height: 800px;
                 display: block;
@@ -44,91 +50,139 @@
                 width: 800px;                
                 z-index: -2;                
               } */
+              table{
+                  font-size: 16pt;
+                  width: 650px;
+                  padding-top: 100px;
+              }
+              table th{
+                  width: 400px;
+              }
+              table th, td{
+                  height: 20pt; 
+                  border-bottom: 1px solid rgba(0, 0, 0, 0.131);                  
+              }
               table, tr, td, th{
+                  /* background: none !important; */
                   color-adjust:exact !important;
-                  background-color: transparent !important;
+                  /* background-color: transparent !important; */
                   -webkit-print-color-adjust:exact !important;
               }
-              
+              #qr_code{
+                 margin: auto;
+              }
+              #senha-de-acesso{
+                width: 100%;
+                text-align: center;
+                display: flex;
+              }
+              #senha-de-acesso div{
+                  margin: 0 auto;
+              }
+              #senha-de-acesso div h1{
+                  font-size: 36pt;
+                  line-height: 20pt;
+              }
+              .m-auto{
+                  margin: auto;
+              }
+              .d-flex{
+                  display: flex;
+                  flex-direction: column;
+              }
+              #datas{
+                  padding-top: 60px;
+                  font-size: 28pt;
+                  text-align: center;
+              }
+              #datas div span{
+                  font-weight: bolder;
+              }
+              .text-left{
+                  text-align: left;
+              }
+              .bg{
+                  background-color: aqua;
+              }
     </style>
 </head>
-<body class="container-fluid d-flex flex-column">
-    <div class="row">
-        <div class="col d-flex">
+<body>
+    <div class="row ">
+        <div class="col">
             <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>
         </div>
     </div>
     <br>
-    <div class="container m-auto d-flex flex-column">
-        <!-- <img class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt=""> -->
+    <div class="m-auto">
+        <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt="">
         <div class="watermark m-auto">
-
+                
             <div class="row">
+                <div id="datas" class="col d-flex">
+                    <div>Data de entrada: <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span></div><br>
+                    <div>Data de saída: <br><span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span></div>
+                </div>
                 <div class="col">
-                    <h3 class="text-center">SENHA DE ACESSO:</h3>
-                    <br>
-                    <h1 class="text-center">{{ viagem.senha}}</h1>
-                    <br>
-                    <br>
-                </div>                
+                    <div id="senha-de-acesso">
+                        <div>
+                         <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->
+                         {% load qr_code %}
+                         <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
+                         <h1 class="text-center">{{ viagem.senha}}/22NF</h1>
+                         
+                        </div>
+                     </div>     
+                </div>
             </div>
-
-            <table  class="table table-borderless">
-
+                           
+            
+           
+            <table class="table table-borderless bg-none m-auto">
+                
                 <tr>
-                    <th class="text-center">Data de entrada:</th>
-                    <th class="text-center">Data de saída:</th>
-                </tr>
-                    <td class="text-center">{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
-                    <td class="text-center">{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
-                </tr>
-                <tr>
-                    <th class="text-right"></th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="text-right">Veículo</th>
-                    <td>{{ viagem.tipo_veiculo }}</td>
-                </tr>
-                <tr>
-                    <th class="text-right">Quant. Passageiros</th>
-                    <td>{{ viagem.quant_passageiros }}</td>
-                </tr>
-                <tr>
-                    <th class="text-right">Empresa de Transporte</th>
+                    <td class="text-left">Empresa de Transporte</td>
                     <td>{{ viagem.empresa_transporte }}</td>
-                </tr>
+                </tr>                
                 <tr>
-                    <th class="text-right">CNPJ da Empresa de Transporte</th>
+                    <th class="text-left">CNPJ da Empresa de Transporte</th>
                     <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">Cadastur da Empresa de Transporte</th>
+                    <th class="text-left">Cadastur da Empresa de Transporte</th>
                     <td>{{ viagem.cadastur_empresa_transporte }}</td>
                 </tr>
 
+                <tr>
+                    <th class="text-left">Veículo</th>
+                    <td>{{ viagem.tipo_veiculo }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Quant. Passageiros</th>
+                    <td>{{ viagem.quant_passageiros }}</td>
+                </tr>
+                
                 <!-- Viatem/Turismo -->
 
                 {% if viagem_turismo %}
 
                 <tr>
-                    <th class="text-right">Nome do Guia:</th>
+                    <th class="text-left">Nome do Guia:</th>
                     <td>{{ viagem_turismo.nome_guia }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">Cadastur do Guia:</th>
+                    <th class="text-left">Cadastur do Guia:</th>
                     <td>{{ viagem_turismo.cadastur_guia }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">Celular do Guia:</th>
+                    <th class="text-left">Celular do Guia:</th>
                     <td id="celular">{{ viagem_turismo.celular }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">Telefone do Guia:</th>
+                    <th class="text-left">Telefone do Guia:</th>
                     <td id="telefone">{{ viagem_turismo.telefone }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">Pontos Turísticos:</th>
+                    <th class="text-left">Pontos Turísticos:</th>
                     <td>{%for ponto_turistico in pontos_turisticos %}
                         {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
                         {% endfor %}</td>
@@ -138,22 +192,22 @@
 
             </table>            
             <div class="row">
-                <div class="col d-flex pt-5">
-                    <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>    
+                <div class="col">
+                    <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>    
                 </div>
             </div>
         </div>
         
     </div>
 <SCRIPT LANGUAGE="JavaScript">
-    window.onload = function (){
-        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
-        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
-    }
-    window.print();
-    setTimeout(function(){
-        window.close();
-    },2000);
+    // window.onload = function (){
+    //     document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
+    //     document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+    // }
+    // window.print();
+    // setTimeout(function(){
+    //     window.close();
+    // },2000);
 </SCRIPT>
 </body>
 </html>

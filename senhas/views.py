@@ -197,7 +197,7 @@ def viagem_inclui(request, tipo):
 @login_required
 def viagem(request, id):
 
-    viagem = Viagem.objects.get(id=id)
+    viagem = Viagem.objects.get(senha=id)
 
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
@@ -219,7 +219,7 @@ def viagem_altera(request, id):
                 'nome_guia':{'state': True}} 
     from datetime import date
     tipo=''
-    viagem = Viagem.objects.get(id=id)
+    viagem = Viagem.objects.get(senha=id)
 
     if date.today() > viagem.dt_Saida:
         messages.error(request, 'Não é mais possível alterar viagem, já que a viagem já ocorreu.')
@@ -348,8 +348,8 @@ def cad_acesso_ponto(request):
 @login_required
 def gera_senha(request, id):
 
-    viagem = Viagem.objects.get(id=id)
-    
+    viagem = Viagem.objects.get(senha=id)
+    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/' + str(id)
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
@@ -370,6 +370,7 @@ def gera_senha(request, id):
     context={
         'viagem': viagem,
         'viagem_turismo': viagem_turismo,
-        'pontos_turisticos': pontosTuristicos}
+        'pontos_turisticos': pontosTuristicos,
+        'endereco': endereco}
     
     return render(request, 'senhas/gera_senha.html', context)

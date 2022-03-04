@@ -63,8 +63,8 @@
                                 <tr>
                                     <td class="text-center">{{forloop.counter}}</td>
                                     <td class="d-flex">
-                                        <span class="mx-auto">{{ v.senha }}</span> 
-                                        <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.id %}">
+                                        <span class="mx-auto">{{ v.senha }}/22NF</span> 
+                                        <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.senha %}">
                                             <i class="fad fa-print"></i>
                                             <span class="tooltiptext">Imprimir documento</span>
                                         </a>                                                                                      
@@ -74,7 +74,7 @@
                                     <td class="text-center">{{ v.tipo_veiculo }}</td>
                                     <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'senhas:viagem' v.id %}"><i class="fas fa-edit m-auto"></i></a>
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="fas fa-edit m-auto"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
