@@ -72,7 +72,7 @@ def viagem_inclui(request, tipo):
                 viagem.save()    
                           
                 if tipo=='turismo':
-                    viagem.senha='T'+get_random_string()+str(viagem.id)+get_random_string()+'/22NF' 
+                    viagem.senha='T'+get_random_string()+str(viagem.id)+get_random_string() 
                     viagem.save()
                     viagem_turismo=Viagem_Turismo(
                         viagem=viagem,
@@ -87,7 +87,7 @@ def viagem_inclui(request, tipo):
                         viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
                     viagem_turismo.save()                    
                 else:
-                    viagem.senha='C'+get_random_string()+str(viagem.id)+get_random_string()+'/22NF' 
+                    viagem.senha='C'+get_random_string()+str(viagem.id)+get_random_string() 
                     viagem.save()
                 messages.success(request, 'Viagem cadastrada.')
                 return redirect('senhas:cad_transporte')
