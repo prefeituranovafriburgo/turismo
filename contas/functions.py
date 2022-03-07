@@ -106,8 +106,12 @@ def validations(request):
     validate['telefone']=validateTelefone(request['telefone'])
     validate['senha']=validatePassword(request['senha'], request['senha_confirma'])  
     validate['estado']=validateNotBlank(request['estado'])
-    validate['cidade']=validateNotBlank(request['cidade'])  
-    return validate
+    validate['cidade']=validateNotBlank(request['cidade']) 
+    valido=True
+    for val in validate:        
+        if validate[val]['state']!=True:
+            valido=False
+    return validate, valido
 
 def validationsViagem(request, tipo):  
     validate={}

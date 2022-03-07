@@ -27,15 +27,15 @@ def cadastrar(request):
     estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)
-        validation=validations(request.POST)
+        validation, valido=validations(request.POST)
         if form.is_valid():
             cidade = Cidade.objects.get(id=request.POST.get('cidade'))
             try:
-                user = User.objects.create_user(request.POST.get('email'), request.POST.get('email'), request.POST.get('senha'))
+                user = User.objects.create_user(request.POST['email'], request.POST['email'], request.POST['senha'])
 
                 # Update fields and then save again
-                user.first_name = request.POST.get('nome')
-#                user.last_name = request.POST.get('nome')
+                user.first_name = request.POST['nome']
+                user.last_name = request.POST['nome']
                 user.save()
 
                 usuario = Usuario(
@@ -96,7 +96,7 @@ def cadastrar(request):
                 'cidade': cidade,
                 'estados': estados
             }
-            print('teste')
+            print(validation)
             return render(request, 'contas/cadastrar.html', context)
     else:        
         form = CadastrarForm()
