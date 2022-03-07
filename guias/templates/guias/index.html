@@ -6,41 +6,92 @@
         <h2>GUIAS DE TURISMO RECEPTIVO </h2>
         <div id="guias">
             {% for guia in guias %}
-            <div class="card-guia">            
-                <div class="img-thumbnail rounded" style="background-image: url({% static 'images/guias/01.png' %}); background-position: center;"></div>
-                    <div class="descritivo">                
-                        <div class="nome">
-                            <b>{{guia.nome}}</b>                        
-                        </div>
-                        <div class="cadastur">
-                            <b>Cadastur:</b>
-                            <span>{{guia.cadastur}}</span>
-                            <!-- <span class="validade">Valido: {{guia.validade_cadastur}}</span>                     -->
-                        </div>
-                        <div class="telefone">
-                            <b>Telefone:</b>
-                            <span>{{guia.telefone}}</span>
-                        </div>
-                        <div class="email">
-                            <b>Email:</b>
-                            <span>{{guia.email}}</span>
-                        </div>
-                        <div class="categoria">
-                            <b style="vertical-align: top">Categoria:</b>
-                            <span>                            
-                                {% for categoria in guia.categoria.all %}
-                                    {% if forloop.first %}
-                                        {{categoria}}
-                                    {% else %}
-                                        {% if  forloop.last %}
-                                            e {{categoria}}.
-                                        {%else%}
-                                            , {{categoria}}
-                                        {% endif %} 
-                                {%endif%}
-                                {% endfor %}                            
-                            </span>
-                        </div>   
+            <div class="card-guia w-100">            
+                <div class="row">
+                    <div class="col d-flex">
+                        <div class="my-auto img-thumbnail rounded avatar" style="background-image: url(/static/images/guias/0{{forloop.counter}}.png); background-position: center;"></div>
+                        <div class="descritivo">                
+                            <div class="row">
+                                <div class="col nome">
+                                    <b>{{guia.nome}}</b>                        
+                                    <!-- <b>Luis Eduardo Cordeiro Salarini</b> -->
+                                </div>  
+                            </div>
+                            <div class="row">                                      
+                                <!-- <div class="cadastur">
+                                    <b>Cadastur:</b>
+                                    <span>{{guia.cadastur}}</span>
+                                    <span class="validade">Valido: {{guia.validade_cadastur}}</span>                    
+                                </div> -->
+        
+                                <div class=" mr-4">
+                                    <div class="telefone">
+                                        <b>Telefone:</b>
+                                        <span id="telefone" class="w-100">{{guia.telefone}}</span>
+                                    </div>                        
+                                    <div class="email">
+                                        <b>Email:</b>
+                                        <span class="w-100">{{guia.email}}</span>
+                                    </div> 
+                                </div>
+                                <div class="">
+                                    <div class="redes">
+                                        <div class="mr-3">
+                                            <span><b class="mr-1">Instagram:</b>@esalarini</span>
+                                            <span><b class="mr-1">Facebook:</b>@esalarini</span>
+                                        </div>
+                                        <div>
+                                            <span><b class="mr-1">LinkedIn:</b>@esalarini</span>
+                                            <span><b class="mr-1">Website:</b>esalarini.com</span>
+                                        </div>
+                                        <!-- <img src="{% static 'images/icones-redes-sociais/facebook.png' %}" alt="">
+                                        <img src="{% static 'images/icones-redes-sociais/instagram.png' %}" alt="">
+                                        <img src="{% static 'images/icones-redes-sociais/web2.png' %}" alt="">
+                                        <img src="{% static 'images/icones-redes-sociais/whatsapp.png' %}" alt=""> -->
+                                    </div>           
+                                </div>
+                            </div>                      
+                            <div class="row">
+                                <div class="col">
+                                    <div class="idiomas">
+                                        <b style="vertical-align: top">Idiomas:</b>
+                                        <span>                            
+                                            {% for categoria in guia.idiomas.all %}
+                                                {% if forloop.first %}
+                                                    {{categoria}}
+                                                {% else %}
+                                                    {% if  forloop.last %}
+                                                        e {{categoria}}.
+                                                    {%else%}
+                                                        , {{categoria}}
+                                                    {% endif %} 
+                                            {%endif%}
+                                            {% endfor %}                            
+                                        </span>
+                                    </div>              
+                                    <div class="categoria">
+                                        <b style="vertical-align: top">Categoria:</b>
+                                        <span>                            
+                                            {% for categoria in guia.categoria.all %}
+                                                {% if forloop.first %}
+                                                    {{categoria}}
+                                                {% else %}
+                                                    {% if  forloop.last %}
+                                                        e {{categoria}}.
+                                                    {%else%}
+                                                        , {{categoria}}
+                                                    {% endif %} 
+                                            {%endif%}
+                                            {% endfor %}                            
+                                        </span>
+                                    </div>                                                                            
+                                </div>
+                            </div>                                        
+                        </div>  
+                    </div>                            
+                </div>  
+                <div class="row">
+                    <div class="col">
                         <div class="segmento">
                             <b style="vertical-align: top">Segmento de Atuação:</b>
                             <span>                            
@@ -56,46 +107,90 @@
                                 {%endif%}
                                 {% endfor %}                            
                             </span>
-                        </div>                     
-                    </div> 
-                </div>
+                        </div>  
+                    </div>
+                </div>                
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
 <style>
-    #guias .card-guia{
-        height: auto;
+    #guias{
         display: flex;
-        padding: 20px;
+        flex-wrap: wrap;
+        ;
     }
-    #guias .card-guia div{
+    .card-guia{
+        color: black;
+        background-color: rgba(0, 110, 255, 0.233);
+        border-radius: 5px;
+        width: auto;
+        margin-bottom: 20px;
+        border: 1px solid gray;
+        height: auto;
+        padding: 20px;
+        box-shadow: 2px 2px 13px 2px #006eff4b;
+    }
+    .card-guia .avatar{
         height: 150px;
         width: 150px;
+        border: 1px solid gray;
     }
-    #guias .card-guia .descritivo{
-        width: 310px;
+    .card-guia .descritivo{
+        width: 100%;
+        margin-left: 20px;
         /* border: 1px solid black; */
     }
-    #guias .card-guia .descritivo div{
+    .card-guia .descritivo div{
         width: auto;
         height: auto;
-        margin-left: 30px;
+        margin: 0;
+        padding: 0;
     }
-    #guias .card-guia .descritivo .nome{
-        font-size: 18pt;        
+    
+    .card-guia .descritivo .nome{
+        padding-left: 0;
+        font-size: 18pt;       
     }
-    #guias .card-guia .descritivo span{
+    .card-guia .descritivo .redes{
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: flex;        
+    }
+    .card-guia .descritivo .redes div{
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .card-guia .descritivo .telefone{
+        margin-top: 3px;
+    }
+    .card-guia .descritivo .email{
+        
+        margin-bottom: 3px;
+    }
+    .card-guia .descritivo span{
         margin: 0 0px;    
     }
-    #guias .card-guia .descritivo .categoria{
-        margin-left: -150px;
+    .card-guia .descritivo .categoria{
+        margin-bottom: 3px;
         text-align: justify;
     }
-    #guias .card-guia .descritivo .segmento{
-        margin-left: -150px;
+    .card-guia .segmento{
+        margin-left: 0px;
+        text-align: justify;
+        margin-top: 10px;
+    }
+    .card-guia .descritivo .idiomas{
+        margin-top: 3px;
         text-align: justify;
     }
 </style>
+<script>
+    window.onload = function() {                                            
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")                      
+    };
+</script>
     {% endblock %}
