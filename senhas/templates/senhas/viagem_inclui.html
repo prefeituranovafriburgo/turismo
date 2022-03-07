@@ -8,18 +8,18 @@
 
                     <div class="row">
                         <div class="col">
-                            <h3 class="uppercase">CADASTRAR NOVA VIAGEM</h3>
+                            <h3 class="uppercase">{{titulo}} - {% if tipo == 'turismo' %}VIAGEM DE TURISMO{% else %} VIAGEM EXCLUSIVAMENTE P/ COMPRAS{% endif %}</h3>
                         </div>
                 
-                        <div class="col text-right">
-                            <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-primary" role="button">
+                        <div class="col-3 text-right">
+                            <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-danger" role="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mb-1 mr-1 bi bi-arrow-left-circle" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                                 </svg>
-                                VOLTAR
-                            </a>
+                                CANCELAR
+                            </a>                            
                         </div>
-                
+                        
                     </div>
                 
                     
@@ -28,38 +28,52 @@
                                 
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Chegada_day" class="w-auto mr-5 my-auto">Dt chegada:</label>
-                                        <div class="d-flex">                                            
-                                            <input class="form-control" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}">
+                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
+                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_chegada}}
                                         </div>
                                     </div>                                                            
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Saida_day" class="my-auto mr-5">Dt saida:</label>
-                                        <div class="d-flex">
-                                            <input class="form-control" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}">
+                                        <label for="id_dt_Saida_day" class="mr-5">Dt saida:</label>
+                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_saida}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2"> 
                                         <label for="id_estado">Estado de origem:</label>
-                                        <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
-                                           
+                                        <select class="form-control {%if not validation.estado.state %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                            <option value="" {%if estado_ == '' %}selected{% endif %}></option>
+                                            {% for estado in estados %}
+                                            <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
+                                            {% endfor %}
                                         </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.estado.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control" name="cidade" required id="id_cidade">
-                                                                                      
+                                        <select class="form-control {%if not validation.cidade.state %}is-invalid{% endif %}" onblur="validar(event)" name="cidade" required id="id_cidade">
+                                            <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.cidade.msg}}
+                                        </div>
                                     </div>                                                             
                                 </div>                               
                                 <div class="form-row mt-4 px-3 justify-content-center py-3">                                    
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_empresa_transporte">Empresa de transporte:</label>
-                                        <input class="form-control" type="text" name="empresa_transporte" maxlength="120" required id="id_empresa_transporte" value="{{viagem.empresa_transporte}}">
+                                        <input class="form-control {%if not validation.empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="empresa_transporte" maxlength="120" required id="id_empresa_transporte" value="{{viagem.empresa_transporte}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.empresa_transporte.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_cnpj_empresa_transporte">CNPJ:</label>
-                                            <input class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
+                                            <input id="cnpj" class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
                                                 required id="id_cnpj_empresa_transporte" value="{{viagem.cnpj_empresa_transporte}}">
                                             <div class="invalid-feedback">
                                                 {{validation.cnpj_empresa_transporte.msg}}
@@ -67,7 +81,7 @@
                                     </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
-                                        <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" type="text" name="cadastur_empresa_transporte" maxlength="14" required
+                                        <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur_empresa_transporte" maxlength="14" required
                                         id="id_cadastur_empresa_transporte" value="{{viagem.cadastur_empresa_transporte}}">
                                         <div class="invalid-feedback">
                                             {{validation.cadastur_empresa_transporte.msg}}
@@ -75,8 +89,8 @@
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_tipo_veiculo">Tipo veiculo:</label>
-                                        <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" name="tipo_veiculo" required id="id_tipo_veiculo">
-                                            <option value="">---------</option>                        
+                                        <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" onblur="validar(event)" name="tipo_veiculo" required id="id_tipo_veiculo">
+                                            <option value=""></option>                        
                                             {% for veiculo in veiculos %}
                                             <option value="{{veiculo.id}}" {% if veiculo.nome == viagem.tipo_veiculo.nome %}selected{% endif %}>{{veiculo.nome}}</option>                            
                                             {% endfor %}
@@ -87,29 +101,41 @@
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_quant_passageiros">Quant passageiros:</label>
-                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
+                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" onblur="validar(event)" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
                                         <div class="invalid-feedback">
                                             {{validation.quant_passageiros.msg}}
                                         </div>
                                     </div>           
                                 </div>
                                 {% if tipo == 'turismo' %}
-                                <div class="form-row pt-4 px-3" >
+                                <div class="form-row px-3 py-3" >
                                     <div class="form-group col-md-3 d-flex flex-column">                        
-                                        <label for="id_hotel" class="mr-3 my-auto">Nome do guia de turismo:</label>
-                                        <input class="form-control" type="text" name="nome_guia"  maxlength="120" value="{{viagem_turismo.nome_guia}}">
+                                        <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
+                                        <input class="form-control {%if not validation.nome_guia.state %}is-invalid{% endif %}" type="text" onblur="validar(event)" name="nome_guia"  maxlength="120" value="{{viagem_turismo.nome_guia}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.nome_guia.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_guia"  class="my-auto mr-3">Cadastur do guia:</label>
-                                        <input class="form-control w-100" type="text" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
+                                        <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
+                                        <input class="form-control w-100 {%if not validation.cadastur_guia.state %}is-invalid{% endif %}" type="text" onblur="validar(event)" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.cadastur_guia.msg}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2 d-flex flex-column">                                                                
+                                        <label for="id_celular" class="mr-3" >Celular:</label>
+                                        <input id="celular" class="form-control w-100 {%if not validation.celular.state %}is-invalid{% endif %}" onkeydown="mascara(this,icelular)" onblur="validar(event)" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.celular.msg}}
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_celular" class="my-auto mr-3">Celular:</label>
-                                        <input class="form-control w-100" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
-                                    </div>
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_telefone" class="my-auto mr-3">Telefone:</label>
-                                        <input class="form-control w-100" type="text" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
+                                        <label for="id_telefone" class="mr-3">Telefone:</label>
+                                        <input id="telefone" class="form-control w-100 {%if not validation.telefone.state %}is-invalid{% endif %}" onkeydown="mascara(this,itelefone)" type="text" onblur="validar(event)" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.telefone.msg}}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row mt-4 px-3" >
@@ -136,8 +162,8 @@
                                     <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
                                         <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
                                         <div class="d-flex" >
-                                            <div class="custom-control custom-switch">
-                                                <input onchange="hospedados(event)" value="false" type="checkbox" class="custom-control-input" id="customSwitch1">
+                                            <div class="custom-control custom-switch">                                                
+                                                <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
                                                 <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
                                             </div>
                                                 <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
@@ -145,10 +171,10 @@
                                         </div>
                                     </div>   
                                     <div class="form-group col-md-3 ml-5 d-flex flex-column">                        
-                                        <label class="my-auto" for="restaurante">Possui restaurante de preferência?</label>
+                                        <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
                                         <div class="d-flex" >
                                             <div class="custom-control custom-switch">
-                                                <input onchange="drestaurante(event)" value="false" type="checkbox" class="custom-control-input" id="restaurante">
+                                                <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
                                                 <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
                                             </div>
 
@@ -156,15 +182,15 @@
                                     </div> 
                                 </div>
                                 <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
-                                    <div class="form-group justify-content-center col-md-4 d-flex flex-column">                        
+                                    <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Hotel que ficarão hospedados:</label>
-                                        <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel">
+                                        <input class="form-control" type="text" name="hotel" maxlength="120" id="id_hotel" value="{{viagem.hotel}}">
                                     </div>                                    
                                 </div>
                                 <div class="form-row pt-2 px-3 justify-content-center" id="drestaurante">                                    
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
-                                        <label for="id_drestaurante" class="my-auto mr-3">Restaurante de sua preferência:</label>
-                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_drestaurante">
+                                        <label for="id_drestaurante" class="my-auto mr-3">Restaurante reservado:</label>
+                                        <input class="form-control w-100" type="text" name="restaurante" maxlength="120" id="id_drestaurante" value="{{viagem.restaurante}}">
                                     </div>
                                 </div>                                
                                 <div class="form-row mt-4 px-3 py-3">
@@ -175,7 +201,7 @@
                                 </div>      
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                       
-                                        <input class="btn btn-primary" type="submit" value="Cadastrar">
+                                        <input class="btn btn-primary" type="submit" value="{{titulo}}">
                                     </div>
                                 </div>
                     </form>
@@ -186,7 +212,20 @@
                 
                 <!--
                 -->
-                
+                {% if viagem.ficarao_hospedados %}
+                <script>
+                    document.getElementById('hospedar').style.display='flex';
+                    document.getElementById('customSwitch1').value='true';
+                    document.getElementById('labelSwitch').innerText='Sim';
+                </script>
+                {% endif %}
+                {% if viagem.restaurante_reservado %}
+                <script>
+                    document.getElementById('drestaurante').style.display='flex';
+                    document.getElementById('restaurante').value='true';
+                    document.getElementById('labelSwitch2').innerText='Sim';
+                </script>
+                {% endif %}
                 <script>
                     $('.selEstado').change(function mostracidade () {
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
@@ -266,7 +305,8 @@
 
                     function mostracidade(event){
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        estadoId = event.target.value;                        
+                        estadoId = event.target.value;   
+                        console.log(estadoId)                     
                         $.ajax({ 
                             url: url,
                             data: {
@@ -311,6 +351,15 @@
                         v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
                         return v
                     }
+                    function icnpj(v){
+                        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{2})(\d)/,"$1.$2")       //Coloca um ponto entre o segundo e terceiro digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1/$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        v=v.replace(/(\d{4})(\d)/,"$1-$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        // v=v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+                        return v
+                    }
                     function itelefone(v){
                         v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
                         v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
@@ -338,8 +387,15 @@
                     function execmascara(){
                         v_obj.value=v_fun(v_obj.value)
                     }
+
+                    function validar(event){
+                        event.target.classList.remove("is-invalid");
+                    }
                     window.onload = function() {
-                      mostraestado();
+                        cnpj=document.getElementById('cnpj').value                        
+                        document.getElementById('cnpj').value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
+                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
                     };
                 
                 </script>                

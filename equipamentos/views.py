@@ -10,12 +10,10 @@ from .models import *
 # from django.shortcuts import render
 # from qr_code.qrcode.utils import QRCodeOptions
 
-
 # Create your views here.
 
 def inicio(request):
     return render(request, 'inicio.html')
-
 
 def equipamento(request, id):
    

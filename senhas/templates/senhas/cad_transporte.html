@@ -47,12 +47,13 @@
                 
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Senha</th>
-                                <th>Dt. Chegada</th>
-                                <th>Dt. Saída</th>
-                                <th>Veículo</th>
-                                <th>Dt. Inclusão</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Senha</th>
+                                <th class="text-center">Dt. Chegada</th>
+                                <th class="text-center">Dt. Saída</th>
+                                <th class="text-center">Veículo</th>
+                                <th class="text-center">Dt. Inclusão</th>
+                                <th></th>
                             </tr>
                         </thead>
                 
@@ -60,18 +61,21 @@
                 
                             {% for v in viagens %}
                                 <tr>
-                                    <td><a href="{% url 'senhas:viagem' v.id %}">{{ forloop.counter }} </a></td>
+                                    <td class="text-center">{{forloop.counter}}</td>
                                     <td class="d-flex">
-                                        <span class="mx-auto">{{ v.senha }}</span> 
-                                        <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.id %}">
+                                        <span class="mx-auto">{{ v.senha }}/22NF</span> 
+                                        <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.senha %}">
                                             <i class="fad fa-print"></i>
                                             <span class="tooltiptext">Imprimir documento</span>
                                         </a>                                                                                      
                                     </td>
-                                    <td>{{ v.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
-                                    <td>{{ v.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
-                                    <td>{{ v.tipo_veiculo }}</td>
-                                    <td>{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
+                                    <td class="text-center">{{ v.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
+                                    <td class="text-center">{{ v.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
+                                    <td class="text-center">{{ v.tipo_veiculo }}</td>
+                                    <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
+                                    <td class="text-center">
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="fas fa-edit m-auto"></i></a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                 

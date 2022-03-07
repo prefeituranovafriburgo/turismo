@@ -13,7 +13,7 @@ from itertools import cycle
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
-
+import time
 
 
 error_messages = {
@@ -71,8 +71,7 @@ def validate_CNPJ(value):
     group of 14 characters.
     :type value: object
     """
-    value = str(value)
-    print('erro ->',value)
+    value = str(value)    
     if value in EMPTY_VALUES:
         return u''
     if not value.isdigit():
@@ -93,8 +92,7 @@ def validate_CNPJ(value):
     new_2dv = DV_maker(new_2dv % 11)
     value = value[:-1] + str(new_2dv)
     if value[-2:] != orig_dv:
-        raise ValidationError(error_messages['invalid'])
-    print('erro ->', orig_value)
+        raise ValidationError(error_messages['invalid'])    
     return orig_value
 
 #VALIDATIONS FOR EDUARDO SALARINI
@@ -106,19 +104,59 @@ def validations(request):
     validate['email']=validateEMAIL(request['email'])
     validate['celular']=validateCelular(request['celular'])
     validate['telefone']=validateTelefone(request['telefone'])
-    validate['senha']=validatePassword(request['senha'], request['senha_confirma'])    
-    return validate
+    validate['senha']=validatePassword(request['senha'], request['senha_confirma'])  
+    validate['estado']=validateNotBlank(request['estado'])
+    validate['cidade']=validateNotBlank(request['cidade']) 
+    valido=True
+    for val in validate:        
+        if validate[val]['state']!=True:
+            valido=False
+    return validate, valido
 
-def validationsViagem(request):  
+def validationsViagem(request, tipo):  
     validate={}
     validate['veiculo']=validateVeiculo(request['tipo_veiculo'])
     validate['quant_passageiros']=validatePassageiros(request['quant_passageiros'])
     validate['cadastur_empresa_transporte']=validateCadastur(request['cadastur_empresa_transporte'])
     validate['cnpj_empresa_transporte']=validateCNPJ(request['cnpj_empresa_transporte'])
-    if validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
-        return validate, True    
+    validate['estado']=validateNotBlank(request['estado'])
+    validate['cidade']=validateNotBlank(request['cidade'])
+    validate['empresa_transporte']=validateNotBlank(request['empresa_transporte'])
+    if tipo=='turismo':
+        validate['nome_guia']=validateNotBlank(request['nome_guia'])
+        validate['celular']=validateCelular(request['celular'])
+        validate['telefone']=validateTelefone(request['telefone'])
+        validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
+    validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
+    
+    if validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
+        if tipo=='turismo':
+            if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
+                return validate, True    
+        else:        
+            return validate, True    
     return validate, False
 
+def validateDates(chegada, saida):
+    if chegada=='' and saida=='':
+        return {'state_chegada': False, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.', 'msg_saida': 'Data de saida invalida.'}
+    try:
+        chegada_=time.strptime(chegada, "%Y-%m-%d")
+    except:
+        return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
+    try:
+        saida_=time.strptime(saida, "%Y-%m-%d")
+    except:
+        return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
+    
+    agora = time.localtime() # get struct_time
+    if chegada_ <= agora:
+        return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
+    if chegada_ > saida_:
+        return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    return {'state_chegada': True, 'state_saida': True, 'msg': ''}
+    
+    
 def validateCNPJ(cnpj_):
     cnpj = [int(char) for char in cnpj_ if char.isdigit()]
     if len(cnpj) != 14:
@@ -154,9 +192,12 @@ def validateNOME(nome):
 
     return 'teste'
 def validateCadastur(cadastur):
-    if len(cadastur)!=8:
+    cadastur_ = [int(char) for char in cadastur if char.isdigit()]
+    cadastur=''.join([str(_) for _ in cadastur_])
+    print(cadastur)
+    if len(cadastur_)<8:
         return {'state': False, 'msg': 'Cadastur inválido.'}
-    return {'state': True, 'msg': ''}
+    return {'state': True, 'msg': '', 'cadastur': cadastur}
 
 def validateCPF(cpf_):      
     #  Obtém os números do CPF e ignora outros caracteres
@@ -184,17 +225,17 @@ def validateEMAIL(email):
     return {'state': False, 'msg': 'Email inválido.'}
 
 def validateCelular(cel):
-    celular=[int(char) for char in cel if char.isdigit()]
-    if len(celular)!=11:
-        return {'state': False, 'msg': 'Número de celular inválido.'}        
-    return {'state': True, 'msg': ''}   
+    celular=[int(char) for char in cel if char.isdigit()]    
+    if len(celular)==11:
+        return {'state': True, 'msg': ''}   
+    return {'state': False, 'msg': 'Número de celular inválido.'}        
+    
 
 def validateTelefone(tel):
-    telefone=[int(char) for char in tel if char.isdigit()]
-    print(telefone)
-    if len(telefone)!=11:
-        return {'state': False, 'msg': 'Número de telefone inválido.'}        
-    return {'state': True, 'msg': ''}   
+    telefone=[int(char) for char in tel if char.isdigit()]    
+    if len(telefone)==10:        
+        return {'state': True, 'msg': ''}   
+    return {'state': False, 'msg': 'Número de telefone inválido.'}          
 
 def validatePassword(senha, senha2):
     if senha==senha2:
@@ -205,3 +246,7 @@ def validatePassword(senha, senha2):
     return {'state': False, 'msg': 'Senhas não coincidem.'}        
 
 
+def validateNotBlank(value):
+    if not value=='':        
+        return {'state': True, 'msg': '.'}        
+    return {'state': False, 'msg': 'Preencha o campo.'}        

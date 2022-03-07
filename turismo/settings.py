@@ -41,7 +41,7 @@ email_pass = env[6]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(debug)
 
-ALLOWED_HOSTS = ['turismo.jlb.net.br', '127.0.0.1', 'localhost', '192.168.1.108', '192.168.15.179']
+ALLOWED_HOSTS = ['turismo.jlb.net.br', 'senhas.novafriburgo.rj.gov.br', '127.0.0.1', '127.0.1.1', 'localhost', '192.168.1.109']
 
 
 # Application definition
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qr_code',
+    'guias'
 ]
 
 MIDDLEWARE = [
@@ -168,8 +169,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_mail")
 DEFAULT_FROM_EMAIL = 'Secretaria Municipal de Turismo e Marketing <turismo@sme.novafriburgo.rj.gov.br>'
 
 EMAIL_USE_TLS = True
