@@ -1,0 +1,487 @@
+html, body{
+    height: 100%;
+}
+#header .col{
+    /* border-bottom: 1px solid gray; */
+    display: flex;
+    height: 100px;
+    padding: 10px 10px;
+    position: relative;
+}
+#header .col img{
+    height: 100%;
+}
+#header .col #nav{
+    margin-left: auto;
+}
+#main .cards{
+    width: 100%; 
+    height: 500px;      
+    position: relative;
+}
+#main .cards #card-bus{
+    width: 350px;
+    height: 100%;
+    margin-right: 5px;
+   
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
+
+    background-image: url(../images/bus.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+#main .cards #card-bus2{
+    width: 700px;
+    height: 100%;
+    margin-right: 5px;
+   
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
+
+    background-image: url(../images/bus.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+#main .cards #card-ponto{
+    width: 350px;
+    height: 100%;
+    margin-left: 5px;
+    
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
+
+    background-image: url(../images/ponto.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+
+
+#main .cards .card-context{
+    border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.144);
+    height: 100%;
+    width: 100%;
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column  ;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+/* #main .cards .card-context:hover{
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0);
+    height: 100%;
+    width: 100%;
+    padding: 20px 20px;
+    display: flex;    
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+} */
+
+
+#main .cards .card-context span{  
+    width: 100%;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-size: 13pt;
+    text-align: center;
+    margin-bottom: 5px;  
+}
+#main .cards .card-context a{        
+    width: 100%;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    margin: auto  auto 0 auto;
+    font-size: 13pt;
+    text-align: center;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.lateral{
+    height: 100%;
+    width: 40%;    
+    /* border: 1px solid rgba(230, 229, 229, 0.521); */
+    border-radius: 5px;
+    position: relative;
+}
+.lateral .teste{    
+    padding: 0;
+    margin: 0;
+}
+.lateral .teste .col{
+    margin: 5px 5px;
+    height: 102px;
+    border-radius: 5px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0;
+}
+.lateral .teste .col a:hover{
+    background-color: rgba(36, 34, 58, 0.342);
+}
+.lateral .teste .col a{
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: rgba(36, 34, 58, 0.582);
+    display: flex;
+}
+.lateral .teste .col a span{
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    margin: auto;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+ .rede-social{
+    display: flex;
+    justify-content: flex-end;
+}
+.rede-social img{
+    height: 50px;
+    margin: 10px 5px;
+}
+.hidden{
+    display: flex;
+}
+.show{
+    display: none;
+}
+footer{
+    width: 100%;
+    border-top: solid 1px black;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 53px;
+}
+.btn-light{
+    background-color: white;
+}
+.btn-light:hover{
+    border: 1px solid white;
+    background-color: white;
+}
+.container-fluid{
+    display: flex;
+    flex-direction: column;
+}
+
+#contato{
+    display: flex;
+    flex-direction: row;
+}
+#contato ul{
+    list-style: none;
+}
+
+@media (max-width: 1115px)
+{
+    #main .cards{
+        width: 100%; 
+        height: 400px;      
+        position: relative;
+    }
+    #main .cards #card-ponto{
+        width: 49%;
+    }
+    #main .cards #card-bus{
+        width: 49%;
+    }
+}
+
+@media (max-width: 850px){
+    #main .cards{
+        width: 100%; 
+        height: 280px;      
+        position: relative;
+    }
+    #main .cards #card-ponto{
+        width: 350px;
+    }
+    #main .cards #card-bus{
+        width: 350px;
+    }
+    #nav{
+        margin: auto;
+    }
+    #header .col{
+        justify-content: center;
+        height: auto;
+        flex-direction: column;
+    }
+    #logo{
+        display: flex;
+    }
+    #header .col a{
+        height: auto;
+        margin: auto;
+    }
+    #header .col img{  
+        margin: auto;      
+        width: 250px;
+        height: auto;
+    }
+    #contato{
+        flex-direction: column;
+    }
+
+}
+@media (max-width: 450px){
+    .hidden{
+        display: none;
+    }
+    .rede-social{
+        display: flex;
+        justify-content: center;
+    }
+    .rede-social img{
+        height: 50px;
+        margin: 10px 5px;
+    }
+    .show{        
+        display: flex;
+    }
+}
+#conheca{
+    background-image: url(../images/buttons/praca.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#roteiros{
+    background-image: url(../images/buttons/queijaria.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#mapa{
+    background-image: url(../images/buttons/cao.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#folder{
+    background-image: url(../images/buttons/flores.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#guia{
+    background-image: url(../images/buttons/trespicos.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#dropdownMenuButton{
+    z-index: 1;
+}
+.show{
+    z-index: 1500;
+}
+#brasao{
+    border: 1px solid rgba(0, 0, 0, 0.336);
+    height: 50px;
+    width: 50px;
+    display: flex;
+    margin: 10px 5px;
+}
+#brasao-img{
+    margin: auto;
+    height: 40px;
+}
+
+#hospedar{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+#drestaurante{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+#dOutros{
+    display: none;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+
+#pontosTuristicos{
+    display: none;
+    padding-top: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+
+
+#pontosTuristicos2{
+    display: none;
+    margin-top: 0 !important;    
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+    background-color: rgba(59, 132, 192, 0.212);
+}
+
+#menu_transporte{
+    left: 0;
+    margin: 0;
+    display: none;
+    flex-direction: column;
+    background-color: rgba(100, 99, 99, 0.637);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;    
+}
+#menu_transporte #btn_voltar{
+    position: absolute;
+    margin-top: 12%;
+    right: 15%;
+    z-index: 5000;
+}
+#menu_transporte .cards{
+    width: 100%;
+}
+#menu_transporte .cards #card-bus{
+    width: 350px;
+    height: 500px;
+    margin-left: 20px;
+    border-radius: 5px;
+    border: 1px solid rgba(245, 245, 245, 0.308);
+
+    background-image: url(../images/bus.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+
+#menu_transporte .cards #card-ponto{
+    width: 350px;
+    height: 500px;
+    
+    
+    border-radius: 5px;
+    border: 1px solid rgba(245, 245, 245, 0.308);
+
+    background-image: url(../images/ponto.jpg);
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0;
+}
+
+
+#menu_transporte .cards .card-context{
+    border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.144);
+    height: 100%;
+    width: 100%;
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column  ;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+/* #menu .cards .card-context:hover{
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0);
+    height: 100%;
+    width: 100%;
+    padding: 20px 20px;
+    display: flex;    
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+} */
+
+
+#menu_transporte .cards .card-context span{  
+    width: 100%;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-size: 13pt;
+    text-align: center;
+    margin-bottom: 5px;  
+}
+#menu_transporte .cards .card-context a{        
+    width: 100%;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    margin: auto  auto 0 auto;
+    font-size: 13pt;
+    text-align: center;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 170px;
+    background-color: rgba(41, 41, 41, 0.788);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    margin-top: -40px;
+    margin-left: -90px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+.tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(41, 41, 41, 0.788) transparent transparent transparent;
+}
+.mx-auto:hover .tooltiptext {
+    visibility: visible;
+  }
+
+/* .btn-primary{
+    background-color: #00A83D;
+    border-color: #00A83D;
+}
+
+a{
+    color: #00A83D;
+} */

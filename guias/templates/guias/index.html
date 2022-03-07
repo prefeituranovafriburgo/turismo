@@ -1,3 +1,101 @@
 {% extends 'cab.html' %}
-
-teste
+{% block cab %}
+{% load static %}
+<div id="main" class="row w-100 p-0 m-0 bg-light h-100">
+    <div class="col pt-4">
+        <h2>GUIAS DE TURISMO RECEPTIVO </h2>
+        <div id="guias">
+            {% for guia in guias %}
+            <div class="card-guia">            
+                <div class="img-thumbnail rounded" style="background-image: url({% static 'images/guias/01.png' %}); background-position: center;"></div>
+                    <div class="descritivo">                
+                        <div class="nome">
+                            <b>{{guia.nome}}</b>                        
+                        </div>
+                        <div class="cadastur">
+                            <b>Cadastur:</b>
+                            <span>{{guia.cadastur}}</span>
+                            <!-- <span class="validade">Valido: {{guia.validade_cadastur}}</span>                     -->
+                        </div>
+                        <div class="telefone">
+                            <b>Telefone:</b>
+                            <span>{{guia.telefone}}</span>
+                        </div>
+                        <div class="email">
+                            <b>Email:</b>
+                            <span>{{guia.email}}</span>
+                        </div>
+                        <div class="categoria">
+                            <b style="vertical-align: top">Categoria:</b>
+                            <span>                            
+                                {% for categoria in guia.categoria.all %}
+                                    {% if forloop.first %}
+                                        {{categoria}}
+                                    {% else %}
+                                        {% if  forloop.last %}
+                                            e {{categoria}}.
+                                        {%else%}
+                                            , {{categoria}}
+                                        {% endif %} 
+                                {%endif%}
+                                {% endfor %}                            
+                            </span>
+                        </div>   
+                        <div class="segmento">
+                            <b style="vertical-align: top">Segmento de Atuação:</b>
+                            <span>                            
+                                {% for categoria in guia.segmento_de_atuacao.all %}
+                                    {% if forloop.first %}
+                                        {{categoria}}
+                                    {% else %}
+                                        {% if  forloop.last %}
+                                            e {{categoria}}.
+                                        {%else%}
+                                            , {{categoria}}
+                                        {% endif %} 
+                                {%endif%}
+                                {% endfor %}                            
+                            </span>
+                        </div>                     
+                    </div> 
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<style>
+    #guias .card-guia{
+        height: auto;
+        display: flex;
+        padding: 20px;
+    }
+    #guias .card-guia div{
+        height: 150px;
+        width: 150px;
+    }
+    #guias .card-guia .descritivo{
+        width: 310px;
+        /* border: 1px solid black; */
+    }
+    #guias .card-guia .descritivo div{
+        width: auto;
+        height: auto;
+        margin-left: 30px;
+    }
+    #guias .card-guia .descritivo .nome{
+        font-size: 18pt;        
+    }
+    #guias .card-guia .descritivo span{
+        margin: 0 0px;    
+    }
+    #guias .card-guia .descritivo .categoria{
+        margin-left: -150px;
+        text-align: justify;
+    }
+    #guias .card-guia .descritivo .segmento{
+        margin-left: -150px;
+        text-align: justify;
+    }
+</style>
+    {% endblock %}

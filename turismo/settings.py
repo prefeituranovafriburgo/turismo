@@ -155,8 +155,8 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
-# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+# STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'
