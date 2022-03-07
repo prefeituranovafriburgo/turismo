@@ -209,7 +209,7 @@ def password_reset_request(request):
 			associated_users = User.objects.filter(email=data)
 			if associated_users.exists():
 				for user in associated_users:
-					subject = "Password Reset Requested"
+					subject = "Alteração de Senha do Sistema de Senhas da Secretária Municipal de Turismo de Nova Friburgo"
 					email_template_name = "registration/password_reset_email.txt"
 					c = {
 					"email":user.email,
@@ -222,7 +222,7 @@ def password_reset_request(request):
 					}
 					email = render_to_string(email_template_name, c)
 					try:
-						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+						send_mail(subject, email, [user.email] , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					return redirect ("password_reset_done")
