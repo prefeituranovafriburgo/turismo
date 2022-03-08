@@ -1,0 +1,43 @@
+{% extends 'cab.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/print_guias.css' %}">
+{% endblock %}
+{% block cab %}
+<div class="print-cab">
+    <div id="logo" class="m-auto">        
+            <img src="{% static 'images/logo.png' %}"  alt="Logo Pmnf" title="Logo Pmnf"/>        
+    </div>     
+</div>
+<div id="main" class="row w-100 p-0 m-0 bg-light h-100">
+    <div class="col pt-4 px-0 mx-0">
+        <div class="d-flex w-100 px-3">
+            
+            <div class="ml-auto no-print mb-3">
+                <a href="{% url 'senhas:inicio' %}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mb-1 mr-2 bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>Voltar</a>
+                <button class="btn btn-primary" onclick="window.print();"><i class="fal fa-print mr-2"></i>Imprimir</button>
+            </div>
+        </div>
+        <div id="mapa-turistico">
+            <img class="m-auto" src="{% static 'images/mapa-turistico.jpeg' %}" alt="">
+        </div>
+    </div>
+</div>
+<style>
+    #mapa-turistico{
+        display: flex;
+        padding: 0;
+    }
+    #mapa-turistico img{
+        width: 100%;
+    }
+</style>
+<script>
+    window.onload = function() {                                            
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")                      
+    };
+</script>
+    {% endblock %}

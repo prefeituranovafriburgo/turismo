@@ -5,11 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
     {% load template_filters %}
-
-{% load static %}
-
+    {% load static %}
     <style type="text/css">
             body{              
                 -webkit-print-color-adjust:exact;
@@ -187,27 +184,24 @@
                         {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
                         {% endfor %}</td>
                 </tr>
-
                 {% endif %}
-
             </table>            
             <div class="row">
                 <div class="col">
                     <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>    
                 </div>
             </div>
-        </div>
-        
+        </div>        
     </div>
 <SCRIPT LANGUAGE="JavaScript">
-    // window.onload = function (){
-    //     document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
-    //     document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
-    // }
-    // window.print();
-    // setTimeout(function(){
-    //     window.close();
-    // },2000);
+    window.onload = function (){
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
+        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+    }
+    window.print();
+    setTimeout(function(){
+        window.close();
+    },2000);
 </SCRIPT>
 </body>
 </html>
