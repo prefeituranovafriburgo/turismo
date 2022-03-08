@@ -61,7 +61,9 @@ html, body{
     background-repeat: no-repeat;
     padding: 0;
 }
-
+.cards  .card{
+    cursor: pointer;
+}
 
 #main .cards .card-context{
     border-radius: 5px;
@@ -73,7 +75,7 @@ html, body{
     display: flex;
     flex-direction: column  ;
     color: rgb(0, 0, 0);
-    font-weight: bold;
+    font-weight: bold;    
 }
 /* #main .cards .card-context:hover{
     border-radius: 5px;
@@ -85,7 +87,6 @@ html, body{
     cursor: pointer;
     color: rgb(0, 0, 0);
 } */
-
 
 #main .cards .card-context span{  
     width: 100%;
