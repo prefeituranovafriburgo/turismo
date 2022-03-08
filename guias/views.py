@@ -21,7 +21,8 @@ def cadastrar(request):
         valido, validation=validar_cadastro_guia(request.POST)
         print('opcao', valido)
         if valido:
-            print('ok')    
+            print('ok')  
+            form=''  
         else:
             form={
                 'nome': request.POST['nome'],
