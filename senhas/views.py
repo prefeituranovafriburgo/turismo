@@ -273,8 +273,9 @@ def viagem_altera(request, id):
                     viagem_turismo.celular=request.POST['celular']
                     viagem_turismo.telefone=request.POST['telefone']
                     
-                    viagem_turismo.save()
-                    for ponto in request.POST.getlist('pontos_turisticos'):
+                    viagem_turismo.save()                
+                    viagem_turismo.pontos_turisticos.clear()
+                    for ponto in request.POST.getlist('pontos_turisticos'):                                                                        
                         viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
                     viagem_turismo.save()                                    
                 messages.success(request, 'Viagem alterada.')

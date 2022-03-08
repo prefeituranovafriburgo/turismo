@@ -14,10 +14,10 @@
         <div class="d-flex w-100">
             <h2>GUIAS DE TURISMO RECEPTIVO </h2>
             <div class="ml-auto no-print">
-                <button class="btn btn-primary">
+                <a href="{% url 'senhas:inicio' %}" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mb-1 mr-2 bi bi-arrow-left-circle" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                </svg>Voltar</button>
+                </svg>Voltar</a>
                 <button class="btn btn-primary" onclick="window.print();"><i class="fal fa-print mr-2"></i>Imprimir</button>
             </div>
         </div>
@@ -25,8 +25,8 @@
             {% for guia in guias %}
             <div class="card-guia w-100">            
                 <div class="row">
-                    <div class="col d-flex">
-                        <div class="my-auto img-thumbnail rounded avatar" style="background-image: url(/static/images/guias/0{{forloop.counter}}.png); background-position: center;"></div>
+                    <div class="col div-superior">
+                        <div class="img-thumbnail rounded avatar" style="background-image: url(/static/images/guias/0{{forloop.counter}}.png); background-position: center;"></div>
                         <div class="descritivo">                
                             <div class="row">
                                 <div class="col nome">
@@ -148,6 +148,58 @@
         height: auto;
         padding: 20px;
         box-shadow: 2px 2px 13px 2px #006eff4b;
+    }
+    .card-guia .div-superior{
+        display: flex;
+    }
+    .card-guia .avatar{
+        margin-left: 20px;
+    }
+    @media (max-width: 600px)
+    {
+        .card-guia .descritivo{
+            padding-right: 20px;
+        }
+        .card-guia .descritivo .redes{
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+        .card-guia .segmento{
+            padding: 20px;
+        }
+    }
+    @media (max-width: 500px)
+    {
+        .card-guia .descritivo{
+            padding-right: 20px;
+        }
+        .card-guia .div-superior{
+            display: flex;
+            flex-direction: column;
+        }
+        .card-guia .descritivo .redes{
+            display: flex;
+            flex-direction: column;
+        }
+        .avatar{
+            text-align: center;
+            margin: auto !important;
+        }
+        .nome{
+            text-align: center;
+            margin: auto;
+        }
+    }
+    @media (max-width: 400px){
+        .avatar{
+            text-align: center;
+            margin: auto !important;
+        }
+        .nome{
+            text-align: center;
+            margin: auto;
+        }
     }
     .card-guia .avatar{
         height: 150px;
