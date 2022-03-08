@@ -2,16 +2,27 @@
 {% load static %}
 <html lang="pt-br">
     <head>
+        <link rel="shortcut icon" type="image/png" href="{% static 'brasao.ico' %}"/>
         <!-- Meta tags Obrigatórias -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <!-- GOOGLE FONTS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-        <link href="{% static "css/jlb.css" %}" rel="stylesheet" type="text/css">
-
-        <title>Turismo Nova Friburgo</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- FONTAWESOME -->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <!-- CUSTOM CSS -->
+        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">
+        {% block css %}        
+        {% endblock %}
+        
+        <title>{% block title %}Turismo Nova Friburgo{% endblock %}</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
@@ -25,36 +36,34 @@
     </script>
 
     <body class="body">
-        <div class="container-fluid">
-
-            <div class="quadrocab">
-                <div class="row">
-                    <div class="col-2">
-                        <a href="https://novafriburgo.rj.gov.br"><img src="/static/logopmnf.png"  alt="Logo Pmnf" title="Logo Pmnf"  style="margin:28px 0 0 23px;position: relative;left: 10px;"/></a>
+        <div class="container-fluid h-100">
+            <div id="header" class="row no-print">
+                <div class="col">
+                    <div id="logo">
+                        <a href="{% url 'senhas:inicio' %}">
+                            <img src="{% static 'images/logo.png' %}"  alt="Logo Pmnf" title="Logo Pmnf"/>
+                        </a>
+                    </div>                    
+                    <div id="nav" class="my-auto d-flex">
+                        <a href="{% url 'senhas:inicio' %}" class="btn" role="button"><i class="fas fa-home mr-2"></i>Página Inicial</a>
+                        <a href="{% url 'senhas:cad_transporte' %}" class="btn" role="button"><i class="fad fa-bus-alt mr-2"></i>Minhas Viagens </a>
+                        {% if user.username %}
+                            <button class="btn d-flex" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <h6 class="text-bold my-auto">Olá,<b> {{ user.first_name }}</b>!</h6>
+                                <span class="dropdown-toggle ml-3"></span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'contas:cadastro' %}"><i class="fas fa-users-cog mr-2"></i> Meu cadastro</a>
+                                <a class="dropdown-item" href="{% url 'contas:change_password' %}"><i class="fas fa-key mr-2"></i> Alterar senha</a>                                
+                                <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                                <a class="dropdown-item text-danger" href="#"><i class="fas fa-comment-alt-exclamation mr-2"></i>Reportar Problema</a>
+                            </div>                                                                                                                 
+                        {% endif %}
                     </div>
-                    <div class="col-8">
-                        <h3>Secretaria Municipal de Turismo e Marketing</h3>
-                        <h3>Secretaria Municipal de Ciência, Tecnologia,<br>Inovação e Educação Profissionalizante e Superior</h3>
-                    </div>
-                    <div class="col-2">
-                        <h6 class="text-md-right mb-3">&nbsp;</h6>
-                        <a href="{% url 'senhas:inicio' %}" class="btn btn-primary" role="button">Início</a>
-                        <a href="{% url 'contas:sair' %}" class="btn btn-danger" role="button">Sair</a>
-                        <h6 class="display-5 text-bold mb-1">Usuário: {{ user.username }}</h6>
-       
-                    </div>
-        
                 </div>
             </div>
+
+            {% block cab %}{% endblock %}
         </div>
-
-        {% block cab %}{% endblock %}
-
-        <!-- JavaScript (Opcional) -->
-        <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </body>
 </html>

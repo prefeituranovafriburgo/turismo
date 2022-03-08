@@ -1,107 +1,207 @@
-{% load template_filters %}
-
-{% load static %}
-
-<style type="text/css">
-    .watermark {
-        width: 800px;
-        height: 800px;
-        display: block;
-        position: relative;
-      }
-      
-      .watermark::after {
-        content: "";
-       background:url({% static "marcadagua.jpg" %});
-        opacity: 1.0;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: absolute;
-        z-index: -1;   
-      }
-</style>
-
-<img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>
-<br>
-<div class="container">
-    <div class="watermark">
-
-    <div class="row">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load template_filters %}
+    {% load static %}
+    <style type="text/css">
+            body{              
+                -webkit-print-color-adjust:exact;
+            }
+            .row{
+                width: 100%;
+                display: flex;
+            }
+            .col{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+            .watermark {
+                padding-top: 60px;
+                width: 800px;
+                height: 800px;
+                display: block;
+                position: relative;
+                /* background-image: url({% static 'marcadagua.jpg' %});
+                background-size: cover;
+                -webkit-print-color-adjust:exact; */
+              }
+              
+              .watermark::after {                
+                opacity: 1.0;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                position: absolute;
+                z-index: -1;   
+                -webkit-print-color-adjust:exact;
+              }
+              /* .marca-dagua{
+                opacity: 0.4;
+                position: absolute;             
+                width: 800px;                
+                z-index: -2;                
+              } */
+              table{
+                  font-size: 16pt;
+                  width: 650px;
+                  padding-top: 100px;
+              }
+              table th{
+                  width: 400px;
+              }
+              table th, td{
+                  height: 20pt; 
+                  border-bottom: 1px solid rgba(0, 0, 0, 0.131);                  
+              }
+              table, tr, td, th{
+                  /* background: none !important; */
+                  color-adjust:exact !important;
+                  /* background-color: transparent !important; */
+                  -webkit-print-color-adjust:exact !important;
+              }
+              #qr_code{
+                 margin: auto;
+              }
+              #senha-de-acesso{
+                width: 100%;
+                text-align: center;
+                display: flex;
+              }
+              #senha-de-acesso div{
+                  margin: 0 auto;
+              }
+              #senha-de-acesso div h1{
+                  font-size: 36pt;
+                  line-height: 20pt;
+              }
+              .m-auto{
+                  margin: auto;
+              }
+              .d-flex{
+                  display: flex;
+                  flex-direction: column;
+              }
+              #datas{
+                  padding-top: 60px;
+                  font-size: 28pt;
+                  text-align: center;
+              }
+              #datas div span{
+                  font-weight: bolder;
+              }
+              .text-left{
+                  text-align: left;
+              }
+              .bg{
+                  background-color: aqua;
+              }
+    </style>
+</head>
+<body>
+    <div class="row ">
         <div class="col">
-            <h3 class="text-center">SENHA DE ACESSO:</h3>
+            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>
         </div>
-        <h1>{{ viagem.id }}/{% now "y" %}NF</h1>
     </div>
+    <br>
+    <div class="m-auto">
+        <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt="">
+        <div class="watermark m-auto">
+                
+            <div class="row">
+                <div id="datas" class="col d-flex">
+                    <div>Data de entrada: <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span></div><br>
+                    <div>Data de saída: <br><span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span></div>
+                </div>
+                <div class="col">
+                    <div id="senha-de-acesso">
+                        <div>
+                         <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->
+                         {% load qr_code %}
+                         <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
+                         <h1 class="text-center">{{ viagem.senha}}/22NF</h1>
+                         
+                        </div>
+                     </div>     
+                </div>
+            </div>
+                           
+            
+           
+            <table class="table table-borderless bg-none m-auto">
+                
+                <tr>
+                    <th class="text-left">Empresa de Transporte</th>
+                    <td>{{ viagem.empresa_transporte }}</td>
+                </tr>                
+                <tr>
+                    <th class="text-left">CNPJ da Empresa de Transporte</th>
+                    <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Cadastur da Empresa de Transporte</th>
+                    <td>{{ viagem.cadastur_empresa_transporte }}</td>
+                </tr>
 
-    <table  class="table table-striped table-bordered">
+                <tr>
+                    <th class="text-left">Veículo</th>
+                    <td>{{ viagem.tipo_veiculo }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Quant. Passageiros</th>
+                    <td>{{ viagem.quant_passageiros }}</td>
+                </tr>
+                
+                <!-- Viatem/Turismo -->
 
-        <tr>
-            <th>Data de entrada:</th>
-            <th>Data de saída:</th>
-        </tr>
-            <td>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
-            <td>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
-        </tr>
-        <tr>
-            <th>Veículo</th>
-            <td>{{ viagem.tipo_veiculo }}</td>
-        </tr>
-        <tr>
-            <th>Quant. Passageiros</th>
-            <td>{{ viagem.quant_passageiros }}</td>
-        </tr>
-        <tr>
-            <th>Empresa de Transporte</th>
-            <td>{{ viagem.empresa_transporte }}</td>
-        </tr>
-        <tr>
-            <th>CNPJ da Empresa de Transporte</th>
-            <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
-        </tr>
-        <tr>
-            <th>Cadastur da Empresa de Transporte</th>
-            <td>{{ viagem.cadastur_empresa_transporte }}</td>
-        </tr>
+                {% if viagem_turismo %}
 
-        <!-- Viatem/Turismo -->
-
-        {% if viagem_turismo %}
-
-        <tr>
-            <th>Nome do Guia:</th>
-            <td>{{ viagem_turismo.nome_guia }}</td>
-        </tr>
-        <tr>
-            <th>Cadastur do Guia:</th>
-            <td>{{ viagem_turismo.cadastur_guia }}</td>
-        </tr>
-        <tr>
-            <th>Celular do Guia:</th>
-            <td>{{ viagem_turismo.celular }}</td>
-        </tr>
-        <tr>
-            <th>Telefone do Guia:</th>
-            <td>{{ viagem_turismo.telefone }}</td>
-        </tr>
-        <tr>
-            <th>Pontos Turísticos:</th>
-            <td>{{ viagem_turismo.pontos_turisticos }}</td>
-        </tr>
-
-        {% endif %}
-
-    </table>
-
-    <img src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin:28px 0 0 23px;position: relative;left: 10px;"/>
-</div>
-
-</div>
-
+                <tr>
+                    <th class="text-left">Nome do Guia:</th>
+                    <td>{{ viagem_turismo.nome_guia }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Cadastur do Guia:</th>
+                    <td>{{ viagem_turismo.cadastur_guia }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Celular do Guia:</th>
+                    <td id="celular">{{ viagem_turismo.celular }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Telefone do Guia:</th>
+                    <td id="telefone">{{ viagem_turismo.telefone }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Pontos Turísticos:</th>
+                    <td>{%for ponto_turistico in pontos_turisticos %}
+                        {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
+                        {% endfor %}</td>
+                </tr>
+                {% endif %}
+            </table>            
+            <div class="row">
+                <div class="col">
+                    <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>    
+                </div>
+            </div>
+        </div>        
+    </div>
 <SCRIPT LANGUAGE="JavaScript">
+    window.onload = function (){
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
+        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+    }
     window.print();
     setTimeout(function(){
         window.close();
     },2000);
 </SCRIPT>
+</body>
+</html>

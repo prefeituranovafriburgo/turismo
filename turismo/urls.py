@@ -22,6 +22,7 @@ admin.site.site_title = "PREFEITURA MUNICIPAL DE NOVA FRIBURGO"
 urlpatterns = [
     path('', include('senhas.urls')),
     path('contas/', include('contas.urls')),
+    path('guias/', include('guias.urls')),
     path('equipamentos/', include('equipamentos.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),

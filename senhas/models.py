@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from contas.functions import validate_CPF, validate_CNPJ
+from contas.functions import validate_CPF, validate_CNPJ, validate_CADASTUR
+from contas.models import Cidade, Estado
 
 # Create your models here.
 
@@ -61,18 +62,22 @@ class Viagem(models.Model):
     def __str__(self):
         return '%s - %s - %s' % (self.user, self.dt_Chegada, self.dt_Saida)
 
+    senha=models.CharField(max_length=10, blank=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     dt_Chegada = models.DateField('Data Chegada')
     dt_Saida = models.DateField('Data Saída')
     ficarao_hospedados = models.BooleanField(default=False, verbose_name='Ficarão Hospedados?')
     hotel = models.CharField(max_length=120, blank=True, null=True)
+    restaurante_reservado= models.BooleanField(default=False, verbose_name='Restaurante reservado?')
     restaurante = models.CharField(max_length=120, blank=True, null=True)
     tipo_veiculo = models.ForeignKey(Tipo_Veiculo, on_delete=models.PROTECT)
     quant_passageiros = models.PositiveSmallIntegerField()
     empresa_transporte = models.CharField(max_length=120)
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
-    cadastur_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
+    cadastur_empresa_transporte = models.CharField(max_length=14)
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
+    estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
+    cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
 
@@ -87,8 +92,9 @@ class Viagem_Turismo(models.Model):
         return '%s' % (self.viagem)
 
     viagem = models.OneToOneField(Viagem, on_delete=models.CASCADE)
+    outros = models.CharField(default='', max_length=60)
     nome_guia = models.CharField(max_length=60)
-    cadastur_guia = models.CharField(max_length=14, validators=[validate_CNPJ])
+    cadastur_guia = models.CharField(max_length=14, validators=[validate_CADASTUR])
     celular = models.CharField(max_length=11)
     telefone = models.CharField(max_length=10, blank=True, null=True)
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)

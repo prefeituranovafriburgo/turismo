@@ -1,0 +1,21 @@
+.print-cab{
+    display: none;
+}
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+    .print-cab{
+        display: flex;
+    }
+    .card-guia{
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    #main{
+        background-color: transparent !important;
+    }
+}
