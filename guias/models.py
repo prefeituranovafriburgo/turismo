@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class Categoria(models.Model):
@@ -37,8 +38,7 @@ class Guias_Turismo(models.Model):
     idiomas=models.ManyToManyField(Idiomas)
     instagram=models.CharField(max_length=60, blank=True, null=True)
     facebook=models.CharField(max_length=60, blank=True, null=True)
-    site=models.CharField(max_length=60, blank=True, null=True)
-    dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    site=models.CharField(max_length=60, blank=True, null=True)    
 
     class Meta:
         verbose_name_plural = "Guias de Turismo Receptivo"
