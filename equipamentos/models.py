@@ -36,7 +36,7 @@ class Equipamento(models.Model):
 
     nome = models.CharField(unique=True, max_length=250)
     tipo_equipamento = models.ForeignKey(Tipo_Equipamento, on_delete=models.PROTECT)
-    descricao = models.CharField(max_length=3000)
+    descricao = models.TextField(max_length=300)
     foto = models.CharField(max_length=250)
     bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
