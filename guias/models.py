@@ -38,6 +38,7 @@ class Guias_Turismo(models.Model):
     instagram=models.CharField(max_length=60, blank=True, null=True)
     facebook=models.CharField(max_length=60, blank=True, null=True)
     site=models.CharField(max_length=60, blank=True, null=True)
+    dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
     class Meta:
         verbose_name_plural = "Guias de Turismo Receptivo"
