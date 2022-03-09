@@ -93,6 +93,7 @@ def viagem_inclui(request, tipo):
                 return redirect('senhas:cad_transporte')
 
             except Exception as e:
+                debug_alert=str(e)
                 print('e:', e)
                 erro = str(e).split(', ')
 
@@ -146,6 +147,7 @@ def viagem_inclui(request, tipo):
         for u in request.POST.getlist('pontos_turisticos'):
             pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
         context={ 
+            'alerta': debug_alert,
             'form': form, 
             'validation': validation, 
             'veiculos': veiculos, 

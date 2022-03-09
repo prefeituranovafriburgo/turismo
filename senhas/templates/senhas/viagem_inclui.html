@@ -25,7 +25,11 @@
                     
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                        
-                                
+                                <div class="row">
+                                    <div class="col">
+                                        {{alerta}}
+                                    </div>
+                                </div>                                
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
