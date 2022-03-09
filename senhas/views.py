@@ -38,7 +38,7 @@ def viagem_inclui(request, tipo):
     estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':                   
         form = ViagemForm(request.POST)
-        print(request.POST)
+        # print(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST, tipo)                                       
         if valido:     
