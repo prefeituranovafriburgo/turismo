@@ -36,7 +36,9 @@ def viagem_inclui(request, tipo):
                 'nome_guia':{'state': True}} 
     
     estados = Estado.objects.all().order_by('nome')
+    teste=''
     if request.method == 'POST':                   
+        teste=request.POST
         form = ViagemForm(request.POST)
         # print(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
@@ -157,6 +159,7 @@ def viagem_inclui(request, tipo):
             'estado_': estado,
             'estados': estados,  
             'cidade': cidade,
+            'teste': teste,
             'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
                        'dt_Saida2': request.POST['dt_saida'],
                     #    'estado_origem': request.POST['estado'],
@@ -184,6 +187,7 @@ def viagem_inclui(request, tipo):
     pontosTuristicos= Pontos_Turisticos.objects.all()
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
+        'teste': teste,
         'form': form, 
         'validation': validation, 
         'veiculos': veiculos, 
