@@ -37,6 +37,7 @@ def viagem_inclui(request, tipo):
     
     estados = Estado.objects.all().order_by('nome')
     teste=''
+    debug_alert=''
     if request.method == 'POST':                   
         teste=request.POST
         form = ViagemForm(request.POST)
@@ -145,6 +146,10 @@ def viagem_inclui(request, tipo):
                 restaurante_reservado=True
         except:
             restaurante_reservado=False
+        try:
+            tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+        except:
+            tipo_veiculo=''
         pontos_selecionados=[]
         for u in request.POST.getlist('pontos_turisticos'):
             pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
@@ -168,7 +173,7 @@ def viagem_inclui(request, tipo):
                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
-                       'tipo_veiculo': Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+                       'tipo_veiculo': tipo_veiculo,
                        'obs': request.POST['obs'],
                        'ficarao_hospedados': ficarao_hospedados,
                        'restaurante_reservado': restaurante_reservado,
