@@ -94,7 +94,7 @@ def viagem_inclui(request, tipo):
 
             except Exception as e:
                 debug_alert=str(e)
-                print('e:', e)
+                print('e:', e, '\nform:', form.errors)
                 erro = str(e).split(', ')
 
                 print('erro:', erro)
