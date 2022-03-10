@@ -180,8 +180,8 @@
                 </tr>
                 <tr>
                     <th class="text-left">Pontos Turísticos:</th>
-                    <td>{%for ponto_turistico in pontos_turisticos %}
-                        {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
+                    <td>{%for ponto_turistico in pontos_turisticos %} 
+                            <span class="ponto" id="ponto-{{forloop.counter}}">{{ ponto_turistico }}</span>                                                        
                         {% endfor %}</td>
                 </tr>
                 {% endif %}
@@ -195,8 +195,33 @@
     </div>
 <SCRIPT LANGUAGE="JavaScript">
     window.onload = function (){
-        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
-        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4");
+        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4");
+
+        pontos=document.getElementsByClassName('ponto')
+        len=Object.keys(pontos).length
+        for(ponto in pontos){
+            console.log(pontos[ponto])
+            if(len===2){
+                document.getElementById('ponto-1').innerText=pontos[0].innerText+' e'                                                  
+                break
+            }else{
+                if (ponto<len){
+                    if(ponto==len-1){
+                        document.getElementById('ponto-'+p.toString()).innerText=pontos[ponto].innerText+' e'                                                  
+                    }else{
+                        p=parseInt(ponto)+1
+                        document.getElementById('ponto-'+p.toString()).innerText=pontos[ponto].innerText+','              
+                    }
+                }
+            }
+            
+            
+            
+            
+        }        
+
+        
     }
     window.print();
     setTimeout(function(){

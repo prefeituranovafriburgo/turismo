@@ -377,12 +377,11 @@ def gera_senha(request, id):
         tipo='compras'
         viagem_turismo={}
     veiculos=Tipo_Veiculo.objects.all()
-    pontosTuristicos= Pontos_Turisticos.objects.all()
     
     context={
         'viagem': viagem,
         'viagem_turismo': viagem_turismo,
-        'pontos_turisticos': pontosTuristicos,
+        'pontos_turisticos': pontosTuristicos_selecionados_,
         'endereco': endereco}
     
     return render(request, 'senhas/gera_senha.html', context)
