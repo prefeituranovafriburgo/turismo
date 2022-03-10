@@ -12,7 +12,6 @@ from .functions import get_random_string
 import time
 import pickle
 
-from captcha.fields import ReCaptchaField
 # Create your views here.
 
 @login_required
