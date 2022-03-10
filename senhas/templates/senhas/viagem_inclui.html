@@ -25,7 +25,16 @@
                     
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                        
-                                
+                                <div class="row">
+                                    <div class="col">
+                                        {{alerta}}
+                                    </div>
+                                </div>    
+                                <div class="row">
+                                    <div class="col">
+                                        {{teste}}
+                                    </div>
+                                </div>                            
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
@@ -81,7 +90,7 @@
                                     </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
-                                        <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur_empresa_transporte" maxlength="14" required
+                                        <input class="form-control {%if not validation.cadastur_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur_empresa_transporte" maxlength="18" required
                                         id="id_cadastur_empresa_transporte" value="{{viagem.cadastur_empresa_transporte}}">
                                         <div class="invalid-feedback">
                                             {{validation.cadastur_empresa_transporte.msg}}
@@ -118,21 +127,21 @@
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
-                                        <input class="form-control w-100 {%if not validation.cadastur_guia.state %}is-invalid{% endif %}" type="text" onblur="validar(event)" name="cadastur_guia" maxlength="120" value="{{viagem_turismo.cadastur_guia}}">
+                                        <input class="form-control w-100 {%if not validation.cadastur_guia.state %}is-invalid{% endif %}" type="text" onblur="validar(event)" name="cadastur_guia" maxlength="18" value="{{viagem_turismo.cadastur_guia}}">
                                         <div class="invalid-feedback">
                                             {{validation.cadastur_guia.msg}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                                                                
                                         <label for="id_celular" class="mr-3" >Celular:</label>
-                                        <input id="celular" class="form-control w-100 {%if not validation.celular.state %}is-invalid{% endif %}" onkeydown="mascara(this,icelular)" onblur="validar(event)" type="text" name="celular" maxlength="120" value="{{viagem_turismo.celular}}">
+                                        <input id="celular" class="form-control w-100 {%if not validation.celular.state %}is-invalid{% endif %}" onkeydown="mascara(this,icelular)" onblur="validar(event)" type="text" name="celular" maxlength="15" value="{{viagem_turismo.celular}}">
                                         <div class="invalid-feedback">
                                             {{validation.celular.msg}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_telefone" class="mr-3">Telefone:</label>
-                                        <input id="telefone" class="form-control w-100 {%if not validation.telefone.state %}is-invalid{% endif %}" onkeydown="mascara(this,itelefone)" type="text" onblur="validar(event)" name="telefone"  maxlength="120" value="{{viagem_turismo.telefone}}">
+                                        <input id="telefone" class="form-control w-100 {%if not validation.telefone.state %}is-invalid{% endif %}" onkeydown="mascara(this,itelefone)" type="text" onblur="validar(event)" name="telefone"  maxlength="14" value="{{viagem_turismo.telefone}}">
                                         <div class="invalid-feedback">
                                             {{validation.telefone.msg}}
                                         </div>

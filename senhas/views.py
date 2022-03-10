@@ -36,9 +36,12 @@ def viagem_inclui(request, tipo):
                 'nome_guia':{'state': True}} 
     
     estados = Estado.objects.all().order_by('nome')
+    teste=''
+    debug_alert=''
     if request.method == 'POST':                   
+        teste=request.POST
         form = ViagemForm(request.POST)
-        print(request.POST)
+        # print(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST, tipo)                                       
         if valido:     
@@ -93,7 +96,8 @@ def viagem_inclui(request, tipo):
                 return redirect('senhas:cad_transporte')
 
             except Exception as e:
-                print('e:', e)
+                debug_alert=str(e)
+                print('e:', e, '\nform:', form.errors)
                 erro = str(e).split(', ')
 
                 print('erro:', erro)
@@ -142,10 +146,15 @@ def viagem_inclui(request, tipo):
                 restaurante_reservado=True
         except:
             restaurante_reservado=False
+        try:
+            tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+        except:
+            tipo_veiculo=''
         pontos_selecionados=[]
         for u in request.POST.getlist('pontos_turisticos'):
             pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
         context={ 
+            'alerta': debug_alert,
             'form': form, 
             'validation': validation, 
             'veiculos': veiculos, 
@@ -155,6 +164,7 @@ def viagem_inclui(request, tipo):
             'estado_': estado,
             'estados': estados,  
             'cidade': cidade,
+            'teste': teste,
             'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
                        'dt_Saida2': request.POST['dt_saida'],
                     #    'estado_origem': request.POST['estado'],
@@ -163,7 +173,7 @@ def viagem_inclui(request, tipo):
                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
-                       'tipo_veiculo': Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+                       'tipo_veiculo': tipo_veiculo,
                        'obs': request.POST['obs'],
                        'ficarao_hospedados': ficarao_hospedados,
                        'restaurante_reservado': restaurante_reservado,
@@ -182,6 +192,7 @@ def viagem_inclui(request, tipo):
     pontosTuristicos= Pontos_Turisticos.objects.all()
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
+        'teste': teste,
         'form': form, 
         'validation': validation, 
         'veiculos': veiculos, 
@@ -366,12 +377,11 @@ def gera_senha(request, id):
         tipo='compras'
         viagem_turismo={}
     veiculos=Tipo_Veiculo.objects.all()
-    pontosTuristicos= Pontos_Turisticos.objects.all()
     
     context={
         'viagem': viagem,
         'viagem_turismo': viagem_turismo,
-        'pontos_turisticos': pontosTuristicos,
+        'pontos_turisticos': pontosTuristicos_selecionados_,
         'endereco': endereco}
     
     return render(request, 'senhas/gera_senha.html', context)
