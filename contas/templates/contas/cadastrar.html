@@ -1,8 +1,27 @@
 {% extends 'registration/head2.html' %}
-{% block conteudo %}   
+{% block conteudo %}  
+
+<link rel="preconnect" href="https://www.google.com">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
+<script type="text/javascript">
+    var onloadCallback = function() {
+      grecaptcha.render('html_element', {
+        'sitekey' : '6LdiIsweAAAAAKHnfIgGx1V-olIVbAFEBUJY5MHb',
+      });
+    };
+  </script>
                     <h2>CADASTRO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
+                        {% if robo %}
+                            <div class="row px-2">
+                                <div class="col d-flex bg-danger  px-5 py-2 rounded mb-3">
+                                    <div class="mx-auto text-white ">
+                                        <b>Não aceitamos robôs</b>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         <div class="form-row">
                             <div class="form-group col-md-3">            
                                 <label for="id_nome">Nome:</label>
@@ -77,13 +96,21 @@
                                 </div> 
                             </div>
                         </div>
-                        <div class="form-row">                            
-
+                        <div class="form-row d-flex flex-column">                                  
+                            <div id="html_element" class="m-auto"></div>                            
                         </table>    
                         <button class="btn btn-primary" type="submit">
                             Cadastrar
                         </button>
 
                     </form>
-                    <a href="{% url 'login' %}">Voltar</a>                    
+                    <a href="{% url 'login' %}">Voltar</a>  
+                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+                    async defer>
+                </script>  
+                <style>
+                    #rc-anchor-container{
+                        width: 100% !important;
+                    }
+                </style>            
                 {% endblock %}

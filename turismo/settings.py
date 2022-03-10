@@ -43,6 +43,8 @@ DEBUG = eval(debug)
 
 ALLOWED_HOSTS = ['turismo.jlb.net.br', 'senhas.novafriburgo.rj.gov.br', '127.0.0.1', '127.0.1.1', 'localhost', '192.168.1.109']
 
+RECAPTCHA_PUBLIC_KEY = '6LdiIsweAAAAAKHnfIgGx1V-olIVbAFEBUJY5MHb'
+RECAPTCHA_PRIVATE_KEY = '6LdiIsweAAAAADv7tYKHZ1fCP4pi6FwIZTw4X4Rl'
 
 # Application definition
 

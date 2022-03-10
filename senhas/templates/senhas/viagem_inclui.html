@@ -38,14 +38,14 @@
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
-                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="diaa" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
                                         <div class="invalid-feedback">
                                             {{validation.chegada_saida.msg_chegada}}
                                         </div>
                                     </div>                                                            
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Saida_day" class="mr-5">Dt saida:</label>
-                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="diaa" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
+                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="dt_saida" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
                                         <div class="invalid-feedback">
                                             {{validation.chegada_saida.msg_saida}}
                                         </div>
@@ -154,7 +154,7 @@
                                             {% for ponto in pontos %}
                                             <option value="{{ponto}}" {%if ponto in pontos_selecionados %}selected{% endif %}>{{ponto}}</option>
                                             {% endfor %}
-                                            <option value="Outros">Outros</option>
+                                            <option value="Outros" {% if not viagem_turismo.outros == '' %}selected{% endif %}>Outros</option>
                                                                                      
                                         </select>
                                         <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
@@ -162,8 +162,8 @@
                                 </div>
                                 <div class="form-row justify-content-center mt-4 px-3" id="dOutros" >
                                     <div class="form-group col-md-8 d-flex flex-column">   
-                                        <label for="id_outros" class="my-auto mr-3">Informe o motivo da viagem:</label>
-                                        <input class="form-control w-100" type="text" name="outros"  maxlength="120">
+                                        <label for="id_outros" class="my-auto mr-3">Motivo da viagem:</label>
+                                        <input id="input-outros" class="form-control w-100" type="text" name="outros"  maxlength="120" value="{{viagem_turismo.outros}}">
                                     </div>
                                 </div>
                                 {% endif %}
@@ -252,21 +252,27 @@
                     })
                 
                 </script>
+                {% if not viagem_turismo.outros == '' %}
+                <script>
+                    document.getElementById('dOutros').style.display='flex';
+                </script>
+                {% endif %}
                 
-                
-                <SCRIPT LANGUAGE="JavaScript">  
+                <SCRIPT LANGUAGE="JavaScript"> 
+
                     function checkOutros(event){
                         if (event.target.value=='Outros'){                            
                             document.getElementById('dOutros').style.display='flex';
                         }else{
                             document.getElementById('dOutros').style.display='none';
+                            document.getElementById('input-outros').value=''
                         }
                     }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
                             document.getElementById('labelSwitch').innerText='Não';
-                            document.getElementById('hospedar').style.display='none';
+                            document.getElementById('hospedar').style.display='none';                            
                         } else {
                             event.target.value='true'
                             document.getElementById('labelSwitch').innerText='Sim';
@@ -403,8 +409,8 @@
                     window.onload = function() {
                         cnpj=document.getElementById('cnpj').value                        
                         document.getElementById('cnpj').value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
-                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
                 </script>                

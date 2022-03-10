@@ -13,7 +13,7 @@
                     <div class="form-column mt-4 justify-content-center">                        
                         <div class="form-group col-md-5 d-flex mx-auto">                                                    
                             <label style="width: 130px;" for="id_nome">Nome:</label>
-                            <input class="form-control" type="text" name="nome" value="{{nome}}" maxlength="60" required id="id_nome">
+                            <input class="form-control" type="text" name="nome" value="{{nome}}" maxlength="60" required id="nome">
                         </div>
                         <div class="form-group col-md-5 d-flex mx-auto">    
                             <label style="width: 130px" for="id_cpf">CPF:</label>   
@@ -22,14 +22,14 @@
                         </div>
                         <div class="form-group col-md-5 d-flex mx-auto">
                             <label style="width: 130px" for="id_email">Email:</label>
-                            <input class="form-control" type="text" name="email" value="{{email}}" maxlength="200" required id="id_email">
+                            <input class="form-control" type="text" name="email" value="{{email}}" maxlength="200" required id="email">
                         </div>
                     </div>
 
                     <div class="form-column mt-4 justify-content-center">
                         <div class="form-group col-md-5 d-flex mx-auto">  
                             <label style="width: 130px" for="id_celular">Celular:</label>
-                            <input class="form-control" type="text" name="celular" value="{{celular}}" onkeydown="mascara(this,icelular)" maxlength="15" required id="celular">
+                            <input class="form-control" type="text" name="celular" value="{{celular}}" onkeydown="mascara(this,icelular)" maxlength="14" required id="celular">
                         </div>
                         <div class="form-group col-md-5 d-flex mx-auto">
                             <label style="width: 130px" for="id_telefone">Telefone:</label>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group col-md-5 d-flex mx-auto">
                             <label style="width: 130px" for="id_estado">Estado:</label>
-                            <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                            <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="estado">
                                 <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                             {% for estado in estados %}
                                             <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group col-md-5 d-flex mx-auto">
                             <label style="width: 130px" for="id_cidade">Cidade:</label>
-                            <select class="form-control" name="cidade" required id="id_cidade">
+                            <select class="form-control" name="cidade" required id="cidade">
                                 <option value="" {%if cidade == '' %}selected{% endif %}></option>
                                             {% for cidade_ in cidades %}
                                             <option value="{{ cidade_.id }}" {% if cidade_.nome == cidade.nome %}selected{% endif %}>{{ cidade_.nome }}</option>
@@ -83,7 +83,7 @@
                                 'id':estadoId,
                             },
                             success: function(data) {                               
-                                $("#id_cidade").html(data);
+                                $("#cidade").html(data);
                             }
                         });
                 
@@ -152,8 +152,8 @@
             window.onload = function() {
                         cpf=document.getElementById('cpf').value                        
                         document.getElementById('cpf').value=cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/g, "$1.$2.$3-$4");
-                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2)$3-$4")
-                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4")
+                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
         
         </script>    

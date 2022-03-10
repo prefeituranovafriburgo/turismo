@@ -3,6 +3,13 @@
 {% load static %}
 
 {% block conteudo %}
+<script type="text/javascript">
+var onloadCallback = function() {
+    grecaptcha.render('html_element', {
+      'sitekey' : '6LdiIsweAAAAAKHnfIgGx1V-olIVbAFEBUJY5MHb',
+    });
+  };
+</script>
 <div id="login-screen">    
     <h2>LOGIN</h2>
     <form action="." method="post">
@@ -21,7 +28,12 @@
             <div class="form-group">
                 <label for="id_password">Senha:</label>
                 <input class="form-control" type="password" name="password" autocomplete="current-password" required id="id_password">
-            </div>        
+            </div>   
+            <div class="form-row d-flex flex-column">                                  
+                <div id="html_element" class="m-auto">
+
+                </div>                                 
+            </div>
         <button class="btn btn-primary" type="submit">
             Entrar
         </button>
@@ -30,4 +42,7 @@
     <a href="{% url 'contas:password_reset' %}">Esqueci minha senha</a>
     <a href="{% url 'contas:cadastrar' %}">Quero me cadastrar</a>
 </div>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+                    async defer>
+                </script> 
 {% endblock %}

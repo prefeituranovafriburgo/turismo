@@ -11,6 +11,8 @@ from .forms import ViagemForm
 from .functions import get_random_string
 import time
 import pickle
+
+from captcha.fields import ReCaptchaField
 # Create your views here.
 
 @login_required
@@ -82,8 +84,8 @@ def viagem_inclui(request, tipo):
                         outros=request.POST['outros'],
                         nome_guia=request.POST['nome_guia'],
                         cadastur_guia=validation['cadastur_guia']['cadastur'],
-                        celular=request.POST['celular'],
-                        telefone=request.POST['telefone'],                        
+                        celular=validation['celular']['celular'],
+                        telefone=validation['telefone']['telefone'],                        
                     ) 
                     viagem_turismo.save()
                     for ponto in request.POST.getlist('pontos_turisticos'):
@@ -245,7 +247,10 @@ def viagem_altera(request, id):
     if request.method == 'POST':
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation, valido=validationsViagem(request.POST, tipo)                                   
+        if viagem.senha[0]=='T':
+            tipo='turismo'
+        validation, valido=validationsViagem(request.POST, tipo)   
+        print(validation)                                
         if valido:     
             try:
                 if request.POST['ficarao_hospedados']:
@@ -274,21 +279,23 @@ def viagem_altera(request, id):
                 viagem.estado_origem=Estado.objects.get(id=request.POST['estado'])
                 viagem.cidade_origem=Cidade.objects.get(id=request.POST['cidade'])
                 viagem.save()    
-                          
+               
                 if viagem.senha[0]=='T':                    
                     viagem_turismo=Viagem_Turismo.objects.get(viagem=viagem)
                     
                     viagem_turismo.outros=request.POST['outros']
                     viagem_turismo.nome_guia=request.POST['nome_guia']
                     viagem_turismo.cadastur_guia=request.POST['cadastur_guia']
-                    viagem_turismo.celular=request.POST['celular']
-                    viagem_turismo.telefone=request.POST['telefone']
-                    
-                    viagem_turismo.save()                
+                    viagem_turismo.celular=validation['celular']['celular']                                              
+                    viagem_turismo.telefone=validation['telefone']['telefone']
                     viagem_turismo.pontos_turisticos.clear()
-                    for ponto in request.POST.getlist('pontos_turisticos'):                                                                        
-                        viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
-                    viagem_turismo.save()                                    
+                    viagem_turismo.save()          
+                    
+                    if request.POST['outros']=='':    
+                        viagem_turismo.pontos_turisticos.clear()
+                        for ponto in request.POST.getlist('pontos_turisticos'):                                                                        
+                            viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
+                        viagem_turismo.save()                                    
                 messages.success(request, 'Viagem alterada.')
                 return redirect('senhas:cad_transporte')
 
