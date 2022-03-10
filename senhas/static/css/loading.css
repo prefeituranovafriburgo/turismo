@@ -3,6 +3,10 @@ body{
 }
 #loading{
     display: flex;
+    position: absolute;
+    background-color: white;
+    z-index: 200;
+    top: 0;
 }
 .lds-ring {
     display: inline-block;
