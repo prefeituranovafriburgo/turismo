@@ -1,3 +1,5 @@
+import requests
+import json
 from django.shortcuts import render, redirect
 
 from django.contrib.auth.decorators import login_required
@@ -14,7 +16,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 from contas.forms import CadastrarForm, CadastroForm
-from contas.functions import validations
+from contas.functions import validations, validarAlteraçãoUsuario
 from contas.models import Cidade, Usuario, Estado
 from senhas.templatetags.template_filters import formata_cpf
 
@@ -28,52 +30,90 @@ def cadastrar(request):
     if request.method == 'POST':        
         form = CadastrarForm(request.POST)
         validation, valido=validations(request.POST)
-        if form.is_valid():
-            cidade = Cidade.objects.get(id=request.POST.get('cidade'))
-            try:
-                user = User.objects.create_user(request.POST['email'], request.POST['email'], request.POST['senha'])
+        ''' Begin reCAPTCHA validation '''
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': '6LdiIsweAAAAADv7tYKHZ1fCP4pi6FwIZTw4X4Rl',
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+        ''' End reCAPTCHA validation '''
+        if result['success']:
 
-                # Update fields and then save again
-                user.first_name = request.POST['nome']
-                user.last_name = request.POST['nome']
-                user.save()
+            if form.is_valid():
+            
+                cidade = Cidade.objects.get(id=request.POST.get('cidade'))
+                try:
+                    user = User.objects.create_user(request.POST['email'], request.POST['email'], request.POST['senha'])
 
-                usuario = Usuario(
-                    user=user,
-                    cpf=form.cleaned_data['cpf'],
-                    # cadastur=form.cleaned_data['cadastur'],
-                    celular=form.cleaned_data['celular'],
-                    telefone=form.cleaned_data['telefone'],
-                    cidade=cidade,
-                )
+                    # Update fields and then save again
+                    user.first_name = request.POST['nome']
+                    user.last_name = request.POST['nome']
+                    user.save()
 
-                usuario.save()
+                    usuario = Usuario(
+                        user=user,
+                        cpf=form.cleaned_data['cpf'],
+                        # cadastur=form.cleaned_data['cadastur'],
+                        celular=form.cleaned_data['celular'],
+                        telefone=form.cleaned_data['telefone'],
+                        cidade=cidade,
+                    )
 
-                messages.success(request, 'Cadastro criado.')
-                return redirect('/')
+                    usuario.save()
 
-            except Exception as e:
-                print('e:', e)
-                erro = str(e).split(', ')
+                    messages.success(request, 'Cadastro criado.')
+                    return redirect('/')
 
-                print('erro:', erro)
+                except Exception as e:
+                    print('e:', e)
+                    erro = str(e).split(', ')
 
-                if erro[0] == '(1062':
-                    messages.error(request, 'Erro: Usuário já existe.')
-                else:
-                    # Se teve erro:                    
-                    print('Erro: ', form.errors)
-                    erro_tmp = str(form.errors)
-                    erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
-                    erro_tmp = erro_tmp.replace('</li>', '')
-                    erro_tmp = erro_tmp.replace('<ul>', '')
-                    erro_tmp = erro_tmp.replace('</ul>', '')
-                    erro_tmp = erro_tmp.split('<li>')
+                    print('erro:', erro)
 
-                    messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+                    if erro[0] == '(1062':
+                        messages.error(request, 'Erro: Usuário já existe.')
+                    else:
+                        # Se teve erro:                    
+                        print('Erro: ', form.errors)
+                        erro_tmp = str(form.errors)
+                        erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+                        erro_tmp = erro_tmp.replace('</li>', '')
+                        erro_tmp = erro_tmp.replace('<ul>', '')
+                        erro_tmp = erro_tmp.replace('</ul>', '')
+                        erro_tmp = erro_tmp.split('<li>')
+
+                        messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+            else:
+                messages.error(request, 'Corrigir o erro apresentado.')
+                
+                try:
+                    estado=Estado.objects.get(id=request.POST['estado'])
+                except:
+                    estado=''
+                try:
+                    cidade=Cidade.objects.get(id=request.POST['cidade'])
+                except:
+                    cidade=''
+                print(estado, cidade)
+                estados = Estado.objects.all().order_by('nome')
+                context={
+                    'form': form,
+                    'validations': validation,
+                    'nome':request.POST['nome'],
+                    'cpf': request.POST['cpf'],
+                    'email':request.POST['email'],
+                    'celular':request.POST['celular'],
+                    'telefone':request.POST['telefone'],
+                    'estado_':estado,
+                    'cidade': cidade,
+                    'estados': estados
+                }
+                return render(request, 'contas/cadastrar.html', context)
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
-            
+                
             try:
                 estado=Estado.objects.get(id=request.POST['estado'])
             except:
@@ -82,22 +122,22 @@ def cadastrar(request):
                 cidade=Cidade.objects.get(id=request.POST['cidade'])
             except:
                 cidade=''
-            print(estado, cidade)
-            estados = Estado.objects.all().order_by('nome')
-            context={
-                'form': form,
-                'validations': validation,
-                'nome':request.POST['nome'],
-                'cpf': request.POST['cpf'],
-                'email':request.POST['email'],
-                'celular':request.POST['celular'],
-                'telefone':request.POST['telefone'],
-                'estado_':estado,
-                'cidade': cidade,
-                'estados': estados
-            }
-            print(validation)
-            return render(request, 'contas/cadastrar.html', context)
+                estados = Estado.objects.all().order_by('nome')
+                context={
+                    'form': form,
+                    'robo': True,
+                    'validations': validation,
+                    'nome':request.POST['nome'],
+                    'cpf': request.POST['cpf'],
+                    'email':request.POST['email'],
+                    'celular':request.POST['celular'],
+                    'telefone':request.POST['telefone'],
+                    'estado_':estado,
+                    'cidade': cidade,
+                    'estados': estados
+                }
+                return render(request, 'contas/cadastrar.html', context)
+    
     else:        
         form = CadastrarForm()
     estados=Estado.objects.all()           
@@ -109,21 +149,24 @@ def cadastro(request):
 
     user = request.user    
     usuario = Usuario.objects.get(user=user)
-
+    print(usuario)
     if request.method == 'POST':
-        form = CadastroForm(request.POST, instance=usuario)
-
-        if form.is_valid():
+        validations,valido=validarAlteraçãoUsuario(request.POST)
+        print(request.POST, validations)
+        if valido:
             cidade = Cidade.objects.get(id=request.POST.get('cidade'))
 
             try:
-                user.username = form.cleaned_data['email']
-                user.email = form.cleaned_data['email']
-                user.first_name = form.cleaned_data['nome']
+                user.username =request.POST['email']
+                user.email = request.POST['email']
+                user.first_name = request.POST['nome']
+                usuario.cpf = validations['cpf']['cpf']
+                user.email = request.POST['email']
+                usuario.celular = validations['celular']['celular']
+                usuario.telefone = validations['telefone']['telefone']              
+                usuario.cidade= cidade
                 user.save()
-
-                form.save()
-
+                usuario.save()
                 messages.success(request, 'Cadastro alterado.')
                 return redirect('/')
 

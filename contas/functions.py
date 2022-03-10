@@ -123,7 +123,7 @@ def validationsViagem(request, tipo):
     validate['cidade']=validateNotBlank(request['cidade'])
     validate['empresa_transporte']=validateNotBlank(request['empresa_transporte'])
     if tipo=='turismo':
-        validate['nome_guia']=validateNotBlank(request['nome_guia'])
+        validate['nome_guia']=validateNOME(request['nome_guia'])
         validate['celular']=validateCelular(request['celular'])
         validate['telefone']=validateTelefone(request['telefone'])
         validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
@@ -186,7 +186,7 @@ def validateVeiculo(veiculo):
 
 
 def validateNOME(nome):
-    if not bool(re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', nome)) or len(nome)<=3:
+    if not bool(re.fullmatch("^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$", nome)) or len(nome)<=3:
         return {'state': False, 'msg': 'Nome inválido.'}
     return {'state': True, 'msg': ''}
 
@@ -227,14 +227,14 @@ def validateEMAIL(email):
 def validateCelular(cel):
     celular=[int(char) for char in cel if char.isdigit()]    
     if len(celular)==11:
-        return {'state': True, 'msg': ''}   
+        return {'state': True, 'msg': '', 'celular':  ''.join([str(_) for _ in celular])}   
     return {'state': False, 'msg': 'Número de celular inválido.'}        
     
 
 def validateTelefone(tel):
     telefone=[int(char) for char in tel if char.isdigit()]    
     if len(telefone)==10:        
-        return {'state': True, 'msg': ''}   
+        return {'state': True, 'msg': '', 'telefone': ''.join([str(_) for _ in telefone])}   
     return {'state': False, 'msg': 'Número de telefone inválido.'}          
 
 def validatePassword(senha, senha2):
@@ -250,3 +250,19 @@ def validateNotBlank(value):
     if not value=='':        
         return {'state': True, 'msg': '.'}        
     return {'state': False, 'msg': 'Preencha o campo.'}        
+
+def validarAlteraçãoUsuario(request):        
+    validate={}
+    validate['nome']=validateNOME(request['nome'])
+    validate['cpf']=validateCPF(request['cpf'])
+    # validate['cadastur']=validateCadastur(request['cadastur'])
+    validate['email']=validateEMAIL(request['email'])
+    validate['celular']=validateCelular(request['celular'])
+    validate['telefone']=validateTelefone(request['telefone'])
+    validate['estado']=validateNotBlank(request['estado'])
+    validate['cidade']=validateNotBlank(request['cidade']) 
+    valido=True
+    for val in validate:        
+        if validate[val]['state']!=True:
+            valido=False
+    return validate, valido
