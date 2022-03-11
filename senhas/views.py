@@ -12,7 +12,6 @@ from .functions import get_random_string
 import time
 import pickle
 
-# Create your views here.
 
 @login_required
 def inicio(request):

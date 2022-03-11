@@ -5,7 +5,7 @@ body{
     display: flex;
     position: absolute;
     background-color: white;
-    z-index: 200;
+    z-index: 205;
     top: 0;
 }
 .lds-ring {
