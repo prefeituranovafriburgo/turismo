@@ -24,17 +24,7 @@
                 
                     
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
-                        {% csrf_token %}                        
-                                <div class="row">
-                                    <div class="col">
-                                        {{alerta}}
-                                    </div>
-                                </div>    
-                                <div class="row">
-                                    <div class="col">
-                                        {{teste}}
-                                    </div>
-                                </div>                            
+                        {% csrf_token %}                                                   
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Dt chegada:</label>                                                                     
@@ -154,7 +144,7 @@
                                             {% for ponto in pontos %}
                                             <option value="{{ponto}}" {%if ponto in pontos_selecionados %}selected{% endif %}>{{ponto}}</option>
                                             {% endfor %}
-                                            <option value="Outros" {% if not viagem_turismo.outros == '' %}selected{% endif %}>Outros</option>
+                                            <option value="outros" {% if not viagem_turismo.outros == '' %}selected{% endif %}>Outros</option>
                                                                                      
                                         </select>
                                         <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
