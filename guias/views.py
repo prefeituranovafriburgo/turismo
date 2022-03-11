@@ -27,7 +27,7 @@ def cadastrar(request):
                                     nome=request.POST['nome'], 
                                     cadastur=request.POST['cadastur'], 
                                     validade_cadastur=request.POST['validade'], 
-                                    telefone=request.POST['telefone'], 
+                                    telefone=validation['telefone']['telefone'], 
                                     email=request.POST['email'],
                                     instagram=request.POST['instagram'],
                                     facebook=request.POST['facebook'],
