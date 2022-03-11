@@ -478,11 +478,23 @@ footer{
     visibility: visible;
   }
 
-/* .btn-primary{
-    background-color: #00A83D;
-    border-color: #00A83D;
-}
+#btn-reportar:hover{
+    cursor: pointer;
+    background-color: rgba(251, 255, 0, 0.699);
 
-a{
-    color: #00A83D;
-} */
+}
+#dreportar{
+    z-index: 200;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(68, 68, 68, 0.459);
+    display: flex;
+}
+#dreportar #report{    
+    background-color: white;
+    min-width: 300px;
+    margin: auto;
+    border-radius: 5px;
+    padding: 30px 40px;
+}
