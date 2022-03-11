@@ -35,26 +35,7 @@
             {% endfor %}
         {% endif %}        
     </script>
-    <body class="body">
-        <div id="dreportar">
-            <div id="report">
-                <form>
-                    <div class="form-group">
-                        <h4 class="text-uppercase">Reportar Problema</h4>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleFormControlInput1">Informe onde ocorreu:</label>
-                      <input type="text" class="form-control" id="exampleFormControlInput1">
-                    </div>                    
-                    <div class="form-group">
-                      <label for="exampleFormControlTextarea1">Detalhe o que ocorreu:</label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-danger">Enviar</button>
-                    <button type="button" onclick="closeReportar()" class="btn btn-warning">Cancelar</button>
-                  </form>
-            </div>
-        </div>
+    <body class="body">    
         <div class="container-fluid h-100">            
             <div id="header" class="row no-print">
                 <div class="col">
@@ -83,6 +64,25 @@
             </div>
 
             {% block cab %}{% endblock %}
+        </div>
+        <div id="dreportar">
+            <div id="report">
+                <form>
+                    <div class="form-group">
+                        <h4 class="text-uppercase">Reportar Problema</h4>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Informe onde ocorreu:</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput1">
+                    </div>                    
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Detalhe o que ocorreu:</label>
+                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-danger">Enviar</button>
+                    <button type="button" onclick="closeReportar()" class="btn btn-warning">Cancelar</button>
+                  </form>
+            </div>
         </div>
     </body>
     <script>        
