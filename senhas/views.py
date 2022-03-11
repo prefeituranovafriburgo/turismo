@@ -37,10 +37,7 @@ def viagem_inclui(request, tipo):
                 'nome_guia':{'state': True}} 
     
     estados = Estado.objects.all().order_by('nome')
-    teste=''
-    debug_alert=''
     if request.method == 'POST':                   
-        teste=request.POST
         form = ViagemForm(request.POST)
         # print(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
@@ -87,9 +84,12 @@ def viagem_inclui(request, tipo):
                         telefone=validation['telefone']['telefone'],                        
                     ) 
                     viagem_turismo.save()
-                    for ponto in request.POST.getlist('pontos_turisticos'):
-                        viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
-                    viagem_turismo.save()                    
+                    try:
+                        for ponto in request.POST.getlist('pontos_turisticos'):
+                            viagem_turismo.pontos_turisticos.add(Pontos_Turisticos.objects.get(nome=ponto))
+                        viagem_turismo.save()                    
+                    except:
+                        pass
                 else:
                     viagem.senha='C'+get_random_string()+str(viagem.id)+get_random_string() 
                     viagem.save()
@@ -97,7 +97,6 @@ def viagem_inclui(request, tipo):
                 return redirect('senhas:cad_transporte')
 
             except Exception as e:
-                debug_alert=str(e)
                 print('e:', e, '\nform:', form.errors)
                 erro = str(e).split(', ')
 
@@ -152,10 +151,12 @@ def viagem_inclui(request, tipo):
         except:
             tipo_veiculo=''
         pontos_selecionados=[]
-        for u in request.POST.getlist('pontos_turisticos'):
-            pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
+        try:
+            for u in request.POST.getlist('pontos_turisticos'):
+                pontos_selecionados.append(Pontos_Turisticos.objects.get(nome=u))
+        except:
+            pass
         context={ 
-            'alerta': debug_alert,
             'form': form, 
             'validation': validation, 
             'veiculos': veiculos, 
@@ -165,7 +166,6 @@ def viagem_inclui(request, tipo):
             'estado_': estado,
             'estados': estados,  
             'cidade': cidade,
-            'teste': teste,
             'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
                        'dt_Saida2': request.POST['dt_saida'],
                     #    'estado_origem': request.POST['estado'],
@@ -193,7 +193,6 @@ def viagem_inclui(request, tipo):
     pontosTuristicos= Pontos_Turisticos.objects.all()
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
-        'teste': teste,
         'form': form, 
         'validation': validation, 
         'veiculos': veiculos, 

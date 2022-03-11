@@ -195,6 +195,7 @@ def validateCadastur(cadastur):
     cadastur_ = [int(char) for char in cadastur if char.isdigit()]
     cadastur=''.join([str(_) for _ in cadastur_])
     print(cadastur)
+    print(len(cadastur))
     if len(cadastur_)<8:
         return {'state': False, 'msg': 'Cadastur inválido.'}
     return {'state': True, 'msg': '', 'cadastur': cadastur}

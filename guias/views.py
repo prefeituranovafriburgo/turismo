@@ -19,6 +19,7 @@ def cadastrar(request):
 
     if request.method == 'POST':
         valido, validation=validar_cadastro_guia(request.POST)
+        print(request.POST)
         print('opcao', valido)
         if valido:
             form=''  
@@ -52,7 +53,7 @@ def cadastrar(request):
                     }
                     validation={'cadastur': {'state':True, 'msg': 'Cadastur já cadastrado.'}}
                 else:
-                    print(E)
+                    print('teste', E)
             
         else:
             form={
