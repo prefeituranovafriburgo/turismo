@@ -23,13 +23,24 @@ from senhas.templatetags.template_filters import formata_cpf
 # Create your views here.
 
 def cadastrar(request):
+    #Iniciamos a variavel VALIDATION aqui com todos os STATE como True.
+    #Quando submetido o formulario, o que estiver incorreto muda seu STATE para False.
     validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
                 'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True},
                 'cidade':{'state': True}, 'estado':{'state': True}}
+
+    #Busca-se todos os estados para uso no Template.
     estados = Estado.objects.all().order_by('nome')
+
     if request.method == 'POST':        
+        #Retoma as informações do formulario do cliente e preenche nosso objeto
+        #para realização da validação dos campos
         form = CadastrarForm(request.POST)
+
+        #Essa validação é para retornar ao Frontend e notificar o usuário
         validation, valido=validations(request.POST)
+
+        #Abaixo recebemos a validação da API do Google do reCAPTCHA
         ''' Begin reCAPTCHA validation '''
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
@@ -39,19 +50,21 @@ def cadastrar(request):
         r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
         result = r.json()
         ''' End reCAPTCHA validation '''
-        if result['success']:
 
+        #Se o reCAPTCHA garantir que o usuário é um robô
+        if result['success']:
+            #Se o formulario estiver com as informações preenchidas corretamente
             if form.is_valid():
-            
                 cidade = Cidade.objects.get(id=request.POST.get('cidade'))
                 try:
                     user = User.objects.create_user(request.POST['email'], request.POST['email'], request.POST['senha'])
 
-                    # Update fields and then save again
+                    # Atualiza os campos de USER
                     user.first_name = request.POST['nome']
                     user.last_name = request.POST['nome']
                     user.save()
 
+                    # Atualiza os campos de USUARIO
                     usuario = Usuario(
                         user=user,
                         cpf=form.cleaned_data['cpf'],
@@ -60,7 +73,6 @@ def cadastrar(request):
                         telefone=form.cleaned_data['telefone'],
                         cidade=cidade,
                     )
-
                     usuario.save()
 
                     messages.success(request, 'Cadastro criado.')
@@ -86,8 +98,9 @@ def cadastrar(request):
 
                         messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
             else:
-                messages.error(request, 'Corrigir o erro apresentado.')
-                
+                messages.error(request, 'Corrigir o erro apresentado.')                
+                #Abaixo resgatamos as informações do formulario e amarzenamos
+                #na devida variavel para uso no Template
                 try:
                     estado=Estado.objects.get(id=request.POST['estado'])
                 except:
@@ -96,7 +109,6 @@ def cadastrar(request):
                     cidade=Cidade.objects.get(id=request.POST['cidade'])
                 except:
                     cidade=''
-                print(estado, cidade)
                 estados = Estado.objects.all().order_by('nome')
                 context={
                     'form': form,
@@ -138,24 +150,23 @@ def cadastrar(request):
                 }
                 return render(request, 'contas/cadastrar.html', context)
     
-    else:        
-        form = CadastrarForm()
-    estados=Estado.objects.all()           
+    else:                
+        form = CadastrarForm()          
     return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'validations': validation })
 
 
 
 def cadastro(request):
-
+    #Recupera as informações do usuário para preenchimento do Template
     user = request.user    
     usuario = Usuario.objects.get(user=user)
-    print(usuario)
+    
     if request.method == 'POST':
+        #Valida os dados preenchidos no formulario pelo cliente
         validations,valido=validarAlteraçãoUsuario(request.POST)
-        print(request.POST, validations)
+        
         if valido:
             cidade = Cidade.objects.get(id=request.POST.get('cidade'))
-
             try:
                 user.username =request.POST['email']
                 user.email = request.POST['email']
@@ -168,6 +179,7 @@ def cadastro(request):
                 user.save()
                 usuario.save()
                 messages.success(request, 'Cadastro alterado.')
+                #Se bem sucedido, redireciona para o Index
                 return redirect('/')
 
             except Exception as e:
@@ -210,18 +222,16 @@ def cadastro(request):
     # return render(request, 'contas/cadastro.html', { 'form': form })
 
 
-
+#Essa View retorna a cidade nos formularios do cliente
+#ao selecionarem o estado
 def load_cidades(request):    
-    if not request.GET.get('id'):
-        
+    if not request.GET.get('id'):        
         return render(request, 'contas/ret_cidades.html', {})
-
     estado_id = request.GET.get('id')
     cidades = Cidade.objects.filter(estado = estado_id).order_by('nome')
-
-
     return render(request, 'contas/ret_cidades.html', {'cidades' : cidades})
 
+#Essa View não é mais utilizada
 def load_estados(request):   
     estados = Estado.objects.all().order_by('nome')
     return render(request, 'contas/ret_estado.html', {'estados' : estados})
@@ -234,7 +244,7 @@ def change_password(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
+            update_session_auth_hash(request, user)  # Importante!
             messages.success(request, 'Senha alterada.')
             return redirect('contas:change_password')
         else:
