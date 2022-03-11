@@ -126,7 +126,8 @@ def viagem_inclui(request, tipo):
                 'nome_guia': request.POST['nome_guia'], 
                 'cadastur_guia': request.POST['cadastur_guia'],
                 'celular': request.POST['celular'],
-                'telefone': request.POST['telefone']
+                'telefone': request.POST['telefone'],
+                'outros': request.POST['outros']
             }  
         try:
             estado=Estado.objects.get(id=request.POST['estado'])      
