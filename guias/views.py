@@ -8,7 +8,7 @@ def index(request):
     guias=Guias_Turismo.objects.all()
     context={
         'guias': guias,
-        'fotos': ['01', '02']
+        # 'fotos': ['01', '01']
     }
     return render(request, 'guias/index.html', context)
 
@@ -16,11 +16,8 @@ def mapa_turistico(request):
     return render(request, 'guias/mapa-turistico.html')
 
 def cadastrar(request):    
-
     if request.method == 'POST':
         valido, validation=validar_cadastro_guia(request.POST)
-        print(request.POST)
-        print('opcao', valido)
         if valido:
             form=''  
             try:
@@ -51,9 +48,15 @@ def cadastrar(request):
                     'telefone': request.POST['telefone'],
                     'email': request.POST['email'],
                     }
-                    validation={'cadastur': {'state':True, 'msg': 'Cadastur já cadastrado.'}}
+                    validation={
+                        'nome': {'state': True},
+                        'cadastur': {'state':True, 'msg': 'Cadastur já cadastrado.'},
+                        'telefone': {'state': True},
+                        'email': {'state': True},
+                        'validade': {'state': True}
+                    }                    
                 else:
-                    print('teste', E)
+                    print('Erro:', E)
             
         else:
             form={
@@ -65,8 +68,13 @@ def cadastrar(request):
             }
     else:
         form=''
-        validation=''        
-    
+        validation={
+            'nome': {'state': True},
+            'cadastur': {'state': True},
+            'telefone': {'state': True},
+            'email': {'state': True},
+            'validade': {'state': True}
+        }
     categorias = Categoria.objects.all()
     segmentos = Segmento_Atuacao.objects.all()
     idiomas = Idiomas.objects.all()

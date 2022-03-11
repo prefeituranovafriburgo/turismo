@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_tipo_veiculo">Tipo veiculo:</label>
+                                        <label for="id_tipo_veiculo">Tipo veiculo:{{viagem.tipo_veiculo.nome}}</label>
                                         <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" onblur="validar(event)" name="tipo_veiculo" required id="id_tipo_veiculo">
                                             <option value=""></option>                        
                                             {% for veiculo in veiculos %}
@@ -152,7 +152,7 @@
                                 </div>
                                 <div class="form-row justify-content-center mt-4 px-3" id="dOutros" >
                                     <div class="form-group col-md-8 d-flex flex-column">   
-                                        <label for="id_outros" class="my-auto mr-3">Motivo da viagem:</label>
+                                        <label for="id_outros" class="my-auto mr-3">Ponto turístico:</label>
                                         <input id="input-outros" class="form-control w-100" type="text" name="outros"  maxlength="120" value="{{viagem_turismo.outros}}">
                                     </div>
                                 </div>

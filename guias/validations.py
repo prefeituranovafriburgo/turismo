@@ -2,16 +2,13 @@ import re
 from contas.functions import validateCadastur, validateCelular, validateEMAIL, validateNOME, validateTelefone
 
 def validar_cadastro_guia(request):
-    print('validar', request)
     validation={}
     validation['nome']=validateNOME(request['nome'])
     validation['cadastur']=validateCadastur(request['cadastur'])
     validation['telefone']=validateTelefone(request['telefone'])
     validation['email']=validateEMAIL(request['email'])
-    print(validation)
     for i in validation:
         if validation[i]['state']==False:
-            print('outro teste', i)
             return False, validation
     return True, validation
     

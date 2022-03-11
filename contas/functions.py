@@ -194,8 +194,6 @@ def validateNOME(nome):
 def validateCadastur(cadastur):
     cadastur_ = [int(char) for char in cadastur if char.isdigit()]
     cadastur=''.join([str(_) for _ in cadastur_])
-    print(cadastur)
-    print(len(cadastur))
     if len(cadastur_)<8:
         return {'state': False, 'msg': 'Cadastur inválido.'}
     return {'state': True, 'msg': '', 'cadastur': cadastur}
@@ -234,7 +232,7 @@ def validateCelular(cel):
 
 def validateTelefone(tel):
     telefone=[int(char) for char in tel if char.isdigit()]    
-    if len(telefone)==10:        
+    if len(telefone)==10 or len(telefone)==0:        
         return {'state': True, 'msg': '', 'telefone': ''.join([str(_) for _ in telefone])}   
     return {'state': False, 'msg': 'Número de telefone inválido.'}          
 
