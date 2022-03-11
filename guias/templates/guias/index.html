@@ -34,7 +34,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                         <div class="descritivo">                
                             <div class="row">
                                 <div class="col nome">
-                                    <b>{{guia.nome}}</b>                        
+                                    <b class="text-uppercase">{{guia.nome}}</b>                        
                                     <!-- <b>Luis Eduardo Cordeiro Salarini</b> -->
                                 </div>  
                             </div>
@@ -98,7 +98,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                                                     {{categoria}}
                                                 {% else %}
                                                     {% if  forloop.last %}
-                                                        e {{categoria}}.
+                                                        E {{categoria}}.
                                                     {%else%}
                                                         , {{categoria}}
                                                     {% endif %} 
@@ -121,7 +121,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                                         {{categoria}}
                                     {% else %}
                                         {% if  forloop.last %}
-                                            e {{categoria}}.
+                                            E {{categoria}}.
                                         {%else%}
                                             , {{categoria}}
                                         {% endif %} 

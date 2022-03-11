@@ -25,35 +25,35 @@
                                 <div class="form-row mt-4 px-3 justify-content-center py-3">                                    
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_nome">Nome do Guia:</label>
-                                        <input class="form-control {%if  validation.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="120" required id="nome" value="{{form.nome}}">
+                                        <input class="form-control {%if not validation.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="120" required id="nome" value="{{form.nome}}">
                                         <div class="invalid-feedback">
                                             {{ validation.nome.msg }}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="cadastur">Cadastur do Guia:</label>
-                                            <input id="cadastur" class="form-control {%if  validation.cadastur.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur" maxlength="14" required value="{{form.cadastur}}">
+                                            <input id="cadastur" class="form-control {%if not validation.cadastur.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cadastur" maxlength="14" required value="{{form.cadastur}}">
                                             <div class="invalid-feedback">
                                                 {{validation.cadastur.msg}}
                                             </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">
                                         <label for="validade" class="w-auto mr-5">Val. Cadastur:</label>                                                                     
-                                        <input class="form-control {%if  validation.validade.state %}is-invalid{% endif %}" type="date" id="validade" name="validade" value="{{form.validade}}">
+                                        <input class="form-control {%if not validation.validade.state %}is-invalid{% endif %}" type="date" id="validade" name="validade" value="{{form.validade}}">
                                         <div class="invalid-feedback">
                                             
                                         </div>
                                     </div>                                          
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_telefone">Celular:</label>
-                                        <input class="form-control {%if  validation.telefone.state %}is-invalid{% endif %}" onkeydown="mascara(this,itelefone)" onblur="validar(event)" type="text" name="telefone" required id="telefone" value="{{form.telefone}}">
+                                        <input class="form-control {%if not validation.telefone.state %}is-invalid{% endif %}" onkeydown="mascara(this,itelefone)" onblur="validar(event)" type="text" name="telefone" required id="telefone" value="{{form.telefone}}">
                                         <div class="invalid-feedback">
                                           {{validation.telefone.msg}}
                                         </div>
                                     </div> 
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="email">Email:</label>
-                                        <input class="form-control {%if  validation.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="email" name="email" required id="email" value="{{form.email}}">
+                                        <input class="form-control {%if not validation.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="email" name="email" required id="email" value="{{form.email}}">
                                         <div class="invalid-feedback">
                                             {{validation.email.msg}}                                 
                                         </div>
