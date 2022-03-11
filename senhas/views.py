@@ -147,7 +147,7 @@ def viagem_inclui(request, tipo):
         except:
             restaurante_reservado=False
         try:
-            tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+            tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo'])            
         except:
             tipo_veiculo=''
         pontos_selecionados=[]        
@@ -174,7 +174,7 @@ def viagem_inclui(request, tipo):
                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
                        'quant_passageiros': request.POST['quant_passageiros'],
-                       'tipo_veiculo': tipo_veiculo[0],
+                       'tipo_veiculo': tipo_veiculo,
                        'obs': request.POST['obs'],
                        'ficarao_hospedados': ficarao_hospedados,
                        'restaurante_reservado': restaurante_reservado,
@@ -247,8 +247,7 @@ def viagem_altera(request, id):
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         if viagem.senha[0]=='T':
             tipo='turismo'
-        validation, valido=validationsViagem(request.POST, tipo)   
-        print(validation)                                
+        validation, valido=validationsViagem(request.POST, tipo)           
         if valido:     
             try:
                 if request.POST['ficarao_hospedados']:
