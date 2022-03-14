@@ -6,13 +6,13 @@
 
 from django.shortcuts import render
 from .models import *
-
+from django.contrib.auth.decorators import login_required
 # from django.shortcuts import render
 # from qr_code.qrcode.utils import QRCodeOptions
-
+@login_required
 def inicio(request):
     return render(request, 'inicio.html')
-
+@login_required
 def equipamento(request, id):
    
     equipamento = Equipamento.objects.get(id=id)
@@ -31,7 +31,7 @@ def equipamento(request, id):
 
     return render(request, 'equipamento.html', { 'equipamento': equipamento, 'ver_tambem': ver_tambem })
 
-
+@login_required
 def grava_log(sessao, equipamento):
 
     visitante = Visitante(uuid=sessao, equipamento=equipamento)
@@ -39,13 +39,13 @@ def grava_log(sessao, equipamento):
 
     return
 
-
+@login_required
 def tipos(request):
     tipos = Tipo_Equipamento.objects.all()
     return render(request, 'tipos.html', { 'tipos': tipos })
 
 
-
+@login_required
 def equipamentos(request, id):
     equipamentos = Equipamento.objects.filter(tipo_equipamento=id)
     return render(request, 'equipamentos.html', { 'equipamentos': equipamentos })
@@ -61,7 +61,7 @@ def mostra_qrcode(request, id):
     return render(request, 'mostra_qrcode.html', {'endereco': endereco, 'equipamento': equipamento})
 
 
-
+@login_required
 def estatisticas(request):
 
     total_visitantes = Visitante.objects.count()

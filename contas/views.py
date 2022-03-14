@@ -1,7 +1,7 @@
 import requests
 import json
 from django.shortcuts import render, redirect
-
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
@@ -155,7 +155,7 @@ def cadastrar(request):
     return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'validations': validation })
 
 
-
+@login_required
 def cadastro(request):
     #Recupera as informações do usuário para preenchimento do Template
     user = request.user    
@@ -290,3 +290,36 @@ def sair(request):
         return redirect('/accounts/logout')
     else:
         return redirect('/accounts/login')
+
+def login_view(request):
+    if request.method == 'POST':
+        #Abaixo recebemos a validação da API do Google do reCAPTCHA
+        ''' Begin reCAPTCHA validation '''
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+            'secret': '6LdiIsweAAAAADv7tYKHZ1fCP4pi6FwIZTw4X4Rl',
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
+        ''' End reCAPTCHA validation '''
+
+        #Se o reCAPTCHA garantir que o usuário é um robô
+        if result['success']:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:                
+                context={
+                    'error': True,
+                }
+                return render(request, 'registration/login.html', context)
+        else:
+            context={
+                'error2': True,            
+            }
+            return render(request, 'registration/login.html', context)
+    return render(request, 'registration/login.html')

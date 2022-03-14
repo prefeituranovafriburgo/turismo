@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qr_code',
-    'guias'
+    'guias',
+    'report'
 ]
 
 MIDDLEWARE = [
@@ -95,28 +96,19 @@ WSGI_APPLICATION = 'turismo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if DEBUG==False:
-    DATABASES = {
+
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / db_name,
+        'ENGINE': 'django.db.backends.mysql',
+
+        'NAME': db_name,
+        'PORT': '',
+
         'USER': db_user,
-        'PASSWORD': db_passwd,        
-        }
+        'PASSWORD': db_passwd,
+        'HOST': '127.0.0.1',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-
-            'NAME': db_name,
-            'PORT': '',
-
-            'USER': db_user,
-            'PASSWORD': db_passwd,
-            'HOST': '127.0.0.1',
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
