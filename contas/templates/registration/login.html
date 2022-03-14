@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block conteudo %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
 <script type="text/javascript">
 var onloadCallback = function() {
     grecaptcha.render('html_element', {
@@ -11,13 +12,18 @@ var onloadCallback = function() {
   };
 </script>
 <div id="login-screen">    
-    <h2>LOGIN</h2>
+    <h3>LOGIN</h3>
     <form action="." method="post">
         {% csrf_token %}
         
-        {% if form.errors %}
+        {% if error %}
         <div class="form-group p-3 mb-2 bg-danger text-white rounded">
         Por favor, entre com um usuário e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.                    
+        </div>
+        {% endif %}
+        {% if error2 %}
+        <div class="form-group p-3 mb-2 bg-danger text-white rounded text-center">
+            Não aceitamos rôbos por aqui. 
         </div>
         {% endif %}
             <div class="form-group">

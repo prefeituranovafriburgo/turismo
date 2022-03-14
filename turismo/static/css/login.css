@@ -5,6 +5,7 @@ html, body{
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
+    min-width: 630px !important;    
 }
 .container-fluid{
     display: flex;
@@ -13,23 +14,23 @@ html, body{
     background-color: rgba(255, 255, 255, 0.596);
     background-attachment: fixed;
     background-size: cover;
-    background-repeat: no-repeat;
-
+    background-repeat: no-repeat;    
 }
 #header{
     display: flex;
     margin: auto auto 1px auto;
     background-color: #ffffff;
     border-radius: 10px 10px 0px 0px;
-    padding: 20px 0px;
-    width: 600px;
+    padding: 10px 0px;
+    width: 500px;
+    box-shadow: 5px 5px 5px rgba(80, 80, 80, 0.678);    
 }
 #header .col{
     display: flex;
 }
 #header img{
     width: auto;
-    height: auto
+    height: auto;
     margin: auto;
 }
 
@@ -41,8 +42,9 @@ html, body{
     flex-direction: column;
     background-color: white;
     border-radius: 0px 0px 10px 10px;
-    width: 600px;
-    padding: 50px 150px;
+    width: 500px;
+    padding: 30px 100px;
+    box-shadow: 5px 5px 5px rgba(80, 80, 80, 0.678);   
 }
 
 #login-screen img{ 

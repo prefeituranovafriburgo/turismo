@@ -35,7 +35,8 @@
             {% endfor %}
         {% endif %}        
     </script>
-    <body class="body">    
+    <body class="body">   
+         
         <div class="container-fluid h-100">            
             <div id="header" class="row no-print">
                 <div class="col">
@@ -62,36 +63,65 @@
                     </div>
                 </div>
             </div>
-
-            {% block cab %}{% endblock %}
-        </div>
-        <div id="dreportar">
-            <div id="report">
-                <form>
-                    <div class="form-group">
-                        <h4 class="text-uppercase">Reportar Problema</h4>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleFormControlInput1">Informe onde ocorreu:</label>
-                      <input type="text" class="form-control" id="exampleFormControlInput1">
-                    </div>                    
-                    <div class="form-group">
-                      <label for="exampleFormControlTextarea1">Detalhe o que ocorreu:</label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-danger">Enviar</button>
-                    <button type="button" onclick="closeReportar()" class="btn btn-warning">Cancelar</button>
-                  </form>
+            <div id="dreportar">
+                <div id="report">
+                    <form>
+                        <div class="form-group">
+                            <h4 class="text-uppercase">Reportar Problema</h4>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">Informe onde ocorreu:</label>
+                          <input type="text" class="form-control" id="report_local">
+                        </div>                    
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Detalhe o que ocorreu:</label>
+                          <textarea class="form-control" id="report_detalhe" rows="3"></textarea>
+                        </div>
+                        <button type="button" onclick="reportar()" class="btn btn-danger">Enviar</button>
+                        <button type="button" onclick="closeReportar()" class="btn btn-warning">Cancelar</button>
+                      </form>
+                </div>
             </div>
+            {% block cab %}{% endblock %}
+            
         </div>
+        
     </body>
     <script>        
+        
         function openReportar(){
             document.getElementById('dreportar').style.display='flex'            
         }
         function closeReportar(){
             document.getElementById('dreportar').style.display='none'            
-        }
-        closeReportar()
+        }   
+        function reportar(){
+            local=document.getElementById('report_local').value
+            detalhe=document.getElementById('report_detalhe').value
+            if (local!='' && detalhe!=''){
+                $.ajax({ 
+                            type: "POST",
+                            url: '/report/',
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                                'local':local,
+                                'detalhe': detalhe,
+                            },
+                            success: function(data) {                               
+                                // $("#id_cidade").html(data);
+                                closeReportar()
+                                alert(data)
+                            },
+                            fail: function(data) {                               
+                                // $("#id_cidade").html(data);
+                                alert('Falha ao enviar seu feedback!')
+                            }
+                        });
+ 
+                
+            }else{
+                console.log('preencha os campos')
+            }
+        }        
     </script>
 </html>

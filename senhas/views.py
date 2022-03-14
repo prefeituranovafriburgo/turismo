@@ -242,7 +242,7 @@ def viagem_altera(request, id):
         return redirect('/viagem/' + str(id))
 
 
-    if request.method == 'POST':
+    if request.method == 'POST':        
         form = ViagemForm(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         if viagem.senha[0]=='T':

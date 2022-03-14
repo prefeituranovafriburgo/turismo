@@ -76,6 +76,7 @@ html, body{
     flex-direction: column  ;
     color: rgb(0, 0, 0);
     font-weight: bold;    
+    box-shadow: 5px 5px 5px rgb(80, 80, 80);    
 }
 /* #main .cards .card-context:hover{
     border-radius: 5px;
@@ -131,6 +132,7 @@ html, body{
     text-align: center;
     position: relative;
     padding: 0;
+    box-shadow: 2px 5px 4px rgb(80, 80, 80);    
 }
 .lateral .teste .col a:hover{
     background-color: rgba(36, 34, 58, 0.342);
@@ -414,6 +416,7 @@ footer{
     flex-direction: column  ;
     color: rgb(0, 0, 0);
     font-weight: bold;
+    box-shadow: 8px 5px 5px rgba(80, 80, 80, 0.644);    
 }
 /* #menu .cards .card-context:hover{
     border-radius: 5px;
@@ -484,12 +487,13 @@ footer{
 
 }
 #dreportar{
+    display: none;
     z-index: 200;
     position: fixed;
     width: 100%;
     height: 100%;
     background-color: rgba(68, 68, 68, 0.459);
-    display: flex;
+
 }
 #dreportar #report{    
     background-color: white;
