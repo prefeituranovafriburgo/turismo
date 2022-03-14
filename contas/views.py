@@ -124,6 +124,10 @@ def cadastrar(request):
                 }
                 return render(request, 'contas/cadastrar.html', context)
         else:
+            validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
+                        'celular': {'state': True}, 'telefone': {'state': True}, 'senha': {'state': True},
+                        'cidade':{'state': True}, 'estado':{'state': True}}
+
             messages.error(request, 'Corrigir o erro apresentado.')
                 
             try:
