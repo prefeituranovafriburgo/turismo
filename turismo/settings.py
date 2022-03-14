@@ -152,8 +152,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
+LOGIN_URL='/login'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/login'
 
 # JLB para SSL
 
