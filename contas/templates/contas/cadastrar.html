@@ -1,8 +1,9 @@
 {% extends 'registration/head2.html' %}
 {% block conteudo %}  
-
+{% load static %}
 <link rel="preconnect" href="https://www.google.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
 <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
@@ -96,8 +97,21 @@
                                 </div> 
                             </div>
                         </div>
-                        <div class="form-row d-flex flex-column">                                  
-                            <div id="html_element" class="m-auto"></div>                            
+                        <div class="form-row d-flex flex-column">  
+                            
+                            <div class="d-flex flex-wrap">
+                                <div class="mx-auto my-3">
+                                    <a href="#" style="cursor: pointer;width: 300px; height: 77px; background-color: blue; border-color: blue; color: white; font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
+                                        <i class="fab fa-2x fa-facebook mr-3 m-auto"></i><span class="m-auto">Cadastrar com Facebook</span>
+                                    </a>
+                                </div>
+                                <div class="mx-auto my-3">
+                                    <a href="#" style="cursor: pointer;width: 300px; height: 77px; background-color: rgb(255, 255, 255); border-color: rgba(0, 0, 0, 0.384); color: rgb(37, 37, 37); font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
+                                        <img style="margin: auto; height: 60px;" src="{% static 'images/google.jpg' %}" alt=""><span class="m-auto">Cadastrar com Google</span>
+                                    </a>
+                                </div>
+                                <div id="html_element" class="m-auto"></div>    
+                            </div>                        
                         </table>    
                         <button class="btn btn-primary" type="submit">
                             Cadastrar
