@@ -205,7 +205,6 @@ def viagem_inclui(request, tipo):
     return render(request, 'senhas/viagem_inclui.html', context)
 
 
-@login_required
 def viagem(request, id):
 
     viagem = Viagem.objects.get(senha=id)
