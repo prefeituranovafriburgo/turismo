@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'qr_code',
     'guias',
-    'report'
+    'report',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '745294971401-qso3hr2ioa2pgqd45t6ab4dvi4ip2297.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 ROOT_URLCONF = 'turismo.urls'
 
@@ -86,6 +95,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -154,6 +165,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 LOGIN_URL='/login'
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/contas/sair'
 LOGOUT_REDIRECT_URL = '/login'
 
 # JLB para SSL
