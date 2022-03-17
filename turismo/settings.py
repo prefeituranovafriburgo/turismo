@@ -75,12 +75,16 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '745294971401-qso3hr2ioa2pgqd45t6ab4dvi4ip2297.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1840522456142106'
+SOCIAL_AUTH_FACEBOOK_SECRET = '388ee4b6d1089ead679ff65cb6307b3'
 
 ROOT_URLCONF = 'turismo.urls'
 
