@@ -25,19 +25,21 @@
                     
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                                                   
-                                <div class="form-row mt-4 justify-content-center px-3 py-3">
+                                <div class="form-row mt-4  px-3 py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Data chegada:</label>                                                                     
-                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <label for="id_responsavel_viagem">Nome do responsável pelo Grupo:</label>                                                           
+                                        <input class="form-control {%if not validation.responsavel_viagem.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="responsavel_viagem" required
+                                        id="id_responsavel_viagem" value="{{viagem.responsavel_viagem}}">
                                         <div class="invalid-feedback">
-                                            {{validation.chegada_saida.msg_chegada}}
+                                            {{validation.responsavel_viagem.msg}}
                                         </div>
-                                    </div>                                                            
+                                    </div>
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_dt_Saida_day" class="mr-5">Data saida:</label>
-                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="dt_saida" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
+                                        <label for="id_contato_responsavel">Celular do responsável:</label>                                                           
+                                        <input class="form-control {%if not validation.contato_responsavel.state %}is-invalid{% endif %}" onkeydown="mascara(this,icelular)" onblur="validar(event)" type="text" name="contato_responsavel" required
+                                         maxlength="15" id="id_contato_responsavel" value="{{viagem.contato_responsavel}}">
                                         <div class="invalid-feedback">
-                                            {{validation.chegada_saida.msg_saida}}
+                                            {{validation.contato_responsavel.msg}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2"> 
@@ -60,23 +62,29 @@
                                         <div class="invalid-feedback">
                                             {{validation.cidade.msg}}
                                         </div>
-                                    </div>                                                             
-                                </div>                               
-                                <div class="form-row mt-4 px-3 justify-content-center py-3">                                    
+                                    </div>   
+                                </div>
+                                <div class="form-row mt-4 justify-content-center px-3 py-3">
+                                    <div class="form-group col-md-2 d-flex flex-column">
+                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Data chegada:</label>                                                                     
+                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_chegada}}
+                                        </div>
+                                    </div>                                                            
+                                    <div class="form-group col-md-2 d-flex flex-column">
+                                        <label for="id_dt_Saida_day" class="mr-5">Data saida:</label>
+                                        <input class="form-control {%if not validation.chegada_saida.state_saida %}is-invalid{% endif %}" type="date" id="dt_saida" name="dt_saida" value="{{viagem.dt_Saida|date:'Y-m-d'}}{{viagem.dt_Saida2}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.chegada_saida.msg_saida}}
+                                        </div>
+                                    </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_empresa_transporte">Empresa de transporte:</label>
                                         <input class="form-control {%if not validation.empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="empresa_transporte" maxlength="120" required id="id_empresa_transporte" value="{{viagem.empresa_transporte}}">
                                         <div class="invalid-feedback">
                                             {{validation.empresa_transporte.msg}}
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_cnpj_empresa_transporte">CNPJ:</label>
-                                            <input id="cnpj" class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
-                                                required id="id_cnpj_empresa_transporte" value="{{viagem.cnpj_empresa_transporte}}">
-                                            <div class="invalid-feedback">
-                                                {{validation.cnpj_empresa_transporte.msg}}
-                                            </div>
                                     </div>
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
@@ -87,7 +95,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_tipo_veiculo">Tipo veiculo:</label>
+                                        <label for="id_cnpj_empresa_transporte">CNPJ:</label>
+                                            <input id="cnpj" class="form-control {%if not validation.cnpj_empresa_transporte.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cnpj_empresa_transporte" onkeydown="mascara(this,icnpj)" maxlength="18"
+                                                required id="id_cnpj_empresa_transporte" value="{{viagem.cnpj_empresa_transporte}}">
+                                            <div class="invalid-feedback">
+                                                {{validation.cnpj_empresa_transporte.msg}}
+                                            </div>
+                                    </div>                                                                                        
+                                </div>                                                               
+                                {% if tipo == 'turismo' %}
+                                <div class="form-row px-3 py-3" >
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_quant_passageiros">Quant. passageiros:</label>
+                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" onblur="validar(event)" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.quant_passageiros.msg}}
+                                        </div>
+                                    </div>  
+                                    <div class="form-group col-md-1 d-flex flex-column">                        
+                                        <label for="id_tipo_veiculo">Veiculo:</label>
                                         <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" onblur="validar(event)" name="tipo_veiculo" required id="id_tipo_veiculo">
                                             <option value=""></option>                        
                                             {% for veiculo in veiculos %}
@@ -97,17 +123,7 @@
                                         <div class="invalid-feedback">
                                             {{validation.veiculo.msg}}
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_quant_passageiros">Quant passageiros:</label>
-                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" onblur="validar(event)" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
-                                        <div class="invalid-feedback">
-                                            {{validation.quant_passageiros.msg}}
-                                        </div>
-                                    </div>           
-                                </div>
-                                {% if tipo == 'turismo' %}
-                                <div class="form-row px-3 py-3" >
+                                    </div> 
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
                                         <input class="form-control {%if not validation.nome_guia.state %}is-invalid{% endif %}" type="text" onblur="validar(event)" name="nome_guia"  maxlength="120" value="{{viagem_turismo.nome_guia}}">
@@ -135,7 +151,7 @@
                                         <div class="invalid-feedback">
                                             {{validation.telefone.msg}}
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                                 <div class="form-row mt-4 px-3" >
                                     <div class="form-group col-md-12 d-flex flex-column">   
@@ -149,14 +165,13 @@
                                         </select>
                                         <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
                                     </div>                                    
-                                </div>
+                                </div>                                
                                 <div class="form-row justify-content-center mt-4 px-3" id="dOutros" >
                                     <div class="form-group col-md-8 d-flex flex-column">   
                                         <label for="id_outros" class="my-auto mr-3">Ponto turístico:</label>
                                         <input id="input-outros" class="form-control w-100" type="text" name="outros"  maxlength="120" value="{{viagem_turismo.outros}}">
                                     </div>
                                 </div>
-                                {% endif %}
                                 <div class="form-row justify-content-center mt-4 px-3 py-3"> 
                                     <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
                                         <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
@@ -178,8 +193,54 @@
                                             </div>
 
                                         </div>
-                                    </div> 
+                                    </div>    
                                 </div>
+                                {% else %}
+                                <div class="form-row mt-4 px-3 py-3">                                                                    
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_quant_passageiros">Quant. passageiros:</label>
+                                        <input class="form-control {%if not validation.quant_passageiros.state %}is-invalid{% endif %}" onblur="validar(event)" type="number" name="quant_passageiros" min="0" required id="id_quant_passageiros" value="{{viagem.quant_passageiros}}">
+                                        <div class="invalid-feedback">
+                                            {{validation.quant_passageiros.msg}}
+                                        </div>
+                                    </div>  
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_tipo_veiculo">Tipo veiculo:</label>
+                                        <select class="form-control {%if not validation.veiculo.state %}is-invalid{% endif %}" onblur="validar(event)" name="tipo_veiculo" required id="id_tipo_veiculo">
+                                            <option value=""></option>                        
+                                            {% for veiculo in veiculos %}
+                                            <option value="{{veiculo.id}}" {% if veiculo.nome == viagem.tipo_veiculo.nome %}selected{% endif %}>{{veiculo.nome}}</option>                            
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.veiculo.msg}}
+                                        </div>
+                                    </div> 
+                                    <div class="form-group col pl-5 d-flex">                        
+                                        <div class="form-group col ml-5 d-flex flex-column">                        
+                                            <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
+                                            <div class="d-flex" >
+                                                <div class="custom-control custom-switch">                                                
+                                                    <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
+                                                    <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
+                                                </div>
+                                                    <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
+                                                    <span class="my-auto ml-2">Sim</span> -->
+                                            </div>
+                                        </div>   
+                                        <div class="form-group col ml-5 d-flex flex-column">                        
+                                            <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
+                                            <div class="d-flex" >
+                                                <div class="custom-control custom-switch">
+                                                    <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
+                                                    <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
+                                                </div>
+
+                                            </div>
+                                        </div>                                 
+                                    </div>
+                                </div>                            
+                                {% endif %}                                
                                 <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Hotel que ficarão hospedados:</label>
@@ -401,6 +462,7 @@
                         document.getElementById('cnpj').value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
                         document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
                 </script>                
