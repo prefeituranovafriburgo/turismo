@@ -10,7 +10,7 @@
             <div class="row mx-auto cards">
                 <div id="card-ponto" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
                     <div class="card-context card">                                
-                        <span class="btn btn-light">TRANSPORTE PARA <br>COMPRAS E TURISMO</span>
+                        <span class="btn btn-light">GRUPO PARA <br>TURISMO E COMPRAS</span>
                         <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
                             Cadastrar
                         </a>
@@ -18,7 +18,7 @@
                 </div>
                 <div id="card-bus" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
                     <div class="card-context card">                                
-                        <span class="btn btn-light">Transporte exclusivo <br>para REALIZAR Compras</span>
+                        <span class="btn btn-light">GRUPO para<br>EXCLUSIVAMENTE COMPRAS</span>
                         <!-- <span class="btn btn-light">Acesso de Transporte Coletivo</span> -->
                         <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
                             Cadastrar
@@ -55,9 +55,10 @@
                     </a>
                 </div>
                 <div id="guia" class="col">
-                    <a href="{% url 'guias:guias' %}">
+                    <!-- <a href="{% url 'guias:guias' %}"> -->
+                        <a target="_blank" href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/GUIAS-DE-TURISMO-RECEPTIVO-NOVA-FRIBURGO.pdf">
                         <span>
-                            Guias <br>Turísticos
+                            Guias de<br>Turismo
                         </span>
                     </a>
                 </div>

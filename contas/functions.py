@@ -122,6 +122,8 @@ def validationsViagem(request, tipo):
     validate['estado']=validateNotBlank(request['estado'])
     validate['cidade']=validateNotBlank(request['cidade'])
     validate['empresa_transporte']=validateNotBlank(request['empresa_transporte'])
+    validate['responsavel_viagem']=validateNotBlank(request['responsavel_viagem'])
+    validate['contato_responsavel']=validateCelular(request['contato_responsavel'])
     if tipo=='turismo':
         validate['nome_guia']=validateNOME(request['nome_guia'])
         validate['celular']=validateCelular(request['celular'])

@@ -11,7 +11,7 @@ from .forms import ViagemForm
 from .functions import get_random_string
 import time
 import pickle
-
+from datetime import date, timedelta
 
 @login_required
 def inicio(request):
@@ -20,7 +20,8 @@ def inicio(request):
 
 @login_required
 def cad_transporte(request):    
-    viagens = Viagem.objects.filter(user=request.user)
+    hoje=date.today()
+    viagens = Viagem.objects.filter(user=request.user, dt_Saida__range=[hoje, hoje+timedelta(days=365)])
     return render(request, 'senhas/cad_transporte.html', { 'viagens': viagens })
 
 
@@ -33,7 +34,7 @@ def viagem_inclui(request, tipo):
                 'cadastur_guia':  {'state': True}, 'telefone':  {'state': True}, 
                 'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''},
                 'cidade': {'state': True}, 'estado': {'state': True}, 'empresa_transporte': {'state': True},
-                'nome_guia':{'state': True}} 
+                'nome_guia':{'state': True}, 'responsavel_viagem':{'state': True}, 'contato_responsavel':{'state': True}} 
     
     estados = Estado.objects.all().order_by('nome')
     if request.method == 'POST':                   
@@ -53,7 +54,9 @@ def viagem_inclui(request, tipo):
             except:
                 rr=False       
             try:                
-                viagem=Viagem(                    
+                viagem=Viagem(        
+                    responsavel_viagem=request.POST['responsavel_viagem'],
+                    contato_responsavel=validation['contato_responsavel']['celular'],            
                     user=request.user, 
                     dt_Chegada=request.POST['dt_chegada'],
                     dt_Saida=request.POST['dt_saida'],
@@ -166,7 +169,9 @@ def viagem_inclui(request, tipo):
             'estado_': estado,
             'estados': estados,  
             'cidade': cidade,
-            'viagem': {'dt_Chegada2': request.POST['dt_chegada'],
+            'viagem': {'responsavel_viagem': request.POST['responsavel_viagem'],
+                        'contato_responsavel': request.POST['contato_responsavel'],
+                        'dt_Chegada2': request.POST['dt_chegada'],
                        'dt_Saida2': request.POST['dt_saida'],
                     #    'estado_origem': request.POST['estado'],
                     #    'cidade_origem': request.POST['cidade'],
@@ -206,18 +211,27 @@ def viagem_inclui(request, tipo):
 
 
 def viagem(request, id):
-
     viagem = Viagem.objects.get(senha=id)
-
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
         pontos_turisticos=viagem_turismo.pontos_turisticos.all()
     except:
         viagem_turismo = None
         pontos_turisticos= None
-
+    if not viagem.user == request.user:
+        return redirect('cad_transporte')
     return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
 
+def fiscalizar_viagem(request, id):
+    viagem = Viagem.objects.get(senha=id)
+    try:
+        viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
+        pontos_turisticos=viagem_turismo.pontos_turisticos.all()
+    except:
+        viagem_turismo = None
+        pontos_turisticos= None
+    print(request.user.groups)
+    return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
 
 @login_required
 def viagem_altera(request, id):
@@ -226,7 +240,7 @@ def viagem_altera(request, id):
                 'cadastur_guia':  {'state': True}, 'telefone':  {'state': True}, 
                 'celular':{'state': True}, 'chegada_saida':{'state_chegada': True, 'state_saida': True, 'msg': ''},
                 'cidade': {'state': True}, 'estado': {'state': True}, 'empresa_transporte': {'state': True},
-                'nome_guia':{'state': True}} 
+                'nome_guia':{'state': True}, 'responsavel_viagem':{'state': True}, 'contato_responsavel':{'state': True}} 
     from datetime import date
     tipo=''
     viagem = Viagem.objects.get(senha=id)
@@ -258,7 +272,9 @@ def viagem_altera(request, id):
                     rr=True
             except:
                 rr=False           
-            try:                                  
+            try:        
+                viagem.responsavel_viagem=request.POST['responsavel_viagem']
+                viagem.contato_responsavel=validation['contato_responsavel']['celular']
                 viagem.user=request.user
                 viagem.dt_Chegada=request.POST['dt_chegada']
                 viagem.dt_Saida=request.POST['dt_saida']
@@ -297,23 +313,24 @@ def viagem_altera(request, id):
 
             except Exception as e:
                 print('e:', e)
-                erro = str(e).split(', ')
+                messages.error(request, 'Corrigir o erro apresentado.')
+                # erro = str(e).split(', ')
 
-                print('erro:', erro)
+                # print('erro:', erro)
 
-                if erro[0] == '(1062':
-                    messages.error(request, 'Erro: Usuário já existe.')
-                else:
-                    # Se teve erro:
-                    print('Erro: ', form.errors)
-                    erro_tmp = str(form.errors)
-                    erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
-                    erro_tmp = erro_tmp.replace('</li>', '')
-                    erro_tmp = erro_tmp.replace('<ul>', '')
-                    erro_tmp = erro_tmp.replace('</ul>', '')
-                    erro_tmp = erro_tmp.split('<li>')
+                # if erro[0] == '(1062':
+                #     messages.error(request, 'Erro: Usuário já existe.')
+                # else:
+                #     # Se teve erro:
+                #     print('Erro: ', form.errors)
+                #     erro_tmp = str(form.errors)
+                #     erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+                #     erro_tmp = erro_tmp.replace('</li>', '')
+                #     erro_tmp = erro_tmp.replace('<ul>', '')
+                #     erro_tmp = erro_tmp.replace('</ul>', '')
+                #     erro_tmp = erro_tmp.split('<li>')
 
-                    messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+                #     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
     

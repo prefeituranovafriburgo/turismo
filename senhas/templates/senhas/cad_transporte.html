@@ -9,7 +9,7 @@
                     <div class="row mx-auto cards">
                         <div id="card-ponto" class="ml-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
                             <div class="card-context card">                                
-                                <span class="btn btn-light">TRANSPORTE PARA <br>EXCURSÕES TURÍSTICAS</span>
+                                <span class="btn btn-light">GRUPO PARA <br>TURISMO E COMPRAS</span>
                                 <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
@@ -17,7 +17,7 @@
                         </div>
                         <div id="card-bus" class="mr-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
                             <div class="card-context card">                                
-                                <span class="btn btn-light">Transporte exclusivo <br>para REALIZAR Compras</span>
+                                <span class="btn btn-light">GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
                                 <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
@@ -75,7 +75,7 @@
                                     <td class="text-center">{{ v.tipo_veiculo }}</td>
                                     <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="fas fa-edit m-auto"></i></a>
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-eye m-auto"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
