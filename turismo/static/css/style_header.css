@@ -27,7 +27,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -41,7 +41,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -55,7 +55,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/ponto.jpg);
+    background-image: url(../images/buttons/tres_picos.jpeg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -245,6 +245,65 @@ footer{
         flex-direction: column;
     }
 
+    .hidden{
+        display: none;
+    }
+    .mobile{
+        display: flex !important;
+    }
+    .mobile #menu-cadastro #titulo-menu{
+        vertical-align: center;        
+        margin-top: 20px;        
+    }
+    .mobile #card-turismo{
+        background-image: url(../images/buttons/tres_picos.jpeg);        
+        margin-right: 5px;
+    }
+    .mobile #card-compra{        
+        background-image: url(../images/buttons/moda_intima.jpg);        
+        margin-left: 5px;
+    }
+    .mobile .card{
+        border-radius: 5px;
+        background-size: cover;
+        height: 100px;        
+        border: 1px solid rgba(128, 128, 128, 0.733);    
+        box-shadow: 3px 5px 5px rgba(80, 80, 80, 0.644);    
+        background-position-x: center;
+        background-position-y: center;
+        background-repeat: no-repeat;
+        padding: 0;
+    }
+    .mobile .card .context{
+        height: 100%;
+        width: 100%;        
+        background-color: rgba(128, 128, 128, 0.233);          
+        display: flex;  
+        padding: 0 10px;
+    }
+    .mobile .card .context div{
+        font-size: 10pt;
+        font-weight: bold;
+        color: rgba(54, 54, 54, 0.904);
+        padding: 8px 10px;
+        margin: auto;
+        background-color: rgba(255, 255, 255, 0.877);
+        text-align: center;
+        border-radius: 5px;
+    }
+    .mobile .titulo-outra-opcoes{
+        margin-top: 30px;
+    }
+    .mobile .submenu{
+        padding: 0px 0px 20px 0px;
+    }
+    .show{        
+        display: flex;
+    }
+    .rede-social{
+        justify-content: center;
+    }
+
 }
 @media (max-width: 450px){
     .hidden{
@@ -261,6 +320,13 @@ footer{
     .show{        
         display: flex;
     }
+    .mobile #menu-cadastro #titulo-menu{
+        vertical-align: center;
+        text-align: center;
+    }
+    .mobile .titulo-outra-opcoes{
+        text-align: center;
+    }
 }
 #conheca{
     background-image: url(../images/buttons/praca.jpg);
@@ -276,7 +342,7 @@ footer{
 }
 
 #mapa{
-    background-image: url(../images/buttons/cao.jpg);
+    background-image: url(../images/buttons/mapa.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -288,7 +354,7 @@ footer{
     background-position: center;
 }
 #guia{
-    background-image: url(../images/buttons/trespicos.jpg);
+    background-image: url(../images/buttons/praca_suspiro.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -382,7 +448,7 @@ footer{
     border-radius: 5px;
     border: 1px solid rgba(245, 245, 245, 0.308);
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -395,9 +461,9 @@ footer{
     
     
     border-radius: 5px;
-    border: 1px solid rgba(245, 245, 245, 0.308);
-
-    background-image: url(../images/ponto.jpg);
+    border: 1px solid rgba(245, 245, 245, 0.308);    
+    background-image: url(../images/buttons/tres_picos.jpeg);
+    /* background-image: url(../images/ponto.jpg); */
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -501,4 +567,7 @@ footer{
     margin: auto;
     border-radius: 5px;
     padding: 30px 40px;
+}
+.mobile{
+    display: none;
 }

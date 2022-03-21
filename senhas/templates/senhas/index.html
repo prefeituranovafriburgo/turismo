@@ -4,8 +4,7 @@
 {% endblock %}
 {% block cab %}
     {% include 'loading.html' %}
-    <div id="main" class="row w-100 my-auto">
-
+    <div id="main" class="row w-100 my-auto hidden">
         <div class="col-7 d-flex">                                           
             <div class="row mx-auto cards">
                 <div id="card-ponto" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
@@ -27,7 +26,6 @@
                 </div>
             </div>                    
         </div>
-
         <div class="lateral col p-0">
             <div class="row teste">
                 <div id="conheca" class="col">
@@ -100,9 +98,83 @@
         </div>
     </div>
 
-    <div class="row show pt-4">
-        <div id="contato" class="col mt-5 p-5">
-            <h1>Contato</h1>
+    <div class="mobile row w-100 mx-auto">        
+            <div id="menu-cadastro" class="col">
+                <div class="row">
+                    <div  id="titulo-menu" class="col">
+                        <h2 class="display-7">CADASTRAR VIAGEM</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                        <div class="context">
+                            <div>GRUPO PARA<br> TURISMO E COMPRAS</div>
+                        </div>
+                    </div>   
+                    <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                        <div class="context">
+                            <div>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</div>
+                        </div>
+                    </div>     
+                </div>
+            </div>            
+    </div>
+    <div class="mobile row w-100 mx-auto">
+        <div class="col">
+            <div class="row">
+                <div class="titulo-outra-opcoes col">
+                    <h2>SUBMENU</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="submenu lateral col">
+                    <div class="row teste">
+                        <div id="conheca" class="col">
+                            <a href="https://www.pmnf.rj.gov.br/turismo/conheca-nova-friburgo" target="_blank">
+                                <span>
+                                    Conheça</br>Nova Friburgo
+                                </span>
+                            </a>
+                        </div>
+                        <div id="roteiros" class="col">
+                            <a href="https://www.pmnf.rj.gov.br/turismo/roteiros" target="_blank">
+                                <span>
+                                    Roteiros <br>de passeios 
+                                </span>       
+                            </a>                   
+                        </div>
+        
+                    </div>
+                    <div class="row teste">
+                        <div id="folder" class="col">
+                            <a href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/FolderTURISMO-NOVA-FRIBURGO.pdf" target="_blank">
+                                <span>
+                                    Folder <br>de Turismo
+                                </span>
+                            </a>
+                        </div>
+                        <div id="guia" class="col">
+                            <!-- <a href="{% url 'guias:guias' %}"> -->
+                                <a target="_blank" href="https://novafriburgo.rj.gov.br/uploads/pagina/arquivos/GUIAS-DE-TURISMO-RECEPTIVO-NOVA-FRIBURGO.pdf">
+                                <span>
+                                    Guias de<br>Turismo
+                                </span>
+                            </a>
+                        </div>
+                         <div id="mapa" class="col">
+                            <a href="{% url 'guias:mapa_turistico' %}">   
+                                <span>
+                                    Mapa <br>Turístico
+                                </span> 
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row show pt-4 w-100">
+        <div id="contato" class="col mt-3 px-5">
+            <h1 class="hidden">Contato</h1>
             <ul>
                 <li><b>Centro de Informações Turísticas</b></li>
                 <li>Email: <a href="mailto:catcentronf@gmail.com">catcentronf@gmail.com</a></li>
@@ -113,8 +185,8 @@
             </ul>
         </div>
     </div>
-    <div class="row show">
-        <div class="col rede-social pb-4">
+    <div class="row show w-100 mt-5">
+        <div class="col rede-social pb-4 pl-5">
             <a href="https://www.facebook.com/SecturNf" target="_blank">
                 <img src="{% static 'images/facebook.png' %}" alt="">
             </a>

@@ -1,5 +1,6 @@
 html, body{
     height: 100%;
+    min-width: 370px;
 }
 #header .col{
     /* border-bottom: 1px solid gray; */
@@ -245,6 +246,65 @@ footer{
         flex-direction: column;
     }
 
+    .hidden{
+        display: none;
+    }
+    .mobile{
+        display: flex !important;
+    }
+    .mobile #menu-cadastro #titulo-menu{
+        vertical-align: center;        
+        margin-top: 20px;        
+    }
+    .mobile #card-turismo{
+        background-image: url(../images/buttons/tres_picos.jpeg);        
+        margin-right: 5px;
+    }
+    .mobile #card-compra{        
+        background-image: url(../images/buttons/moda_intima.jpg);        
+        margin-left: 5px;
+    }
+    .mobile .card{
+        border-radius: 5px;
+        background-size: cover;
+        height: 100px;        
+        border: 1px solid rgba(128, 128, 128, 0.733);    
+        box-shadow: 3px 5px 5px rgba(80, 80, 80, 0.644);    
+        background-position-x: center;
+        background-position-y: center;
+        background-repeat: no-repeat;
+        padding: 0;
+    }
+    .mobile .card .context{
+        height: 100%;
+        width: 100%;        
+        background-color: rgba(128, 128, 128, 0.233);          
+        display: flex;  
+        padding: 0 10px;
+    }
+    .mobile .card .context div{
+        font-size: 10pt;
+        font-weight: bold;
+        color: rgba(54, 54, 54, 0.904);
+        padding: 8px 10px;
+        margin: auto;
+        background-color: rgba(255, 255, 255, 0.877);
+        text-align: center;
+        border-radius: 5px;
+    }
+    .mobile .titulo-outra-opcoes{
+        margin-top: 30px;
+    }
+    .mobile .submenu{
+        padding: 0px 0px 20px 0px;
+    }
+    .show{        
+        display: flex;
+    }
+    .rede-social{
+        justify-content: center;
+    }
+
 }
 @media (max-width: 450px){
     .hidden{
@@ -260,6 +320,13 @@ footer{
     }
     .show{        
         display: flex;
+    }
+    .mobile #menu-cadastro #titulo-menu{
+        vertical-align: center;
+        text-align: center;
+    }
+    .mobile .titulo-outra-opcoes{
+        text-align: center;
     }
 }
 #conheca{
@@ -501,4 +568,7 @@ footer{
     margin: auto;
     border-radius: 5px;
     padding: 30px 40px;
+}
+.mobile{
+    display: none;
 }
