@@ -27,7 +27,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -41,7 +41,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -55,7 +55,7 @@ html, body{
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
-    background-image: url(../images/ponto.jpg);
+    background-image: url(../images/buttons/tres_picos.jpeg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -288,7 +288,7 @@ footer{
     background-position: center;
 }
 #guia{
-    background-image: url(../images/buttons/trespicos.jpg);
+    background-image: url(../images/buttons/praca_suspiro.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -382,7 +382,7 @@ footer{
     border-radius: 5px;
     border: 1px solid rgba(245, 245, 245, 0.308);
 
-    background-image: url(../images/bus.jpg);
+    background-image: url(../images/buttons/moda_intima.jpg);
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -395,9 +395,9 @@ footer{
     
     
     border-radius: 5px;
-    border: 1px solid rgba(245, 245, 245, 0.308);
-
-    background-image: url(../images/ponto.jpg);
+    border: 1px solid rgba(245, 245, 245, 0.308);    
+    background-image: url(../images/buttons/tres_picos.jpeg);
+    /* background-image: url(../images/ponto.jpg); */
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
