@@ -4,13 +4,7 @@
 <link rel="preconnect" href="https://www.google.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
-<script type="text/javascript">
-    var onloadCallback = function() {
-      grecaptcha.render('html_element', {
-        'sitekey' : '6LdiIsweAAAAAKHnfIgGx1V-olIVbAFEBUJY5MHb',
-      });
-    };
-  </script>
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
                     <h2>CADASTRO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
@@ -110,7 +104,7 @@
                                         <img style="margin: auto; height: 60px;" src="{% static 'images/google.jpg' %}" alt=""><span class="m-auto">Cadastrar com Google</span>
                                     </a>
                                 </div> -->
-                                <div id="html_element" class="m-auto"></div>    
+                                <div class="h-captcha m-auto" data-sitekey="{{hCAPTCHA}}"></div>                               
                             </div>                        
                         </table>    
                         <button class="btn btn-primary" type="submit">
@@ -118,13 +112,6 @@
                         </button>
 
                     </form>
-                    <a href="{% url 'login' %}">Voltar</a>  
-                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-                    async defer>
-                </script>  
-                <style>
-                    #rc-anchor-container{
-                        width: 100% !important;
-                    }
-                </style>            
+                    <a href="{% url 'login' %}">Voltar</a>                                          
+                </script>                  
                 {% endblock %}

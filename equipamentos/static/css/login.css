@@ -1,6 +1,6 @@
 html, body{
     height: 100%;    
-    min-width: 480px;
+    /* min-width: 700px !important; */
     /* min-width: 630px !important;     */
 }
 html{
@@ -125,4 +125,14 @@ body{
         width: 90%;
         padding: 50px 20%;
     }
+    #id_53, .rc-imageselect-payload, #rc-imageselect{
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+     
+     }
+     
+    
 }
+
+ 

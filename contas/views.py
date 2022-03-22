@@ -19,7 +19,7 @@ from contas.forms import CadastrarForm, CadastroForm
 from contas.functions import validations, validarAlteraçãoUsuario
 from contas.models import Cidade, Usuario, Estado
 from senhas.templatetags.template_filters import formata_cpf
-
+from turismo.settings import hCAPTCHA_PUBLIC_KEY, hCAPTCHA_PRIVATE_KEY
 # Create your views here.
 
 def cadastrar(request):
@@ -42,12 +42,12 @@ def cadastrar(request):
 
         #Abaixo recebemos a validação da API do Google do reCAPTCHA
         ''' Begin reCAPTCHA validation '''
-        recaptcha_response = request.POST.get('g-recaptcha-response')
+        recaptcha_response = request.POST.get('h-captcha-response')
         data = {
-            'secret': '6LdiIsweAAAAADv7tYKHZ1fCP4pi6FwIZTw4X4Rl',
+            'secret': hCAPTCHA_PRIVATE_KEY,
             'response': recaptcha_response
         }
-        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        r = requests.post('https://hcaptcha.com/siteverify', data=data)
         result = r.json()
         ''' End reCAPTCHA validation '''
 
@@ -120,7 +120,8 @@ def cadastrar(request):
                     'telefone':request.POST['telefone'],
                     'estado_':estado,
                     'cidade': cidade,
-                    'estados': estados
+                    'estados': estados,
+                    'hCAPTCHA': hCAPTCHA_PUBLIC_KEY
                 }
                 return render(request, 'contas/cadastrar.html', context)
         else:
@@ -150,13 +151,14 @@ def cadastrar(request):
                     'telefone':request.POST['telefone'],
                     'estado_':estado,
                     'cidade': cidade,
-                    'estados': estados
+                    'estados': estados,
+                    'hCAPTCHA': hCAPTCHA_PUBLIC_KEY
                 }
                 return render(request, 'contas/cadastrar.html', context)
     
     else:                
         form = CadastrarForm()          
-    return render(request, 'contas/cadastrar.html', { 'form': form, 'estados': estados, 'validations': validation })
+    return render(request, 'contas/cadastrar.html', { 'hCAPTCHA': hCAPTCHA_PUBLIC_KEY,'form': form, 'estados': estados, 'validations': validation })
 
 
 @login_required
@@ -297,18 +299,18 @@ def sair(request):
 
 def login_view(request):
     if request.method == 'POST':
-        #Abaixo recebemos a validação da API do Google do reCAPTCHA
-        ''' Begin reCAPTCHA validation '''
-        recaptcha_response = request.POST.get('g-recaptcha-response')
-        data = {
-            'secret': '6LdiIsweAAAAADv7tYKHZ1fCP4pi6FwIZTw4X4Rl',
+        #Abaixo recebemos a validação da API do hCAPTCHA
+        ''' Begin hCAPTCHA validation '''
+        recaptcha_response = request.POST.get('h-captcha-response')
+        data = {            
+            'secret': hCAPTCHA_PRIVATE_KEY,
             'response': recaptcha_response
         }
-        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        r = requests.post('https://hcaptcha.com/siteverify', data=data)
         result = r.json()
-        ''' End reCAPTCHA validation '''
+        ''' End hCAPTCHA validation '''
 
-        #Se o reCAPTCHA garantir que o usuário é um robô
+        #Se o hCAPTCHA garantir que o usuário é um robô
         if result['success']:
             username = request.POST['username']
             password = request.POST['password']
@@ -319,11 +321,16 @@ def login_view(request):
             else:                
                 context={
                     'error': True,
+                    'hCAPTCHA': hCAPTCHA_PUBLIC_KEY
                 }
                 return render(request, 'registration/login.html', context)
         else:
             context={
                 'error2': True,            
+                'hCAPTCHA': hCAPTCHA_PUBLIC_KEY
             }
             return render(request, 'registration/login.html', context)
-    return render(request, 'registration/login.html')
+    context={
+        'hCAPTCHA': hCAPTCHA_PUBLIC_KEY
+    }
+    return render(request, 'registration/login.html', context)
