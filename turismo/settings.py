@@ -32,8 +32,8 @@ DEBUG = eval(debug)
 ALLOWED_HOSTS = ['turismo.jlb.net.br', 'senhas.novafriburgo.rj.gov.br', '127.0.0.1', '127.0.1.1', 'localhost', '192.168.1.109']
 
 try:
-    RECAPTCHA_PUBLIC_KEY = env[7]
-    RECAPTCHA_PRIVATE_KEY = env[8]
+    hCAPTCHA_PUBLIC_KEY = env[7]
+    hCAPTCHA_PRIVATE_KEY = env[8]
 except:
     RECAPTCHA_PUBLIC_KEY = ''
     RECAPTCHA_PRIVATE_KEY = ''
@@ -187,3 +187,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = email_user
 EMAIL_HOST_PASSWORD = email_pass
+

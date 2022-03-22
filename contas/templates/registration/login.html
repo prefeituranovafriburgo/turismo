@@ -3,13 +3,7 @@
 {% load static %}
 
 {% block conteudo %}
-<script type="text/javascript">
-var onloadCallback = function() {
-    grecaptcha.render('html_element', {
-      'sitekey' : '6LdiIsweAAAAAKHnfIgGx1V-olIVbAFEBUJY5MHb',
-    });
-  };
-</script>
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <div id="login-screen">    
     <h3>LOGIN</h3>
     <form action="." method="post">
@@ -35,9 +29,7 @@ var onloadCallback = function() {
                 <input class="form-control" type="password" name="password" autocomplete="current-password" required id="id_password">
             </div>   
             <div class="form-row d-flex flex-column">                                  
-                <div id="html_element" class="m-auto">
-
-                </div>                                 
+                <div class="h-captcha m-auto" data-sitekey="{{hCAPTCHA}}"></div>                               
             </div>
         <button class="btn btn-primary" type="submit">
             Entrar
@@ -47,7 +39,4 @@ var onloadCallback = function() {
     <a href="{% url 'contas:password_reset' %}">Esqueci minha senha</a>
     <a href="{% url 'contas:cadastrar' %}">Quero me cadastrar</a>
 </div>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-                    async defer>
-                </script> 
 {% endblock %}
