@@ -6,7 +6,7 @@
             <div id="main" class="row w-100">
                 <div class="container mt-5 pt-5">
 
-                    <div class="row">
+                    <div class="row hidden">
                         <div class="col">
                             <h3 class="uppercase">{{titulo}} - {% if tipo == 'turismo' %}GRUPO DE TURISMO E COMPRAS{% else %} GRUPO EXCLUSIVAMENTE P/ COMPRAS{% endif %}</h3>
                         </div>
@@ -21,7 +21,7 @@
                         </div>
                         
                     </div>
-                
+                    {% include 'senhas/for_mobile/viagem_inclui.html' %}
                     
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                                                   
