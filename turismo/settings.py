@@ -1,39 +1,29 @@
 import os
-
 from pathlib import Path
+from .envvars import load_envars
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+env_vars=load_envars(BASE_DIR)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
-env_vars = open(str(BASE_DIR.parent) + "/.envvar", "r")
-
-env = []
-for linha in env_vars:
-    env.append(linha.rstrip())
-
-db_name = env[0]
-db_user = env[1]
-db_passwd = env[2]
-SECRET_KEY = env[3]
-debug = env[4]
-email_user = env[5]
-email_pass = env[6]
+db_name = env_vars['db_name']
+db_user = env_vars['db_user']
+db_passwd = env_vars['db_pw']
+SECRET_KEY = env_vars['django_secret_key']
+debug_mode = env_vars['debug_mode']
+email_user = env_vars['email_sistema']
+email_pass = env_vars['email_pw']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = eval(debug)
+DEBUG = debug_mode
 
 ALLOWED_HOSTS = ['turismo.jlb.net.br', 'senhas.novafriburgo.rj.gov.br', '127.0.0.1', '127.0.1.1', 'localhost', '192.168.1.109']
 
 try:
-    hCAPTCHA_PUBLIC_KEY = env[7]
-    hCAPTCHA_PRIVATE_KEY = env[8]
+    hCAPTCHA_PUBLIC_KEY = env_vars['hCAPTCHA_Public_Key']
+    hCAPTCHA_PRIVATE_KEY = env_vars['hCAPTCHA_Secret_Key']
 except:
     RECAPTCHA_PUBLIC_KEY = ''
     RECAPTCHA_PRIVATE_KEY = ''
@@ -72,11 +62,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 try:
-    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env[9]
-    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env[10]
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_vars['GOOGLE_OAUTH2_PUBLIC_KEY']
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_vars['GOOGLE_OAUTH2_SECRET_KEY']
 
-    SOCIAL_AUTH_FACEBOOK_KEY = env[11]
-    SOCIAL_AUTH_FACEBOOK_SECRET = env[12]
+    SOCIAL_AUTH_FACEBOOK_KEY = env_vars['FACEBOOK_DEVELOPER_PUBLIC_KEY']
+    SOCIAL_AUTH_FACEBOOK_SECRET = env_vars['FACEBOOK_DEVELOPER_SECRET_KEY']
 except:
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
