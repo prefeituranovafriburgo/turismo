@@ -1,11 +1,11 @@
 # Turismo
 Gerador de senhas para controle de transporte turístico
 
-## *Instalação
+## * Instalação
 
 Para instalar as dependencias do projeto basta usar o comando: __pip install -r requeriments.txt__
 
-## *Configurando as Variáveis de Ambiente
+## * Configurando as Variáveis de Ambiente
 
 Para criar as variáveis de ambiente crie um arquivo com o nome **'.envars.yaml'** na raiz do seu projeto ou no diretrio **acima da pasta do seu projeto** contendo as seguintes informações conforme o modelo abaixo:
 ```
