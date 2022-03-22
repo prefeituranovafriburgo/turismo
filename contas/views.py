@@ -23,6 +23,8 @@ from turismo.settings import hCAPTCHA_PUBLIC_KEY, hCAPTCHA_PRIVATE_KEY
 # Create your views here.
 
 def cadastrar(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     #Iniciamos a variavel VALIDATION aqui com todos os STATE como True.
     #Quando submetido o formulario, o que estiver incorreto muda seu STATE para False.
     validation={'nome': {'state': True},'cpf': {'state': True},'email': {'state': True}, 
@@ -298,6 +300,8 @@ def sair(request):
         return redirect('/accounts/login')
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         #Abaixo recebemos a validação da API do hCAPTCHA
         ''' Begin hCAPTCHA validation '''
