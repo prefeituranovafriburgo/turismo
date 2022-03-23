@@ -315,8 +315,7 @@ def login_view(request):
         }
         r = requests.post('https://hcaptcha.com/siteverify', data=data)
         result = r.json()
-        ''' End hCAPTCHA validation '''
-        print(result)
+        ''' End hCAPTCHA validation '''        
         #Se o hCAPTCHA garantir que o usuário é um robô
         if result['success']:
             username = request.POST['username']
