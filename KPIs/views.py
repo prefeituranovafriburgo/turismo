@@ -14,8 +14,6 @@ def index(request):
     viagens=Viagem.objects.all().count()
     viagem_turismo=Viagem_Turismo.objects.all().count()
     ##Origens Registradas
-    print(users_mes, users_ano)
-    print(request.user.date_joined)
 
     context={
         'total_viagens': viagens,
