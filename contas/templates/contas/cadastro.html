@@ -1,148 +1,193 @@
 {% extends "cab.html" %}
-
 {% load static %}
+{% block cab %}    
+            <div id="main" class="row w-100">
+                <div class="container pt-4">
+                <form method="POST" class="mb-5 py-5 rounded" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
+                    {% csrf_token %}  
+                    <div class="row d-flex">
+                        <div class="col-md-5 mx-auto">
+                            <h3 class="mx-auto">Alteração de Cadastro:</h3>
+                        </div>
+                    </div>
+                    <div class="form-column mt-4 justify-content-center">                        
+                        <div class="form-group col-md-5 mx-auto">                                                    
+                            <div class="d-flex">
+                                <label style="width: 130px;" for="id_nome">Nome:</label>
+                                <input class="form-control {%if not validation.nome.state %}is-invalid{% endif %}" type="text" name="nome" value="{{nome}}" maxlength="60" required id="nome">                            
+                            </div>
+                            {%if not validation.nome.state %}
+                            <div class="invalid-feedback d-flex pl-5 w-100">
+                                <span class="ml-5">{{validation.nome.msg}}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-md-5 mx-auto">    
+                            <div class="d-flex">
+                                <label style="width: 130px" for="id_cpf">CPF:</label>   
+                                <input class="form-control {%if not validation.cpf.state %}is-invalid{% endif %}" type="text" name="cpf" value="{{cpf}}" onkeydown="mascara(this,icpf)" maxlength="14" required
+                                    id="cpf">   
+                            </div>       
+                            {%if not validation.cpf.state %}
+                            <div class="invalid-feedback d-flex pl-5 w-100">
+                                <span class="ml-5">{{validation.cpf.msg}}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-md-5 mx-auto">
+                            <div class="d-flex">
+                                <label style="width: 130px" for="id_email">Email:</label>
+                                <input class="form-control {%if not validation.email.state %}is-invalid{% endif %}" type="text" name="email" value="{{email}}" maxlength="200" required id="email">                            
+                            </div>
+                            {%if not validation.email.state %}
+                            <div class="invalid-feedback d-flex pl-5 w-100">
+                                <span class="ml-5">{{validation.email.msg}}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-{% block cab %}
-<br>
-<div class="container">
+                    <div class="form-column mt-4 justify-content-center">
+                        <div class="form-group col-md-5 mx-auto">  
+                            <div class="d-flex">
+                                <label style="width: 130px" for="id_celular">Celular:</label>
+                                <input class="form-control {%if not validation.celular.state %}is-invalid{% endif %}" type="text" name="celular" value="{{celular}}" onkeydown="mascara(this,icelular)" maxlength="14" required id="celular">                                                        
+                            </div>
+                            {%if not validation.celular.state %}
+                            <div class="invalid-feedback d-flex pl-5 w-100">
+                                <span class="ml-5">{{validation.celular.msg}}</span>
+                            </div>
+                            {%endif%}
+                        </div>
+                        <div class="form-group col-md-5 mx-auto">
+                            <div class="d-flex">
+                                <label style="width: 130px" for="id_telefone">Telefone:</label>
+                                <input class="form-control {%if not validation.telefone.state %}is-invalid{% endif %}" type="text" name="telefone" value="{{telefone}}" onkeydown="mascara(this,itelefone)" maxlength="14" id="telefone">                            
+                            </div>
+                            <div class="invalid-feedback d-flex pl-5 w-100">
+                                <span class="ml-5">{{validation.telefone.msg}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_estado">Estado:</label>
+                            <select class="form-control" onchange="mostracidade(event)" name="estado" class="selEstado" required id="estado">
+                                <option value="" {%if estado_ == '' %}selected{% endif %}></option>
+                                            {% for estado in estados %}
+                                            <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.estado.msg}}
+                                        </div>
+                                </select>
+                        </div>
+                        <div class="form-group col-md-5 d-flex mx-auto">
+                            <label style="width: 130px" for="id_cidade">Cidade:</label>
+                            <select class="form-control" name="cidade" required id="cidade">
+                                <option value="" {%if cidade == '' %}selected{% endif %}></option>
+                                            {% for cidade_ in cidades %}
+                                            <option value="{{ cidade_.id }}" {% if cidade_.nome == cidade.nome %}selected{% endif %}>{{ cidade_.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{validation.cidade.msg}}
+                                        </div>
+                        </div>                        
+                    </div>
+                    <div class="row d-flex">
+                        <div class="col-md-5 mx-auto d-flex">
+                            <button class="btn btn-primary ml-auto">Alterar</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>                   
+        </div>      
+        <!-- JavaScript (Opcional) -->    
+        <SCRIPT LANGUAGE="JavaScript">
 
-    <div class="row">
-        <div class="col">
-            <h3>Alteração de Cadastro:</h3>
-        </div>
-<!--
-        <div class="col text-right">
-            <a href="{% url 'inicio' %}" class="btn btn-primary" role="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                </svg>
-                Volta
-            </a>
-        </div>
--->
-    </div>
 
-
-    <form method="POST" id="formulario" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
-        {% csrf_token %}
-
-        <table  class="table table-striped table-bordered">
-            {{ form.as_table }}
-        </table>
-
-        <input class="btn btn-primary" type="submit" value="Alterar">
-    </form>
-
-
-</div>
-
-
-<!--
--->
-
-<script>
-    $('.selEstado').change(function mostracidade () {
-        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-        var estadoId = $(this).val();
-            $.ajax({ 
-                url: url,
-                data: {
-                    'id':estadoId,
-                },
-                success: function(data)
-                {
-                    $("#id_cidade").html(data);
-                }
-                });
-    })
-
-</script>
-
-
-<SCRIPT LANGUAGE="JavaScript">
-
-
-    function mostracidade(){
-        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-
-        var cidadeId = formulario.cidade.value;
-        var estadoId = formulario.estado.value;
-        $.ajax({ 
-            url: url,
-            data: {
-                'id':estadoId,
-            },
-            success: function(data) {
-                $("#id_cidade").html(data);
-                document.getElementById('id_cidade').value=cidadeId;
+                function mostracidade(event){
+                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        estadoId = event.target.value;                        
+                        $.ajax({ 
+                            url: url,
+                            data: {
+                                'id':estadoId,
+                            },
+                            success: function(data) {                               
+                                $("#cidade").html(data);
+                            }
+                        });
+                
+                    };
+            // mostracidade();
+        
+            function leech(v){
+                v=v.replace(/o/gi,"0")
+                v=v.replace(/i/gi,"1")
+                v=v.replace(/z/gi,"2")
+                v=v.replace(/e/gi,"3")
+                v=v.replace(/a/gi,"4")
+                v=v.replace(/s/gi,"5")
+                v=v.replace(/t/gi,"7")
+                return v
             }
-        });
-
-    };
-
-    // mostracidade();
-
-    function leech(v){
-        v=v.replace(/o/gi,"0")
-        v=v.replace(/i/gi,"1")
-        v=v.replace(/z/gi,"2")
-        v=v.replace(/e/gi,"3")
-        v=v.replace(/a/gi,"4")
-        v=v.replace(/s/gi,"5")
-        v=v.replace(/t/gi,"7")
-        return v
-    }
-
-    function open_popup(url){
-        newwindow = window.open(url,'{{title}}', 'height = 400,width = 600');
-        if(window.focus) {newwindow.focus()}
-        return false;
-    }
-
-    function data(v){
-        v=v.replace(/\D/g,"")                //Remove tudo o que nao e digito
-        v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
-        v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
-                                                //de novo (para o segundo bloco de numeros)
-        return v
-    }
-    function icpf(v){
-        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
-        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
-        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
-                                                //de novo (para o segundo bloco de numeros)
-        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
-        return v
-    }
-    function itelefone(v){
-        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
-        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
-        v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
-        return v
-    }
-    function icep(v){
-        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
-        v=v.replace(/(\d{2})(\d)/,"$1.$2")    //Coloca hifen entre o quarto e o quinto digitos
-        v=v.replace(/(\d{3})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
-        return v
-    }
-    function icelular(v){
-        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
-        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
-        v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
-        return v
-    }
-    function mascara(o,f){
-        v_obj=o
-        v_fun=f
-        setTimeout("execmascara()",1)
-    }
-
-    function execmascara(){
-        v_obj.value=v_fun(v_obj.value)
-    }
-
-</script>
-
-
+        
+            function open_popup(url){
+                newwindow = window.open(url,'{{title}}', 'height = 400,width = 600');
+                if(window.focus) {newwindow.focus()}
+                return false;
+            }
+        
+            function data(v){
+                v=v.replace(/\D/g,"")                //Remove tudo o que nao e digito
+                v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                                                        //de novo (para o segundo bloco de numeros)
+                return v
+            }
+            function icpf(v){
+                v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                        //de novo (para o segundo bloco de numeros)
+                v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+                return v
+            }
+            function itelefone(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function icep(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/(\d{2})(\d)/,"$1.$2")    //Coloca hifen entre o quarto e o quinto digitos
+                v=v.replace(/(\d{3})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function icelular(v){
+                v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                return v
+            }
+            function mascara(o,f){
+                v_obj=o
+                v_fun=f
+                setTimeout("execmascara()",1)
+            }
+        
+            function execmascara(){
+                v_obj.value=v_fun(v_obj.value)
+            }
+            window.onload = function() {
+                        cpf=document.getElementById('cpf').value                        
+                        document.getElementById('cpf').value=cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/g, "$1.$2.$3-$4");
+                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                    };
+        
+        </script>    
 {% endblock %}

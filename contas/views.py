@@ -54,6 +54,7 @@ def cadastrar(request):
         ''' End reCAPTCHA validation '''
 
         #Se o reCAPTCHA garantir que o usuário é um robô
+        print(result)
         if result['success']:
             #Se o formulario estiver com as informações preenchidas corretamente
             if form.is_valid():
@@ -168,7 +169,8 @@ def cadastro(request):
     #Recupera as informações do usuário para preenchimento do Template
     user = request.user    
     usuario = Usuario.objects.get(user=user)
-    
+    validations={'nome': {'state': True}, 'cpf': {'state': True}, 'email': {'state': True},
+                 'celular': {'state': True}, 'telefone': {'state': True}}
     if request.method == 'POST':
         #Valida os dados preenchidos no formulario pelo cliente
         validations,valido=validarAlteraçãoUsuario(request.POST)
@@ -224,9 +226,10 @@ def cadastro(request):
         'estados': Estado.objects.all(),
         'cidades': Cidade.objects.filter(estado=Estado.objects.get(nome=usuario.cidade.estado)),
         'estado_': usuario.cidade.estado,
-        'cidade': usuario.cidade
+        'cidade': usuario.cidade,
+        'validation': validations
     }
-    return render(request, 'contas/cadastro2.html', context)
+    return render(request, 'contas/cadastro.html', context)
     # return render(request, 'contas/cadastro.html', { 'form': form })
 
 
@@ -312,8 +315,7 @@ def login_view(request):
         }
         r = requests.post('https://hcaptcha.com/siteverify', data=data)
         result = r.json()
-        ''' End hCAPTCHA validation '''
-
+        ''' End hCAPTCHA validation '''        
         #Se o hCAPTCHA garantir que o usuário é um robô
         if result['success']:
             username = request.POST['username']

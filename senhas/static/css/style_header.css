@@ -210,7 +210,26 @@ footer{
     }
 }
 
+#sobrepor{
+    position: fixed;
+    top: 200px;
+    left: 40%;
+}
+#mobile_show{
+    display: none;
+}
+#moble .d-flex{
+    display: none !important;
+}
+
 @media (max-width: 850px){
+    #mobile_hidden{
+        display: none;
+    }
+    #mobile_show{
+        display: flex;
+        flex-direction: column;
+    }
     #main .cards{
         width: 100%; 
         height: 280px;      
