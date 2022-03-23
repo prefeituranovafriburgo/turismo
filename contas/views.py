@@ -169,7 +169,8 @@ def cadastro(request):
     #Recupera as informações do usuário para preenchimento do Template
     user = request.user    
     usuario = Usuario.objects.get(user=user)
-    
+    validations={'nome': {'state': True}, 'cpf': {'state': True}, 'email': {'state': True},
+                 'celular': {'state': True}, 'telefone': {'state': True}}
     if request.method == 'POST':
         #Valida os dados preenchidos no formulario pelo cliente
         validations,valido=validarAlteraçãoUsuario(request.POST)
@@ -225,7 +226,8 @@ def cadastro(request):
         'estados': Estado.objects.all(),
         'cidades': Cidade.objects.filter(estado=Estado.objects.get(nome=usuario.cidade.estado)),
         'estado_': usuario.cidade.estado,
-        'cidade': usuario.cidade
+        'cidade': usuario.cidade,
+        'validation': validations
     }
     return render(request, 'contas/cadastro.html', context)
     # return render(request, 'contas/cadastro.html', { 'form': form })
