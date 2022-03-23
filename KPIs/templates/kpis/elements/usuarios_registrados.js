@@ -54,7 +54,8 @@ function drawBasic2() {
         title: ''
       },
       vAxis: {
-        title: ''
+        title: '',
+        format: '0'
       }, 
       series: {
         0: { color: '#6f9654' },
