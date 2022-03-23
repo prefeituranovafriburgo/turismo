@@ -54,6 +54,7 @@ def cadastrar(request):
         ''' End reCAPTCHA validation '''
 
         #Se o reCAPTCHA garantir que o usuário é um robô
+        print(result)
         if result['success']:
             #Se o formulario estiver com as informações preenchidas corretamente
             if form.is_valid():
@@ -313,7 +314,7 @@ def login_view(request):
         r = requests.post('https://hcaptcha.com/siteverify', data=data)
         result = r.json()
         ''' End hCAPTCHA validation '''
-
+        print(result)
         #Se o hCAPTCHA garantir que o usuário é um robô
         if result['success']:
             username = request.POST['username']
