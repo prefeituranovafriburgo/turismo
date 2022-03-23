@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'qr_code',
     'guias',
     'report',
-    'social_django'
+    'social_django',
+    'KPIs'
 ]
 
 MIDDLEWARE = [

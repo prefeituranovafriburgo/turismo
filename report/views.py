@@ -1,7 +1,8 @@
 from urllib import request
 from django.shortcuts import render
 from .models import ProblemasRelatados
-
+from django.contrib.auth.decorators import login_required
+from turismo.decorators import membro_secretaria_required, membro_fiscais_required
 def receberProblema(request):
     if request.method == 'POST':
         try:
@@ -16,7 +17,10 @@ def receberProblema(request):
         
     return render(request, 'report/index.html')
 
-def verProblemasRelatados(request):
+@login_required
+@membro_fiscais_required
+def verProblemasRelatados(request):    
+
     problemas=ProblemasRelatados.objects.all()
     context={
         'problemas': problemas

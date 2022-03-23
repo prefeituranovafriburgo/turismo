@@ -21,6 +21,7 @@ admin.site.site_title = "PREFEITURA MUNICIPAL DE NOVA FRIBURGO"
 
 urlpatterns = [
     path('', include('senhas.urls')),
+    path('kpi/', include('KPIs.urls')),
     path('contas/', include('contas.urls')),    
     path('guias/', include('guias.urls')),
     path('equipamentos/', include('equipamentos.urls')),
