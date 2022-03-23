@@ -227,7 +227,7 @@ def cadastro(request):
         'estado_': usuario.cidade.estado,
         'cidade': usuario.cidade
     }
-    return render(request, 'contas/cadastro2.html', context)
+    return render(request, 'contas/cadastro.html', context)
     # return render(request, 'contas/cadastro.html', { 'form': form })
 
 
