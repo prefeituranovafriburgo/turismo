@@ -17,10 +17,12 @@ function drawBasic0() {
       Width: '100%',
       height: 'auto',
       hAxis: {
-        title: ''
+        title: '',
+        format: '0'
       },
       vAxis: {
-        title: ''
+        title: '',
+        format: '0'
       }
     };
 
@@ -51,7 +53,8 @@ function drawBasic2() {
       Width: '100%',
       height: 'auto',
       hAxis: {
-        title: ''
+        title: '',
+        format: '0'
       },
       vAxis: {
         title: '',
