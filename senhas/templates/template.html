@@ -18,27 +18,22 @@
         <!-- FONTAWESOME -->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
         <!-- CUSTOM CSS -->
-        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">
-        
+        <link href="{% static 'css/style_header.css' %}" rel="stylesheet" type="text/css">        
         {% block css %}        
-        {% endblock %}
-        
+        {% endblock %}        
         <title>{% block title %}Turismo Nova Friburgo{% endblock %}</title>
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         {% block head %}
         {% endblock %}
+        <script language="JavaScript">
+            {% if messages %}
+                {% for message in messages %}
+                    alert("{{ message }}");
+                {% endfor %}
+            {% endif %}        
+        </script>
     </head>
-
-    <SCRIPT LANGUAGE="JavaScript">
-        {% if messages %}
-            {% for message in messages %}
-                alert("{{ message }}");
-            {% endfor %}
-        {% endif %}        
-    </script>
-    <body class="body">   
-         
+    <body class="body">            
         <div class="container-fluid h-100">            
             <div id="header" class="row no-print">
                 <div class="col">
@@ -56,10 +51,12 @@
                                 <span class="dropdown-toggle ml-3"></span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'contas:cadastro' %}"><i class="fas fa-users-cog mr-2"></i> Meu cadastro</a>
-                                <a class="dropdown-item" href="{% url 'contas:change_password' %}"><i class="fas fa-key mr-2"></i> Alterar senha</a>                                
-                                <a class="dropdown-item" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
-                                <span class="dropdown-item text-danger" id="btn-reportar" onclick="openReportar()"><i class="fas fa-comment-alt-exclamation mr-2"></i>Reportar Problema</span>
+                                {% if request.user.is_staff %}<a class="dropdown-item marcar" href="/admin"><i class="fas fa-tools mr-3"></i>Administração</a>{% endif %}                                
+                                {% if request.user.is_superuser %}<a class="dropdown-item marcar" href="/kpi"><i class="fas fa-chart-pie mr-3"></i>Indicadores</a>{% endif %}                                
+                                <a class="dropdown-item marcar" href="{% url 'contas:cadastro' %}"><i class="fas fa-users-cog mr-2"></i> Meu cadastro</a>
+                                <a class="dropdown-item marcar" href="{% url 'contas:change_password' %}"><i class="fas fa-key mr-3"></i>Alterar senha</a>                                
+                                <a class="dropdown-item marcar" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt mr-3"></i> Logout</a>
+                                <span class="dropdown-item text-danger" id="btn-reportar" onclick="openReportar()"><i class="fas fa-comment-alt-exclamation mr-3"></i>Reportar Problema</span>                                
                             </div>                                                                                                                 
                         {% endif %}
                     </div>

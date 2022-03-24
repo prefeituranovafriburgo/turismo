@@ -596,3 +596,7 @@ footer{
     display: none;    
     z-index: 1000;
 }
+
+.dropdown-menu .marcar:hover{
+    background-color: rgba(128, 128, 128, 0.37) !important;
+}
