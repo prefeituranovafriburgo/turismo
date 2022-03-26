@@ -1,4 +1,4 @@
-# Turismo
+# Controle de Turismo
 Gerador de senhas para controle de transporte turístico
 
 ## 1 - Instalação
