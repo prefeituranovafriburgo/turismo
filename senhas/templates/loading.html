@@ -1,0 +1,12 @@
+<!-- Loading CSS -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+<div id="loading" class="h-100 w-100">
+    <div class="lds-ring m-auto"><div></div><div></div><div></div><div></div></div>
+</div>
+<script>
+    window.onload = function (){
+        document.getElementById('loading').style.display='none'
+        document.body.style.overflow='auto'
+    }
+</script>

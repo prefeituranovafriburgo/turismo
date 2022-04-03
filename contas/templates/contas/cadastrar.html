@@ -1,8 +1,22 @@
 {% extends 'registration/head2.html' %}
-{% block conteudo %}   
+{% block conteudo %}  
+{% load static %}
+<link rel="preconnect" href="https://www.google.com">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
                     <h2>CADASTRO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
+                        {% if robo %}
+                            <div class="row px-2">
+                                <div class="col d-flex bg-danger  px-5 py-2 rounded mb-3">
+                                    <div class="mx-auto text-white ">
+                                        Não aceitamos robôs por aqui.
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         <div class="form-row">
                             <div class="form-group col-md-3">            
                                 <label for="id_nome">Nome:</label>
@@ -77,13 +91,27 @@
                                 </div> 
                             </div>
                         </div>
-                        <div class="form-row">                            
-
+                        <div class="form-row d-flex flex-column">  
+                            
+                            <div class="d-flex flex-wrap">
+                                <!-- <div class="mx-auto my-3">
+                                    <a href="{% url 'social:begin' 'facebook' %}" style="cursor: pointer;width: 300px; height: 77px; background-color: blue; border-color: blue; color: white; font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
+                                        <i class="fab fa-2x fa-facebook mr-3 m-auto"></i><span class="m-auto">Cadastrar com Facebook</span>
+                                    </a>
+                                </div>
+                                <div class="mx-auto my-3">
+                                    <a href="{% url 'social:begin' 'google-oauth2' %}" style="cursor: pointer;width: 300px; height: 77px; background-color: rgb(255, 255, 255); border-color: rgba(0, 0, 0, 0.384); color: rgb(37, 37, 37); font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
+                                        <img style="margin: auto; height: 60px;" src="{% static 'images/google.jpg' %}" alt=""><span class="m-auto">Cadastrar com Google</span>
+                                    </a>
+                                </div> -->
+                                <div class="h-captcha m-auto" data-sitekey="{{hCAPTCHA}}"></div>                               
+                            </div>                        
                         </table>    
                         <button class="btn btn-primary" type="submit">
                             Cadastrar
                         </button>
 
                     </form>
-                    <a href="{% url 'login' %}">Voltar</a>                    
+                    <a href="{% url 'login' %}">Voltar</a>                                          
+                </script>                  
                 {% endblock %}

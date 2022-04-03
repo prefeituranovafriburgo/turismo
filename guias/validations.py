@@ -1,27 +1,25 @@
 import re 
-from contas.functions import validateCadastur, validateTelefone
+from contas.functions import validateCadastur, validateCelular, validateEMAIL, validateNOME, validateTelefone
 
 def validar_cadastro_guia(request):
     validation={}
-    validation['nome']=validar_nome(request['nome'])
-    validation['cadastur']=validateCadastur([request['cadastur']])
-    validation['telefone']=validateTelefone([request['telefone']])
-    validation['email']=validar_email(request['email'])
-    print(validation)
+    validation['nome']=validateNOME(request['nome'])
+    validation['cadastur']=validateCadastur(request['cadastur'])
+    validation['telefone']=validateTelefone(request['telefone'])
+    validation['email']=validateEMAIL(request['email'])
     for i in validation:
-        if validation[i]['state']==True:
-            print(i)
+        if validation[i]['state']==False:
             return False, validation
     return True, validation
     
 
 def validar_nome(str):
     if all(char.isalpha() or char.isspace() for char in str):
-        return {'state': False, 'msg':''}
-    return {'state': True, 'msg': 'Nome inválido.'}
+        return {'state': True, 'msg':''}
+    return {'state': False, 'msg': 'Nome inválido.'}
 
 def validar_email(email):
     regex=re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
     if re.fullmatch(regex, email):
-       return {'state': False, 'msg':''}
-    return {'state': True, 'msg': 'Email inválido.'}
+       return {'state': True, 'msg':''}
+    return {'state': False, 'msg': 'Email inválido.'}

@@ -1,14 +1,15 @@
-{% extends "cab.html" %}
+{% extends "template.html" %}
 {% load static %}
 {% block css %}
 {% endblock %}
 {% block cab %}          
+{% include 'loading.html' %}
             <div id="menu_transporte" onclick="closePopUp()">
                 <div class="col d-flex">                                           
                     <div class="row mx-auto cards">
                         <div id="card-ponto" class="ml-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
                             <div class="card-context card">                                
-                                <span class="btn btn-light">TRANSPORTE PARA <br>EXCURSÕES TURÍSTICAS</span>
+                                <span class="btn btn-light">GRUPO PARA <br>TURISMO E COMPRAS</span>
                                 <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
@@ -16,7 +17,7 @@
                         </div>
                         <div id="card-bus" class="mr-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
                             <div class="card-context card">                                
-                                <span class="btn btn-light">Transporte exclusivo <br>para REALIZAR Compras</span>
+                                <span class="btn btn-light">GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
                                 <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
@@ -25,7 +26,25 @@
                     </div>                    
                 </div>
             </div>
-            <div id="main" class="row w-100">
+            <div id="menu_transporte_mobile" onclick="closePopUpMobile()">
+                <div class="col d-flex flex-column mobile m-auto">                                           
+                    <div id="menu-cadastro" class="col">
+                        <div class="row">
+                            <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                                <div class="context">
+                                    <div>GRUPO PARA<br> TURISMO E COMPRAS</div>
+                                </div>
+                            </div>   
+                            <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                                <div class="context">
+                                    <div>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</div>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>       
+                </div>
+            </div>
+            <div id="main" class="row w-100 hidden">
                 <div class="container pt-5 mt-5">
                     <div class="row">
                         <div class="col">
@@ -49,11 +68,11 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Senha</th>
-                                <th class="text-center">Dt. Chegada</th>
-                                <th class="text-center">Dt. Saída</th>
+                                <th class="text-center">Data Chegada</th>
+                                <th class="text-center">Data Saída</th>
                                 <th class="text-center">Veículo</th>
-                                <th class="text-center">Dt. Inclusão</th>
-                                <th></th>
+                                <th class="text-center">Data Inclusão</th>
+                                <th class="text-center">Visualizar/Editar</th>
                             </tr>
                         </thead>
                 
@@ -74,7 +93,7 @@
                                     <td class="text-center">{{ v.tipo_veiculo }}</td>
                                     <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="fas fa-edit m-auto"></i></a>
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-eye m-auto"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -83,14 +102,22 @@
                 
                     </table>
                 </div>
-            </div>                   
-        </div>
+            </div>  
+            {% include 'senhas/for_mobile/cad_transporte.html' %}
         <script>
             function openPopUp(){
                 document.getElementById("menu_transporte").style.display='flex'
             }
             function closePopUp(){
                 document.getElementById("menu_transporte").style.display='none'
+            }
+            function openPopUpMobile(){
+                document.getElementById("menu_transporte_mobile").style.display='flex'
+                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-danger d-flex py-2' onclick='closePopUpMobile()' role='button' style='color: white'><i class='fas fa-minus-circle'></i></button>"
+            }
+            function closePopUpMobile(){
+                document.getElementById("menu_transporte_mobile").style.display='none'
+                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-primary d-flex py-2' onclick='openPopUpMobile()' role='button'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle-fill m-auto' viewBox='0 0 16 16'><path d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z'/></svg></button>"
             }
         </script>   
 {% endblock %}

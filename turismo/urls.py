@@ -15,15 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from contas.views import login_view
 admin.site.site_header = "SECRETARIA MUNICIPAL DE TURISMO E MARKETING"
 admin.site.site_title = "PREFEITURA MUNICIPAL DE NOVA FRIBURGO"
 
 urlpatterns = [
     path('', include('senhas.urls')),
-    path('contas/', include('contas.urls')),
+    path('kpi/', include('KPIs.urls')),
+    path('contas/', include('contas.urls')),    
     path('guias/', include('guias.urls')),
     path('equipamentos/', include('equipamentos.urls')),
+    path('report/', include('report.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('login/',login_view, name='login'),
+    path('social-auth/', include('social_django.urls', namespace='social-auth')),
 ]

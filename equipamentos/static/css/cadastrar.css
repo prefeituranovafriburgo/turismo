@@ -20,15 +20,16 @@ html, body{
     margin: auto auto 1px auto;
     background-color: #ffffff;
     border-radius: 10px 10px 0px 0px;
-    padding: 20px 0px;
+    padding: 10px 0px;
     width: 94%;
+    box-shadow: 5px 5px 5px rgba(80, 80, 80, 0.678);   
 }
 #header .col{
     display: flex;
 }
 #header img{
     width: auto;
-    max-height: 150px;    
+    max-height: 120px;    
 }
 
 #login-screen{
@@ -40,7 +41,8 @@ html, body{
     background-color: white;
     border-radius: 0px 0px 10px 10px;
     width: 94%;    
-    padding: 50px 150px;
+    padding: 40px 150px;
+    box-shadow: 5px 5px 5px rgba(80, 80, 80, 0.678);   
 }
 
 #login-screen img{ 
@@ -109,9 +111,11 @@ html, body{
     }
     #header{
         width: 90%;
+        min-width: 460px;
     }
     #login-screen{
         width: 90%;
         padding: 50px 20%;
+        min-width: 460px;
     }
 }

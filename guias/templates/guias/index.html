@@ -1,4 +1,4 @@
-{% extends 'cab.html' %}
+{% extends 'template.html' %}
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/print_guias.css' %}">
@@ -34,7 +34,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                         <div class="descritivo">                
                             <div class="row">
                                 <div class="col nome">
-                                    <b>{{guia.nome}}</b>                        
+                                    <b class="text-uppercase">{{guia.nome}}</b>                        
                                     <!-- <b>Luis Eduardo Cordeiro Salarini</b> -->
                                 </div>  
                             </div>
@@ -58,12 +58,12 @@ Guias Turisticos Receptivo - Nova Friburgo
                                 <div class="">
                                     <div class="redes">
                                         <div class="mr-3">
-                                            <span><b class="mr-1">Instagram:</b>@esalarini</span>
-                                            <span><b class="mr-1">Facebook:</b>@esalarini</span>
+                                            <span><b class="mr-1">Instagram:</b>{{guia.instagram}}</span>
+                                            <span><b class="mr-1">Facebook:</b>{{guia.facebook}}</span>
                                         </div>
                                         <div>
-                                            <span><b class="mr-1">LinkedIn:</b>@esalarini</span>
-                                            <span><b class="mr-1">Website:</b>esalarini.com</span>
+                                            <span><b class="mr-1">LinkedIn:</b></span>
+                                            <span><b class="mr-1">Website:</b>{{guia.site}}</span>
                                         </div>
                                         <!-- <img src="{% static 'images/icones-redes-sociais/facebook.png' %}" alt="">
                                         <img src="{% static 'images/icones-redes-sociais/instagram.png' %}" alt="">
@@ -98,7 +98,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                                                     {{categoria}}
                                                 {% else %}
                                                     {% if  forloop.last %}
-                                                        e {{categoria}}.
+                                                        E {{categoria}}.
                                                     {%else%}
                                                         , {{categoria}}
                                                     {% endif %} 
@@ -121,7 +121,7 @@ Guias Turisticos Receptivo - Nova Friburgo
                                         {{categoria}}
                                     {% else %}
                                         {% if  forloop.last %}
-                                            e {{categoria}}.
+                                            E {{categoria}}.
                                         {%else%}
                                             , {{categoria}}
                                         {% endif %} 

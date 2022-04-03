@@ -21,7 +21,7 @@
                 flex-direction: row;
             }
             .watermark {
-                padding-top: 60px;
+                padding-top: 10px;
                 width: 800px;
                 height: 800px;
                 display: block;
@@ -48,9 +48,9 @@
                 z-index: -2;                
               } */
               table{
-                  font-size: 16pt;
+                  font-size: 20pt;
                   width: 650px;
-                  padding-top: 100px;
+                  padding-top: 20px;
               }
               table th{
                   width: 400px;
@@ -58,6 +58,9 @@
               table th, td{
                   height: 20pt; 
                   border-bottom: 1px solid rgba(0, 0, 0, 0.131);                  
+              }
+              table tr{
+                  line-height: 50px;
               }
               table, tr, td, th{
                   /* background: none !important; */
@@ -101,41 +104,64 @@
               .bg{
                   background-color: aqua;
               }
+              .display-1{
+                  font-size: 90pt !important;
+              }
     </style>
 </head>
 <body>
     <div class="row ">
         <div class="col">
-            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>
+            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>            
         </div>
     </div>
     <br>
     <div class="m-auto">
         <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt="">
         <div class="watermark m-auto">
-                
             <div class="row">
-                <div id="datas" class="col d-flex">
-                    <div>Data de entrada: <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span></div><br>
-                    <div>Data de saída: <br><span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span></div>
-                </div>
                 <div class="col">
                     <div id="senha-de-acesso">
                         <div>
-                         <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->
-                         {% load qr_code %}
-                         <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
-                         <h1 class="text-center">{{ viagem.senha}}/22NF</h1>
+                         <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->                         
+                         <h1 class="text-center display-1">{{ viagem.senha}}/22NF</h1>
                          
                         </div>
                      </div>     
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    {% load qr_code %}
+                         <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
+                </div>
+            </div>
+            <div class="row">
+                <div id="datas" class="col">
+                    <div class="row">
+                        <div class="col d-flex">
+                            <div>Data de entrada:</div>
+                            <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span>
+                        </div>
+                        <div class="col d-flex">
+                            <div>Data de saída:</div>
+                            <span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span>
+                        </div>
+                    </div>
+                </div>                
+            </div>
                            
             
            
             <table class="table table-borderless bg-none m-auto">
-                
+                <tr>
+                    <th class="text-left">Nome do responsável</th>
+                    <td>{{ viagem.responsavel_viagem }}</td>
+                </tr>  
+                <tr>
+                    <th class="text-left">Contato do Responsável</th>
+                    <td>{{ viagem.contato_responsavel }}</td>
+                </tr>  
                 <tr>
                     <th class="text-left">Empresa de Transporte</th>
                     <td>{{ viagem.empresa_transporte }}</td>
@@ -170,25 +196,11 @@
                     <th class="text-left">Cadastur do Guia:</th>
                     <td>{{ viagem_turismo.cadastur_guia }}</td>
                 </tr>
-                <tr>
-                    <th class="text-left">Celular do Guia:</th>
-                    <td id="celular">{{ viagem_turismo.celular }}</td>
-                </tr>
-                <tr>
-                    <th class="text-left">Telefone do Guia:</th>
-                    <td id="telefone">{{ viagem_turismo.telefone }}</td>
-                </tr>
-                <tr>
-                    <th class="text-left">Pontos Turísticos:</th>
-                    <td>{%for ponto_turistico in pontos_turisticos %} 
-                            <span class="ponto" id="ponto-{{forloop.counter}}">{{ ponto_turistico }}</span>                                                        
-                        {% endfor %}</td>
-                </tr>
                 {% endif %}
             </table>            
             <div class="row">
                 <div class="col">
-                    <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>    
+                    <!-- <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>     -->
                 </div>
             </div>
         </div>        

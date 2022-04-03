@@ -1,0 +1,84 @@
+{% extends "template.html" %}
+{% load static %}
+{% block head %}
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {packages: ['corechart', 'bar', 'line']});
+  {% include 'kpis/elements/usuarios_registrados.js' %}
+  {% include 'kpis/elements/viagens_registradas_totais.js' %}
+  {% include 'kpis/elements/viagens_registradas_origens.js' %}    
+  {% include 'kpis/elements/viagens_registradas_pontos_turisticos.js' %}    
+</script>
+{% endblock %}
+{% block cab %}
+<section class="w-100 h-100 pb-4">
+    <div class="w-100 p-4 d-flex justify-content-evenly align-content-around  flex-wrap ">        
+        <div class="kpi text-center boder rounded">
+            <div class="kpi-title rounded">
+                <span class="px-5">USUÁRIOS REGISTRADOS</span>            
+            </div>
+            <div id="chart_div_usuarios" class=""></div>
+            <div id="chart_div_usuarios_anual" class=""></div>
+        </div>
+        <div class="kpi text-center border rounded">
+            <div class="kpi-title rounded">
+                <span class="px-5">VIAGENS REGISTRADAS</span>            
+            </div>
+            <div class="w-100 d-flex pb-5 flex-wrap">
+                <div id="chart_div_viagens" class="mt-4 mx-auto"></div>
+                <div id="chart_div_origens" class="mt-4 mx-auto"></div>
+                <div id="chart_div_pontos_turisticos" class="mt-4 mx-auto"></div>
+            </div>
+        </div>                
+    </div>    
+    <div class="w-100 p-4 d-flex flex-column flex-wrap ">        
+        <h1>Anotações</h1>
+        <ul>
+            <li><b>Usuarios Registrados</b></li>
+            <li style="list-style: none;">Total de usuários (Criar model com o quantitativo e uma view que valide com a model User quando solicitado ou periodicamente)</li>
+            <li style="list-style: none;">Quantidade de usuários criados por rede social (Criar uma rota que recebe o cadastro por rede social e contabilize)</li>
+            <li><b>Viagens Registradas</b></li>
+            <li style="list-style: none;">Pontos Turisticos não mapeados registrados</li>
+            <li style="list-style: none;">Viagens que vão acontecer</li>
+            <li style="list-style: none;">Viagens realizadas</li>
+            <li style="list-style: none;">Viagens canceladas</li>
+            <li><b>Guias</b></li>
+            <li><b>Quantificação das visitas</b></li>
+            <li style="list-style: none;">Visitar únicas diárias, semanais e mensais.</li>
+        </ul>
+    </div>
+</section>
+<style>
+    .kpi{
+        margin: auto;
+        margin-bottom: 20px;
+        height: 100%;
+        width: 100%;
+    }
+    .kpi-title{
+        display: flex;
+        flex-wrap: wrap;
+        color: white;
+        vertical-align: center;
+        background-color: rgb(29, 28, 28) !important;
+        border: 1px solid black;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        box-shadow: 2px 4px 4px rgba(51, 50, 50, 0.123);   
+        text-align: center;           
+    }
+    .kpi-title span{        
+        margin: auto;
+        padding: 15px 0;
+    }
+    .border{        
+        border-color: rgba(0, 0, 0, 0.096) !important;
+        border-right-color: rgba(65, 64, 64, 0.151) !important;                
+        border-left-color: rgba(80, 79, 79, 0.13) !important;  
+        box-shadow: 2px 4px 4px rgba(51, 50, 50, 0.123);              
+    }
+           
+
+</style>
+{% endblock %}

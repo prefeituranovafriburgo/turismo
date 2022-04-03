@@ -62,6 +62,8 @@ class Viagem(models.Model):
     def __str__(self):
         return '%s - %s - %s' % (self.user, self.dt_Chegada, self.dt_Saida)
 
+    responsavel_viagem=models.CharField(max_length=120, default=None)
+    contato_responsavel=models.CharField(max_length=18, default=None)
     senha=models.CharField(max_length=10, blank=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     dt_Chegada = models.DateField('Data Chegada')
@@ -74,7 +76,7 @@ class Viagem(models.Model):
     quant_passageiros = models.PositiveSmallIntegerField()
     empresa_transporte = models.CharField(max_length=120)
     cnpj_empresa_transporte = models.CharField(max_length=14, validators=[validate_CNPJ])
-    cadastur_empresa_transporte = models.CharField(max_length=14)
+    cadastur_empresa_transporte = models.CharField(max_length=18)
     obs = models.TextField(max_length=2000, verbose_name='Observação', blank=True, null=True)
     estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
     cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)

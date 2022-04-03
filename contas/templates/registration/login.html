@@ -3,14 +3,20 @@
 {% load static %}
 
 {% block conteudo %}
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <div id="login-screen">    
-    <h2>LOGIN</h2>
+    <h3>LOGIN</h3>
     <form action="." method="post">
         {% csrf_token %}
         
-        {% if form.errors %}
+        {% if error %}
         <div class="form-group p-3 mb-2 bg-danger text-white rounded">
         Por favor, entre com um usuário e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.                    
+        </div>
+        {% endif %}
+        {% if error2 %}
+        <div class="form-group p-3 mb-2 bg-danger text-white rounded text-center">
+            Não aceitamos robôs por aqui. 
         </div>
         {% endif %}
             <div class="form-group">
@@ -21,7 +27,10 @@
             <div class="form-group">
                 <label for="id_password">Senha:</label>
                 <input class="form-control" type="password" name="password" autocomplete="current-password" required id="id_password">
-            </div>        
+            </div>   
+            <div class="form-row d-flex flex-column">                                  
+                <div class="h-captcha m-auto" data-sitekey="{{hCAPTCHA}}"></div>                               
+            </div>
         <button class="btn btn-primary" type="submit">
             Entrar
         </button>
@@ -30,4 +39,12 @@
     <a href="{% url 'contas:password_reset' %}">Esqueci minha senha</a>
     <a href="{% url 'contas:cadastrar' %}">Quero me cadastrar</a>
 </div>
+<style>
+        .btn:focus{            
+            box-shadow:0 0 0 0.2rem rgba(78, 78, 78, 0.25) !important;            
+        }
+        .btn-primarry:focus{
+            box-shadow:0 0 0 0.2rem rgba(78, 78, 78, 0.25) !important;            
+        }
+</style>
 {% endblock %}
