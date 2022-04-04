@@ -384,7 +384,7 @@ def cad_acesso_ponto(request):
 def gera_senha(request, id):
 
     viagem = Viagem.objects.get(senha=id)
-    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/' + str(id)+'/22NF'
+    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + str(id)+'/22NF'
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
