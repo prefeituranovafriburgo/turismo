@@ -13,6 +13,8 @@ import time
 import pickle
 from datetime import date, timedelta
 
+from turismo.decorators import membro_secretaria_required, membro_fiscais_required
+
 @login_required
 def inicio(request):
     return render(request, 'senhas/index.html')
@@ -222,6 +224,7 @@ def viagem(request, id):
         return redirect('senhas:cad_transporte')
     return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
 
+@membro_fiscais_required
 def fiscalizar_viagem(request, id):
     viagem = Viagem.objects.get(senha=id)
     try:
@@ -381,7 +384,7 @@ def cad_acesso_ponto(request):
 def gera_senha(request, id):
 
     viagem = Viagem.objects.get(senha=id)
-    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/' + str(id)+'/22NF'
+    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + str(id)+'/22NF'
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
