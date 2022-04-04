@@ -219,7 +219,7 @@ def viagem(request, id):
         viagem_turismo = None
         pontos_turisticos= None
     if not viagem.user == request.user:
-        return redirect('cad_transporte')
+        return redirect('senhas:cad_transporte')
     return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
 
 def fiscalizar_viagem(request, id):
