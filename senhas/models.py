@@ -96,7 +96,7 @@ class Viagem_Turismo(models.Model):
     viagem = models.OneToOneField(Viagem, on_delete=models.CASCADE)
     outros = models.CharField(default='', max_length=120, blank=True)
     nome_guia = models.CharField(max_length=60)
-    cadastur_guia = models.CharField(max_length=14)
+    cadastur_guia = models.CharField(max_length=18)
     celular = models.CharField(max_length=18)
     telefone = models.CharField(max_length=18, blank=True, null=True)
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
