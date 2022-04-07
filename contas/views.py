@@ -80,11 +80,13 @@ def cadastrar(request):
                     )
                     try:
                         usuario.save()
-                        log=LogEntry(user=User.objects.get(username='sistema', object_id=usuario.id, object_repr=usuario, action_flag=1, content_type=ContentType.objects.get(id=8)))
-                        log.save()
+                        messages.success(request, 'Cadastro criado.')
+                        #log=LogEntry(user=User.objects.get(username='sistema', object_id=usuario.id, object_repr=usuario, action_flag=1, content_type=ContentType.objects.get(id=8)))
+                        #log.save()
                     except Exception as e:
+                        messages.success(request, 'Um erro ocorreu. Informe a secretária com data e hora do erro, por favor.')
                         print(e)
-                    messages.success(request, 'Cadastro criado.')
+                    
                     return redirect('/')
 
                 except Exception as e:
@@ -196,15 +198,15 @@ def cadastro(request):
                     user.save()
                     usuario.save()
                     messages.success(request, "Cadastro alterado.")
-                    change_message=json.dumps('Alterado email/usuario, nome, cpf, celular, telefone e cidade/estado ')                    
-                    log=LogEntry(user=User.objects.get(username=request.user), 
-                                object_id=usuario.id, 
-                                object_repr=usuario,
-                                action_flag=2,
-                                change_message=[json.loads(change_message)],
-                                content_type=ContentType.objects.get(id=8)
-                                )
-                    log.save()
+                    #change_message=json.dumps('Alterado email/usuario, nome, cpf, celular, telefone e cidade/estado ')                    
+                    #log=LogEntry(user=User.objects.get(username=request.user), 
+                    #            object_id=usuario.id, 
+                    #            object_repr=usuario,
+                    #            action_flag=2,
+                    #            change_message=[json.loads(change_message)],
+                    #            content_type=ContentType.objects.get(id=8)
+                    #            )
+                    #log.save()
                 except Exception as e:
                     print(e)
                 

@@ -94,7 +94,7 @@ class Viagem_Turismo(models.Model):
         return '%s' % (self.viagem)
 
     viagem = models.OneToOneField(Viagem, on_delete=models.CASCADE)
-    outros = models.CharField(default='', max_length=60, blank=True)
+    outros = models.CharField(default='', max_length=120, blank=True)
     nome_guia = models.CharField(max_length=60)
     cadastur_guia = models.CharField(max_length=14)
     celular = models.CharField(max_length=18)
