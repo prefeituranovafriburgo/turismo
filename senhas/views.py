@@ -412,8 +412,8 @@ def gera_senha_to_html(request, id):
 
 def gera_senha_to_pdf(request, id):
     try:
-        url_pdf='/home/turismo/site/turismo/senhas/static/pdf/pdf/'+id+'.pdf'    
-        pdfkit.from_url('http://localhost:8000/gera_senha_html/'+id+'/22NF', url_pdf)        
+        url_pdf='/home/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'    
+        pdfkit.from_url('https://senhas.novafriburgo.rj.gov.br/gera_senha_html/'+id+'/22NF', url_pdf)        
         context={
             'pdf': url_pdf 
         }
@@ -424,4 +424,4 @@ def gera_senha_to_pdf(request, id):
             raise Http404()
     except Exception as E:
         print(E)
-        redirect('senhas:cad_transporte')
+        return redirect('senhas:cad_transporte')
