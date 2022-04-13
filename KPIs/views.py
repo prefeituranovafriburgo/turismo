@@ -25,7 +25,10 @@ def index(request):
            '#00aeff', '#0050ff']
     for i in cidades_contadas:
         cidade=Cidade.objects.get(id=i['cidade_origem'])
-        date_cidades.append({'nome': cidade.nome + ' - ' + cidade.estado.uf, 'qnt':i['total'], 'cor': cores.pop()})
+        try:
+            date_cidades.append({'nome': cidade.nome + ' - ' + cidade.estado.uf, 'qnt':i['total'], 'cor': cores.pop()})
+        except:
+            date_cidades.append({'nome': cidade.nome + ' - ' + cidade.estado.uf, 'qnt':i['total'], 'cor': 'silver'})
 
     # print(date_cidades)
     context={
