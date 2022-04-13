@@ -12,7 +12,8 @@ function drawBasicOrigens() {
       var options = {
         legend: 'none',
         title: 'Principais origens registradas',        
-
+        Width: '100%',
+        height: 'auto',
         hAxis: {
           title: '',
           minValue: 0
