@@ -14,27 +14,36 @@
 {% block cab %}
 <section class="w-100 h-100 pb-4">
     <div class="w-100 p-4 d-flex justify-content-evenly align-content-around  flex-wrap ">        
-        <div class="kpi text-center boder rounded">
+        <!-- <div class="kpi text-center boder rounded">
             <div class="kpi-title rounded">
                 <span class="px-5">USUÁRIOS REGISTRADOS</span>            
             </div>
             <p class="text-left mt-3">Total de usuários registrados até o momento: <b>{{total_usuarios}}</b></p>
             <code>Gráfico em desenvolvimento.</code>
-            <!-- <div id="chart_div_usuarios" class=""></div> -->
-            <!-- <div id="chart_div_usuarios_anual" class=""></div> -->
-        </div>
+            <div id="chart_div_usuarios" class=""></div>
+            <div id="chart_div_usuarios_anual" class=""></div> 
+        </div> -->
         <div class="kpi text-center border rounded">
             <div class="kpi-title rounded">
                 <span class="px-5">VIAGENS REGISTRADAS</span>            
             </div>
             <div class="w-100 d-flex pb-5 flex-wrap">
-                <div id="chart_div_viagens" class="m-auto"></div>                
+                <div class="col pt-4">
+                    <h4>Total de {{total_viagens}} viagens registradas:</h4>
+                    <div id="chart_div_viagens"></div> 
+                </div>
+                <div class="col pt-4">
+                    <h4>Total de usuários registrados:</h4>
+                    <h1 class="display-1 mt-5" style="font-size: 15vw;">{{total_usuarios}}</h1>
+
+                </div>
+                               
             
                 <!-- <div id="chart_div_pontos_turisticos" class="mt-4 mx-auto"></div> -->
             </div>
             <hr>
             <div class="w-100 d-flex pb-5 flex-wrap px-4 h-100">
-                <div id="chart_div_origens" class=" w-100 h-100"></div>
+                <div id="chart_div_origens" class="w-100 h-100"></div>
             </div>
         </div>                
     </div>    
