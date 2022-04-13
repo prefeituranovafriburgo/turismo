@@ -52,7 +52,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if request.user.is_staff %}<a class="dropdown-item marcar" href="/admin"><i class="fas fa-tools mr-3"></i>Administração</a>{% endif %}                                
-                                {% if request.user.is_superuser %}<a class="dropdown-item marcar" href="/kpi"><i class="fas fa-chart-pie mr-3"></i>Indicadores</a>{% endif %}                                
+                                {% if request.user.is_staff %}<a class="dropdown-item marcar" href="/kpi"><i class="fas fa-chart-pie mr-3"></i>Indicadores</a>{% endif %}                                
                                 <a class="dropdown-item marcar" href="{% url 'contas:cadastro' %}"><i class="fas fa-users-cog mr-2"></i> Meu cadastro</a>
                                 <a class="dropdown-item marcar" href="{% url 'contas:change_password' %}"><i class="fas fa-key mr-3"></i>Alterar senha</a>                                
                                 <a class="dropdown-item marcar" href="{% url 'contas:sair' %}"><i class="fas fa-sign-out-alt mr-3"></i> Logout</a>
