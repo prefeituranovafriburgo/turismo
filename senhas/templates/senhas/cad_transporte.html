@@ -72,7 +72,7 @@
                                 <th class="text-center">Data Saída</th>
                                 <th class="text-center">Veículo</th>
                                 <th class="text-center">Data Inclusão</th>
-                                <th class="text-center">Visualizar/Editar</th>
+                                <th class="text-center">Editar/Apagar</th>
                             </tr>
                         </thead>
                 
@@ -93,7 +93,7 @@
                                     <td class="text-center">{{ v.tipo_veiculo }}</td>
                                     <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-eye m-auto"></i></a>
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-cog m-auto"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
