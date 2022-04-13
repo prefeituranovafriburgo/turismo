@@ -14,5 +14,6 @@ urlpatterns = [
     path('viagem/fiscalizar/<str:id>/22NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),
     path('viagem_altera/<str:id>', views.viagem_altera, name='viagem_altera'),
     #
-    path('gera_senha/<str:id>/22NF', views.gera_senha, name='gera_senha'),
+    path('gera_senha_html/<str:id>/22NF', views.gera_senha_to_html, name='gera_senha_html'),
+    path('gera_senha_pdf/<str:id>/22NF', views.gera_senha_to_pdf, name='gera_senha'),
 ]

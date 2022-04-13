@@ -1,3 +1,4 @@
+from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,13 +7,14 @@ from contas.functions import validationsViagem
 from contas.views import sair
 from contas.models import Estado, Cidade
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
+from turismo.settings import BASE_DIR
 from .models import Pontos_Turisticos
 from .forms import ViagemForm
 from .functions import get_random_string
 import time
 import pickle
 from datetime import date, timedelta
-
+import pdfkit
 from turismo.decorators import membro_secretaria_required, membro_fiscais_required
 
 @login_required
@@ -380,8 +382,7 @@ def cad_acesso_ponto(request):
     return render(request, 'senhas/cad_acesso_ponto.html')
 
 
-@login_required
-def gera_senha(request, id):
+def gera_senha_to_html(request, id):
 
     viagem = Viagem.objects.get(senha=id)
     endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + str(id)+'/22NF'
@@ -408,3 +409,15 @@ def gera_senha(request, id):
         'endereco': endereco}
     
     return render(request, 'senhas/gera_senha.html', context)
+
+def gera_senha_to_pdf(request, id):
+
+    url_pdf='./senhas/static/pdf/'+id+'.pdf'    
+    pdfkit.from_url('http://localhost:8000/gera_senha_html/'+id+'/22NF', url_pdf)
+    context={
+        'pdf': url_pdf 
+    }
+    try:
+        return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
+    except FileNotFoundError:
+        raise Http404()
