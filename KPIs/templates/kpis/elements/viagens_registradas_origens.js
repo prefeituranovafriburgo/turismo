@@ -13,7 +13,7 @@ function drawBasicOrigens() {
         legend: 'none',
         title: 'Principais origens registradas',        
         Width: '100%',
-        height: '100%',
+        height: 800,
         chartArea: {width: '100%'},
         hAxis: {
           title: '',
