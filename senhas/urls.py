@@ -11,6 +11,7 @@ urlpatterns = [
     path('cad_acesso_ponto/', views.cad_acesso_ponto, name='cad_acesso_ponto'),
     path('cad_viagem/<str:tipo>', views.viagem_inclui, name='viagem_inclui'),
     path('viagem/<str:id>/22NF', views.viagem, name='viagem'),
+    path('viagem/excluir/<str:id>/22NF', views.excluir_viagem, name='excluir_senha'),
     path('viagem/fiscalizar/<str:id>/22NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),
     path('viagem_altera/<str:id>', views.viagem_altera, name='viagem_altera'),
     #

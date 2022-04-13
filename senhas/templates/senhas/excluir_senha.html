@@ -1,0 +1,81 @@
+{% extends "template.html" %}
+
+{% load template_filters %}
+
+{% load static %}
+
+{% block cab %}
+<br>
+<div class="container">
+
+    <div class="row hidden">
+        <div class="col">
+            <h3 class="text-uppercase">Excluir viagem <b>{{viagem.senha}}</b></h3>
+        </div>
+        {% if viagem.user == request.user %}
+        <div class="col text-right">
+            <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-warning" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Voltar
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+    {% include 'senhas/for_mobile/viagem.html' %}
+    <table  class="table table-striped table-bordered">
+
+        <tr>
+            <th>Dt. Chegada</th>
+            <td>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</td>
+        </tr>
+        <tr>
+            <th>Dt. Saída</th>
+            <td>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</td>
+        </tr>
+        <tr>
+            <th>Empresa de Transporte</th>
+            <td>{{ viagem.empresa_transporte }}</td>
+        </tr>
+        <tr>
+            <th>Dt. Inclusão</th>
+            <td>{{ viagem.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
+        </tr>
+    </table>
+
+    <div class="row">
+        <div class="col py-4">
+            <h4 class="bolder text-center">Você tem certeza que deseja cancelar essa viagem?</h4>            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <form method="POST">
+                {% csrf_token %}
+                <button class="btn btn-danger bolder">Sim, eu desejo cancelar/excluir essa viagem.</button>
+            </form>
+        </div>
+    </div>
+    <!-- <div class="row">
+
+        <div class="col">
+            <a href="{% url 'senhas:gera_senha' viagem.id %}" class="btn btn-primary" role="button" target="_blank">
+                Gera Senha
+            </a>
+        </div>
+
+        <div class="col text-right">
+            <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-primary" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Volta
+            </a>
+        </div>
+    </div> -->
+
+</div>
+
+{% endblock %}

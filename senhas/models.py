@@ -81,6 +81,7 @@ class Viagem(models.Model):
     estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
     cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    ativo=models.BooleanField(default=True)
 
 
 class Viagem_Turismo(models.Model):
