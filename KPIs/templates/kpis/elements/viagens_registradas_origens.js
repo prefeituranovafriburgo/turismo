@@ -3,14 +3,16 @@ google.charts.setOnLoadCallback(drawBasicOrigens);
 function drawBasicOrigens() {
 
       var data = google.visualization.arrayToDataTable([
-        ['Origens', 'Registros',],
-        ['Nova Friburgo, RJ', 8175000],
+        ['Origens', 'Registros', {role: 'style'}],
+        {% for cidade in date_cidades %}
+        ['{{cidade.nome}}', {{cidade.qnt}}, 'silver'],
+        {% endfor %}
       ]);
 
       var options = {
         legend: 'none',
         title: 'Principais origens registradas',        
-        chartArea: {width: '50%'},
+
         hAxis: {
           title: '',
           minValue: 0
