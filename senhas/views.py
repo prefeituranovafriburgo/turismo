@@ -419,5 +419,6 @@ def gera_senha_to_pdf(request, id):
     }
     try:
         return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
-    except FileNotFoundError:
+    except Exception as E:
+        print(E)
         raise Http404()
