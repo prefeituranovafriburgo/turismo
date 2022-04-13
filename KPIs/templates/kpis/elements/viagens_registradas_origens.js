@@ -5,7 +5,7 @@ function drawBasicOrigens() {
       var data = google.visualization.arrayToDataTable([
         ['Origens', 'Registros', {role: 'style'}],
         {% for cidade in date_cidades %}
-        ['{{cidade.nome}}', {{cidade.qnt}}, 'silver'],
+        ['{{cidade.nome}}', {{cidade.qnt}}, '{{cidade.cor}}'],
         {% endfor %}
       ]);
 

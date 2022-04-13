@@ -20,9 +20,12 @@ def index(request):
     ##Origens Registradas
     cidades_contadas=viagens.values('cidade_origem').annotate(total=Count('cidade_origem')).order_by('cidade_origem')
     date_cidades=[]
+    cores=['#0015ff', '#00fff6', '#329787', '#0cff00', '#fff200', '#ffa100',
+           '#ff0000', '#ff0077', '#ff00c3', '#ff00c0', '#b600ff', '#5000ff', 
+           '#00aeff', '#0050ff']
     for i in cidades_contadas:
         cidade=Cidade.objects.get(id=i['cidade_origem'])
-        date_cidades.append({'nome': cidade.nome + ' - ' + cidade.estado.uf, 'qnt':i['total']})
+        date_cidades.append({'nome': cidade.nome + ' - ' + cidade.estado.uf, 'qnt':i['total'], 'cor': cores.pop()})
 
     # print(date_cidades)
     context={
