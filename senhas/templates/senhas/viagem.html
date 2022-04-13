@@ -30,6 +30,9 @@
             <a href="{% url 'senhas:gera_senha' viagem.senha %}" class="btn btn-primary" role="button" target="_blank">
                 <i class="fal fa-print"></i> Documento
             </a>
+            <a href="{% url 'senhas:excluir_senha' viagem.senha %}" class="btn btn-danger" role="button">
+                <i class="far fa-trash"></i> Excluir
+            </a>
         </div>
         {% endif %}
 

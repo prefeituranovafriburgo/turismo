@@ -25,7 +25,7 @@ def inicio(request):
 @login_required
 def cad_transporte(request):    
     hoje=date.today()
-    viagens = Viagem.objects.filter(user=request.user, dt_Saida__range=[hoje, hoje+timedelta(days=365)])
+    viagens = Viagem.objects.filter(user=request.user, dt_Saida__range=[hoje, hoje+timedelta(days=365)], ativo=True)
     return render(request, 'senhas/cad_transporte.html', { 'viagens': viagens })
 
 
@@ -75,7 +75,8 @@ def viagem_inclui(request, tipo):
                     cadastur_empresa_transporte=validation['cadastur_empresa_transporte']['cadastur'],                    
                     obs=request.POST['obs'],
                     estado_origem=Estado.objects.get(id=request.POST['estado']),
-                    cidade_origem=Cidade.objects.get(id=request.POST['cidade']))
+                    cidade_origem=Cidade.objects.get(id=request.POST['cidade']),
+                    ativo=True)
                 viagem.save()    
                           
                 if tipo=='turismo':
@@ -225,6 +226,19 @@ def viagem(request, id):
     if not viagem.user == request.user:
         return redirect('senhas:cad_transporte')
     return render(request, 'senhas/viagem.html', { 'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos })
+
+@login_required
+def excluir_viagem(request, id):
+    viagem = Viagem.objects.get(senha=id)
+    if request.method=='POST':        
+        if viagem.user==request.user:
+            viagem.ativo=False
+            viagem.save()    
+            return redirect('senhas:cad_transporte')        
+    
+    if not viagem.user == request.user:
+        return redirect('senhas:cad_transporte')
+    return render(request, 'senhas/excluir_senha.html', {'viagem': viagem})
 
 @membro_fiscais_required
 def fiscalizar_viagem(request, id):
