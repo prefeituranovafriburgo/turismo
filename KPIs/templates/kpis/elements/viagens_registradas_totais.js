@@ -18,7 +18,7 @@ google.charts.setOnLoadCallback(drawChart);
 
     // Set chart options
     var options = {'title':'Total de {{total_viagens}} viagens registradas.',
-                   'width':400,
+                   'width':600,
                    'height':300};
 
     // Instantiate and draw our chart, passing in some options.
