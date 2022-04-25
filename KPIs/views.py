@@ -60,20 +60,25 @@ def viagens(request):
         'filtro': False,
         }
     print(request)
-    if request.method=='POST':
-        print(request.POST)
+    if request.method=='POST':        
         if request.POST['dt_inclusao']!='' and request.POST['dt_inclusao_f']!='':
             
             viagens=Viagem.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).order_by('dt_inclusao')
+            soma=0
+            for i in viagens:
+                soma+=i.quant_passageiros            
             try:
                 viagem_turismo=Viagem_Turismo.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).count()
             except:
                 viagem_turismo=0
             context={
+                'dt_inclusao': request.POST['dt_inclusao'],
+                'dt_inclusao_f': request.POST['dt_inclusao_f'],
                 'filtro': True,
                 'viagens': viagens,
                 'total_viagens': viagens.count(),
                 'total_turismo': viagem_turismo,
                 'total_compras': viagens.count()-viagem_turismo,
+                'soma': soma,
             }
     return render(request, 'kpis/viagens.html', context)
