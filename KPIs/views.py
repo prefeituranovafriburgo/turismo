@@ -9,6 +9,10 @@ from django.db.models import Count
 
 @membro_secretaria_required
 def index(request):
+    return render(request, 'kpis/index.html')
+
+@membro_secretaria_required
+def usuarios(request):
     #Usuários Registrados
     ano_registro_users='2022'
     users_ano=User.objects.filter(date_joined__year=ano_registro_users)
@@ -43,4 +47,33 @@ def index(request):
         'meses': {'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'}
     }
-    return render(request, 'kpis/index.html', context)
+    return render(request, 'kpis/usuarios.html', context)
+
+@membro_secretaria_required
+def viagens(request):
+    viagens=Viagem.objects.all()
+    viagem_turismo=Viagem_Turismo.objects.all().count()
+    context={
+        'total_viagens': viagens.count(),
+        'total_turismo': viagem_turismo,
+        'total_compras': viagens.count()-viagem_turismo,
+        'filtro': False,
+        }
+    print(request)
+    if request.method=='POST':
+        print(request.POST)
+        if request.POST['dt_inclusao']!='' and request.POST['dt_inclusao_f']!='':
+            
+            viagens=Viagem.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).order_by('dt_inclusao')
+            try:
+                viagem_turismo=Viagem_Turismo.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).count()
+            except:
+                viagem_turismo=0
+            context={
+                'filtro': True,
+                'viagens': viagens,
+                'total_viagens': viagens.count(),
+                'total_turismo': viagem_turismo,
+                'total_compras': viagens.count()-viagem_turismo,
+            }
+    return render(request, 'kpis/viagens.html', context)

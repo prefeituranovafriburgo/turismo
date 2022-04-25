@@ -1,0 +1,113 @@
+{% extends "template.html" %}
+{% load static %}
+{% block head %}
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  
+  google.charts.load('current', {packages: ['corechart', 'bar', 'line']});
+  {% include 'kpis/elements/viagens_registradas_totais.js' %}
+  
+
+</script>
+{% endblock %}
+{% block cab %}
+<section class="w-100 h-100 pb-4">
+    <div class="w-100 p-4 d-flex justify-content-evenly align-content-around  flex-wrap ">        
+        <div class="kpi text-center border rounded">
+            <div class="kpi-title rounded">
+                <span class="px-5">VIAGENS REGISTRADAS</span>            
+            </div>
+            <div class="d-flex flex-column">                
+                <div class="mx-auto pt-4">
+                    <b>Filtrar por data de Inclusão:</b>
+                </div>
+                <form class="mx-auto py-3" method="POST">   
+                    <div class="d-flex">
+                        {% csrf_token %}                 
+                        <div>
+                            <label for="">Data inicial de inclusão:</label>
+                            <input class="form-control" type="date" name="dt_inclusao" id="">
+                        </div>
+                        <div class="ml-4">
+                            <label for="">Data final de inclusão:</label>
+                            <input class="form-control" type="date" name="dt_inclusao_f" id="">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark w-100 mt-4">
+                    Filtrar
+                    </button>                   
+                </form>
+            </div>
+            
+            <div class="w-100 d-flex pb-5 flex-wrap">
+                <div class="col pt-4 d-flex flex-column">
+                    <h4>Total de {{total_viagens}} viagens registradas:</h4>
+                    <div id="chart_div_viagens" class="mx-auto"></div> 
+                </div>                    
+            </div>            
+            {% if filtro %}
+            <table class="table">
+                <thead>
+                  <tr>
+                      <th></th>
+                    <th scope="col">#Senha</th>
+                    <th scope="col">Data Inclusão</th>
+                    <th scope="col">Data Chegada</th>
+                    <th scope="col">Data Saída</th>
+                    <th scope="col">Veículo</th>
+                    <th scope="col">N. passageiros</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                {% for v in viagens %}                 
+                <tr class="" onclick="" {% if v.dt_Chegada != v.dt_Saida %}style="background-color: rgb(255, 217, 217);"{% else %}style="background-color: rgb(219, 223, 255);"{% endif %}>
+                    <td class="bg-light"><a href="{% url 'senhas:fiscalizar_viagem' v.senha  %}" target="_blank" class="mx-auto text-dark w-100 h-100"><i class="far fa-eye mx-auto"></i></a></td>
+                    <th scope="row">{{v.senha}}</th>
+                    <td>{{v.dt_inclusao}}</td>
+                    <td>{{v.dt_Chegada}}</td>
+                    <td>{{v.dt_Saida}}</td>
+                    <td>{{v.tipo_veiculo}}</td>
+                    <td>{{v.quant_passageiros}}</td>
+                  </tr> 
+                {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
+        </div>                
+    </div>    
+</section>
+<style>
+    .kpi{
+        margin: auto;
+        margin-bottom: 20px;
+        height: 100%;
+        width: 100%;
+    }
+    .kpi-title{
+        display: flex;
+        flex-wrap: wrap;
+        color: white;
+        vertical-align: center;
+        background-color: rgb(29, 28, 28) !important;
+        border: 1px solid black;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        box-shadow: 2px 4px 4px rgba(51, 50, 50, 0.123);   
+        text-align: center;           
+    }
+    .kpi-title span{        
+        margin: auto;
+        padding: 15px 0;
+    }
+    .border{        
+        border-color: rgba(0, 0, 0, 0.096) !important;
+        border-right-color: rgba(65, 64, 64, 0.151) !important;                
+        border-left-color: rgba(80, 79, 79, 0.13) !important;  
+        box-shadow: 2px 4px 4px rgba(51, 50, 50, 0.123);              
+    }
+           
+
+</style>
+{% endblock %}
