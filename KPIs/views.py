@@ -72,13 +72,36 @@ def viagens(request):
             except:
                 viagem_turismo=0
             context={
-                'dt_inclusao': request.POST['dt_inclusao'],
-                'dt_inclusao_f': request.POST['dt_inclusao_f'],
+                'dt_inicial': request.POST['dt_inclusao'],
+                'dt_final': request.POST['dt_inclusao_f'],
                 'filtro': True,
                 'viagens': viagens,
                 'total_viagens': viagens.count(),
                 'total_turismo': viagem_turismo,
                 'total_compras': viagens.count()-viagem_turismo,
                 'soma': soma,
+                'filtrado_por': 'inclusão'
+            }
+        elif request.POST['dt_chegada']!='' and request.POST['dt_chegada_f']!='':            
+            viagens=Viagem.objects.filter(dt_Chegada__range=[request.POST['dt_chegada'],request.POST['dt_chegada_f']]).order_by('dt_Chegada')
+            soma=0
+            turismo=[]
+            for i in viagens:
+                soma+=i.quant_passageiros            
+                try: 
+                    turismo.append(Viagem_Turismo.objects.get(viagem=i))
+                except:
+                    pass
+            viagem_turismo=len(turismo)
+            context={
+                'dt_inicial': request.POST['dt_chegada'],
+                'dt_final': request.POST['dt_chegada_f'],
+                'filtro': True,
+                'viagens': viagens,
+                'total_viagens': viagens.count(),
+                'total_turismo': viagem_turismo,
+                'total_compras': viagens.count()-viagem_turismo,
+                'soma': soma,
+                'filtrado_por': 'chegada'
             }
     return render(request, 'kpis/viagens.html', context)
