@@ -42,36 +42,52 @@
             
             <div class="w-100 d-flex pb-5 flex-wrap">
                 <div class="col pt-4 d-flex flex-column">
+                    {% if filtro %}
+                    <h4>De <b>{{dt_inclusao}}</b> até <b>{{dt_inclusao_f}}</b> <br>há no total <b>{{total_viagens}}</b> viagens registradas:</h4>
+                    {% else %}
                     <h4>Total de {{total_viagens}} viagens registradas:</h4>
+                    {% endif %}                    
                     <div id="chart_div_viagens" class="mx-auto"></div> 
                 </div>                    
             </div>            
             {% if filtro %}
-            <table class="table">
-                <thead>
+            <table class="table table-hover">
+                <thead class="thead-dark">
                   <tr>
-                      <th></th>
+                    <th></th>
                     <th scope="col">#Senha</th>
                     <th scope="col">Data Inclusão</th>
                     <th scope="col">Data Chegada</th>
                     <th scope="col">Data Saída</th>
                     <th scope="col">Veículo</th>
-                    <th scope="col">N. passageiros</th>
+                    <th scope="col">Passageiros</th>
+                    <th>Pernoite</th>
 
                   </tr>
                 </thead>
                 <tbody>
                 {% for v in viagens %}                 
-                <tr class="" onclick="" {% if v.dt_Chegada != v.dt_Saida %}style="background-color: rgb(255, 217, 217);"{% else %}style="background-color: rgb(219, 223, 255);"{% endif %}>
-                    <td class="bg-light"><a href="{% url 'senhas:fiscalizar_viagem' v.senha  %}" target="_blank" class="mx-auto text-dark w-100 h-100"><i class="far fa-eye mx-auto"></i></a></td>
-                    <th scope="row">{{v.senha}}</th>
-                    <td>{{v.dt_inclusao}}</td>
-                    <td>{{v.dt_Chegada}}</td>
-                    <td>{{v.dt_Saida}}</td>
-                    <td>{{v.tipo_veiculo}}</td>
-                    <td>{{v.quant_passageiros}}</td>
+                <tr style="border: 1px solid rgb(168, 168, 168);">
+                    <td style="border: 1px solid rgb(168, 168, 168); class="bg-light"><a href="{% url 'senhas:fiscalizar_viagem' v.senha  %}" target="_blank" class="mx-auto text-dark w-100 h-100"><i class="far fa-eye mx-auto"></i></a></td>
+                    <th style="border: 1px solid rgb(168, 168, 168);" scope="row">{{v.senha}}</th>
+                    <td style="border: 1px solid rgb(168, 168, 168);">{{v.dt_inclusao}}</td>
+                    <td style="border: 1px solid rgb(168, 168, 168);">{{v.dt_Chegada}}</td>
+                    <td style="border: 1px solid rgb(168, 168, 168);">{{v.dt_Saida}}</td>
+                    <td style="border: 1px solid rgb(168, 168, 168);">{{v.tipo_veiculo}}</td>
+                    <td style="border: 1px solid rgb(168, 168, 168);">{{v.quant_passageiros}}</td>
+                    {% if v.dt_Chegada != v.dt_Saida %}<td style="border: 1px solid rgb(168, 168, 168); background-color: rgb(213, 233, 255);">Sim</td>{% else %}<td style="border: 1px solid rgb(168, 168, 168); background-color: rgb(255, 213, 213);">Não</td>{% endif %}
                   </tr> 
                 {% endfor %}
+                <tr style="border: 1px solid rgb(168, 168, 168);">
+                    <td style="border: 1px solid white;" class="bg-light"></td>
+                    <th style="border: 1px solid white;" scope="row"></th>
+                    <td style="border: 1px solid white;"></td>
+                    <td style="border: 1px solid white;"></td>
+                    <td style="border: 1px solid white; border-right: 1px solid rgb(168, 168, 168);"></td>
+                    <td style="color: white; border: 1px solid rgb(168, 168, 168); background-color: #343A40; border-right-color: #343A40;">Total:</td>
+                    <td style="color: white; border: 1px solid rgb(168, 168, 168); background-color: #343A40;">{{soma}}</td>
+                    <td style=" border: 1px solid white;"></td>
+                  </tr> 
                 </tbody>
               </table>
             {% endif %}
