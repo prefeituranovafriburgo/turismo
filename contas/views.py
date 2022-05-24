@@ -329,16 +329,16 @@ def login_view(request):
     if request.method == 'POST':
         # Abaixo recebemos a validação da API do hCAPTCHA
         ''' Begin hCAPTCHA validation '''
-        recaptcha_response = request.POST.get('h-captcha-response')
-        data = {            
-            'secret': hCAPTCHA_PRIVATE_KEY,
-            'response': recaptcha_response
-        }
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        result = r.json()
+        # recaptcha_response = request.POST.get('h-captcha-response')
+        # data = {            
+        #     'secret': hCAPTCHA_PRIVATE_KEY,
+        #     'response': recaptcha_response
+        # }
+        # r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        # result = r.json()
         ''' End hCAPTCHA validation '''        
         # Se o hCAPTCHA garantir que o usuário é um robô
-        # result={'success': True}
+        result={'success': True}
         if result['success']:
             username = request.POST['username']
             password = request.POST['password']
