@@ -52,14 +52,14 @@ def usuarios(request):
 @membro_secretaria_required
 def viagens(request):
     viagens=Viagem.objects.all()
-    viagem_turismo=Viagem_Turismo.objects.all().count()
+    viagem_turismo=Viagem_Turismo.objects.all()
     context={
         'total_viagens': viagens.count(),
-        'total_turismo': viagem_turismo,
-        'total_compras': viagens.count()-viagem_turismo,
+        'total_turismo': viagem_turismo.count(),
+        'total_compras': viagens.count()-viagem_turismo.count(),
         'filtro': False,
         }
-    print(request)
+    # print(request)
     if request.method=='POST':        
         if request.POST['dt_inclusao']!='' and request.POST['dt_inclusao_f']!='':
             
@@ -68,16 +68,19 @@ def viagens(request):
             for i in viagens:
                 soma+=i.quant_passageiros            
             try:
-                viagem_turismo=Viagem_Turismo.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).count()
-            except:
-                viagem_turismo=0
+                viagem_turismo=Viagem_Turismo.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']])
+                viagem_turismo_count=viagem_turismo.count()
+            except:     
+                print('deu ruim, irmão')           
+                viagem_turismo_count=0
             context={
                 'dt_inicial': request.POST['dt_inclusao'],
                 'dt_final': request.POST['dt_inclusao_f'],
                 'filtro': True,
                 'viagens': viagens,
+                'viagem_turismo': viagem_turismo,
                 'total_viagens': viagens.count(),
-                'total_turismo': viagem_turismo,
+                'total_turismo': viagem_turismo_count,
                 'total_compras': viagens.count()-viagem_turismo,
                 'soma': soma,
                 'filtrado_por': 'inclusão'
@@ -89,18 +92,20 @@ def viagens(request):
             for i in viagens:
                 soma+=i.quant_passageiros            
                 try: 
-                    turismo.append(Viagem_Turismo.objects.get(viagem=i))
+                    viagem_turismo=Viagem_Turismo.objects.get(viagem=i)
+                    turismo.append(viagem_turismo)
                 except:
                     pass
-            viagem_turismo=len(turismo)
+            viagem_turismo_count=len(turismo)            
             context={
                 'dt_inicial': request.POST['dt_chegada'],
                 'dt_final': request.POST['dt_chegada_f'],
                 'filtro': True,
                 'viagens': viagens,
+                'viagem_turismo': turismo,
                 'total_viagens': viagens.count(),
-                'total_turismo': viagem_turismo,
-                'total_compras': viagens.count()-viagem_turismo,
+                'total_turismo': viagem_turismo_count,
+                'total_compras': viagens.count()-viagem_turismo_count,
                 'soma': soma,
                 'filtrado_por': 'chegada'
             }
