@@ -15,7 +15,7 @@ from .forms import ViagemForm
 from .functions import get_random_string
 import time
 import pickle
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import pdfkit
 from turismo.decorators import membro_secretaria_required, membro_fiscais_required
 
@@ -31,7 +31,7 @@ def cad_transporte(request):
     return render(request, 'senhas/cad_transporte.html', { 'viagens': viagens })
 
 @login_required
-def cadastrar_viagem_caledonia(request):
+def cadastrar_viagem_caledonia(request):    
     validation={'veiculo': {'state': True},
                 'quant_passageiros': {'state': True}, 
                 'cnpj_empresa_transporte': {'state': True}, 
@@ -53,59 +53,67 @@ def cadastrar_viagem_caledonia(request):
         # print(request.POST)
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST, 'turismo')                                       
-        if valido:   
-            try:
-                if request.POST['ficarao_hospedados']:
-                    fh=True
-            except:
-                fh=False      
-            try:
-                if request.POST['restaurante_reservado']:
-                    rr=True
-            except:
-                rr=False       
-            try:                
-                viagem=Viagem(        
-                    responsavel_viagem=request.POST['responsavel_viagem'],
-                    contato_responsavel=validation['contato_responsavel']['celular'],            
-                    user=request.user, 
-                    dt_Chegada=request.POST['dt_chegada'],
-                    dt_Saida=request.POST['dt_saida'],
-                    ficarao_hospedados=fh,
-                    hotel=request.POST['hotel'],
-                    restaurante_reservado=rr,
-                    restaurante=request.POST['restaurante'],
-                    tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
-                    quant_passageiros=request.POST['quant_passageiros'],
-                    empresa_transporte=request.POST['empresa_transporte'],
-                    cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj'],
-                    cadastur_empresa_transporte=validation['cadastur_empresa_transporte']['cadastur'],                    
-                    obs=request.POST['obs'],
-                    estado_origem=Estado.objects.get(id=request.POST['estado']),
-                    cidade_origem=Cidade.objects.get(id=request.POST['cidade']),
-                    ativo=True)
-                viagem.save()    
-                          
-                
-                viagem.senha='PC'+get_random_string()+str(viagem.id)+get_random_string() 
-                viagem.save()
-                viagem_turismo=Viagem_Turismo(
-                    viagem=viagem,
-                    outros='Pico da Caledônia',
-                    nome_guia=request.POST['nome_guia'],
-                    cadastur_guia=validation['cadastur_guia']['cadastur'],
-                    celular=validation['celular']['celular'],
-                    telefone=validation['telefone']['telefone'],  
-                    ativo=True                      
-                ) 
-                viagem_turismo.save() 
-                messages.success(request, 'Viagem cadastrada.')
-                return redirect('senhas:cad_transporte')               
-            except Exception as E:
-                print(E)
+        if valido:                          
+            viagens_caledonia_do_dia=Viagem.objects.filter(ativo=True, dt_Chegada=request.POST['dt_chegada']).count()
+            print('teste: ', viagens_caledonia_do_dia)
+            if viagens_caledonia_do_dia==2:
+                format = '%Y-%m-%d'
+                dt=request.POST['dt_chegada']
+                data=datetime.strptime(dt, format)
+                messages.error(request, 'Não é permitidos mais visitas no dia '+str(data.strftime('%d/%m/%Y'))) 
+            else:
+                try:
+                    if request.POST['ficarao_hospedados']:
+                        fh=True
+                except:
+                    fh=False      
+                try:
+                    if request.POST['restaurante_reservado']:
+                        rr=True
+                except:
+                    rr=False       
+                try:                
+                    viagem=Viagem(        
+                        responsavel_viagem=request.POST['responsavel_viagem'],
+                        contato_responsavel=validation['contato_responsavel']['celular'],            
+                        user=request.user, 
+                        dt_Chegada=request.POST['dt_chegada'],
+                        dt_Saida=request.POST['dt_saida'],
+                        ficarao_hospedados=fh,
+                        hotel=request.POST['hotel'],
+                        restaurante_reservado=rr,
+                        restaurante=request.POST['restaurante'],
+                        tipo_veiculo=Tipo_Veiculo.objects.get(id=request.POST['tipo_veiculo']),
+                        quant_passageiros=request.POST['quant_passageiros'],
+                        empresa_transporte=request.POST['empresa_transporte'],
+                        cnpj_empresa_transporte=validation['cnpj_empresa_transporte']['cnpj'],
+                        cadastur_empresa_transporte=validation['cadastur_empresa_transporte']['cadastur'],                    
+                        obs=request.POST['obs'],
+                        estado_origem=Estado.objects.get(id=request.POST['estado']),
+                        cidade_origem=Cidade.objects.get(id=request.POST['cidade']),
+                        ativo=True)
+                    viagem.save()    
+                            
+                    
+                    viagem.senha='PC'+get_random_string()+str(viagem.id)+get_random_string() 
+                    viagem.save()
+                    viagem_turismo=Viagem_Turismo(
+                        viagem=viagem,
+                        outros='Pico da Caledônia',
+                        nome_guia=request.POST['nome_guia'],
+                        cadastur_guia=validation['cadastur_guia']['cadastur'],
+                        celular=validation['celular']['celular'],
+                        telefone=validation['telefone']['telefone'],  
+                        ativo=True                      
+                    ) 
+                    viagem_turismo.save() 
+                    messages.success(request, 'Viagem cadastrada.')
+                    return redirect('senhas:cad_transporte')               
+                except Exception as E:
+                    print(E)
         else:
             for i in validation:
-                print(i)
+                print('ERROR', i)
         veiculos=Tipo_Veiculo.objects.all()
         pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
     #Incluindo as informações coletas no contexto para uso no Template
