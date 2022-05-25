@@ -54,7 +54,7 @@ def cadastrar_viagem_caledonia(request):
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST, 'turismo')                                       
         if valido:                          
-            viagens_caledonia_do_dia=Viagem.objects.filter(ativo=True, dt_Chegada=request.POST['dt_chegada']).count()            
+            viagens_caledonia_do_dia=Viagem.objects.filter(senha__contains='PC',ativo=True, dt_Chegada=request.POST['dt_chegada']).count()            
             if str(viagens_caledonia_do_dia)>=str(2):
                 format = '%Y-%m-%d'
                 dt=request.POST['dt_chegada']
