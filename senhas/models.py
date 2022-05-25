@@ -102,3 +102,4 @@ class Viagem_Turismo(models.Model):
     telefone = models.CharField(max_length=18, blank=True, null=True)
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    ativo=models.BooleanField(default=True)

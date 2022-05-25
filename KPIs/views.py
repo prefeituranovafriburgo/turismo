@@ -51,8 +51,8 @@ def usuarios(request):
 
 @membro_secretaria_required
 def viagens(request):
-    viagens=Viagem.objects.all()
-    viagem_turismo=Viagem_Turismo.objects.all()
+    viagens=Viagem.objects.filter(ativo=True)
+    viagem_turismo=Viagem_Turismo.objects.filter(ativo=True)
     context={
         'total_viagens': viagens.count(),
         'total_turismo': viagem_turismo.count(),
@@ -63,12 +63,12 @@ def viagens(request):
     if request.method=='POST':        
         if request.POST['dt_inclusao']!='' and request.POST['dt_inclusao_f']!='':
             
-            viagens=Viagem.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).order_by('dt_inclusao')
+            viagens=Viagem.objects.filter(ativo=True, dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']]).order_by('dt_inclusao')
             soma=0
             for i in viagens:
                 soma+=i.quant_passageiros            
             try:
-                viagem_turismo=Viagem_Turismo.objects.filter(dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']])
+                viagem_turismo=Viagem_Turismo.objects.filter(ativo=True, dt_inclusao__range=[request.POST['dt_inclusao'],request.POST['dt_inclusao_f']])
                 viagem_turismo_count=viagem_turismo.count()
             except:     
                 print('deu ruim, irmão')           
@@ -86,7 +86,7 @@ def viagens(request):
                 'filtrado_por': 'inclusão'
             }
         elif request.POST['dt_chegada']!='' and request.POST['dt_chegada_f']!='':            
-            viagens=Viagem.objects.filter(dt_Chegada__range=[request.POST['dt_chegada'],request.POST['dt_chegada_f']]).order_by('dt_Chegada')
+            viagens=Viagem.objects.filter(ativo=True, dt_Chegada__range=[request.POST['dt_chegada'],request.POST['dt_chegada_f']]).order_by('dt_Chegada')
             soma=0
             turismo=[]
             for i in viagens:

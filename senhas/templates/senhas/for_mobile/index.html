@@ -9,13 +9,25 @@
             <div class="row">
                 <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
                     <div class="context">
-                        <div>GRUPO PARA<br> TURISMO E COMPRAS</div>
+                        <div><span>GRUPO PARA<br> TURISMO E COMPRAS</span></div>
                     </div>
                 </div>   
                 <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
                     <div class="context">
-                        <div>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</div>
+                        <div>
+                            <span>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</span>
+                        </div>
                     </div>
+                </div>     
+                <div id="card-caledonia" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                    <div class="context">
+                        <div>
+                            <span>GRUPO PARA<br> PICO DA CALEDÔNIA</span>
+                        </div>
+                    </div>
+                </div>    
+                <div id="card-none" class="col card border-0" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                    
                 </div>     
             </div>
         </div>            
