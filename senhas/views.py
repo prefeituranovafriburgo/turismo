@@ -105,7 +105,7 @@ def cadastrar_viagem_caledonia(request):
             for i in validation:
                 print(i)
         veiculos=Tipo_Veiculo.objects.all()
-        pontosTuristicos= Pontos_Turisticos.objects.all()
+        pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
     #Incluindo as informações coletas no contexto para uso no Template
         if 'turismo'=='turismo':
             viagem_turismo={
@@ -289,7 +289,7 @@ def viagem_inclui(request, tipo):
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
         veiculos=Tipo_Veiculo.objects.all()
-        pontosTuristicos= Pontos_Turisticos.objects.all()
+        pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
     #Incluindo as informações coletas no contexto para uso no Template
         viagem_turismo=False
         if tipo=='turismo':
@@ -364,7 +364,7 @@ def viagem_inclui(request, tipo):
 
     #Pegando as devidas informações para os selects do formulario abaixo
     veiculos=Tipo_Veiculo.objects.all()    
-    pontosTuristicos= Pontos_Turisticos.objects.all()
+    pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
     #Incluindo as informações coletas no contexto para uso no Template
     context={ 
         'form': form, 
@@ -531,7 +531,7 @@ def viagem_altera(request, id):
         tipo='compras'
         viagem_turismo={}
     veiculos=Tipo_Veiculo.objects.all()
-    pontosTuristicos= Pontos_Turisticos.objects.all()
+    pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
 
     estado=viagem.estado_origem
     estados = Estado.objects.all().order_by('nome')
@@ -646,7 +646,7 @@ def viagem_altera_caledonia(request, id):
         tipo='compras'
         viagem_turismo={}
     veiculos=Tipo_Veiculo.objects.all()
-    pontosTuristicos= Pontos_Turisticos.objects.all()
+    pontosTuristicos= Pontos_Turisticos.objects.filter(ativo=True)
 
     estado=viagem.estado_origem
     estados = Estado.objects.all().order_by('nome')

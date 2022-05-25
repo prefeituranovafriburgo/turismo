@@ -7,30 +7,30 @@
         {% include 'loading.html' %}
         <div class="hidden row mt-3 mb-2 ">
             <div class="col pl-4">
-                <h1>CADASTRAR GRUPO PARA</h1>
+                <h1>EMITIR SENHA</h1>
             </div>
         </div>
     <div id="newcards" class="row hidden">
         <div class="col d-flex">
             <a id="turismo" href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn d-flex">
                 <div class="w-100 h-100 d-flex flex-column">
-                    <span>TURISMO E COMPRAS</span>
+                    <span>GRUPO PARA <br>TURISMO E COMPRAS</span>
 
-                    <span class="mt-auto btn btn-primary">Cadastrar</span>
+                    <!-- <span class="mt-auto btn btn-primary">Cadastrar</span> -->
                 </div>
             </a>
             <a id="compras" href="{% url 'senhas:viagem_inclui' tipo='compras' %}" class="btn d-flex">
                 <div class="w-100 h-100 d-flex flex-column">
-                    <span>EXCLUSIVAMENTE COMPRAS</span>
+                    <span>GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
 
-                    <span class="mt-auto btn btn-primary">Cadastrar</span>
+                    
                 </div>
             </a>
             <a id="caledonia" href="{% url 'senhas:caledonia' %}" class="btn d-flex">
                 <div class="w-100 h-100 d-flex flex-column">
-                    <span>PICO DA CALEDÔNIA</span>
+                    <span>GRUPO PARA <br>PICO DA CALEDÔNIA</span>
 
-                    <span class="mt-auto btn btn-primary">Cadastrar</span>
+                    
                 </div>
             </a>
         </div>
