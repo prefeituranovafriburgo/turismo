@@ -54,8 +54,7 @@ def cadastrar_viagem_caledonia(request):
         #Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido=validationsViagem(request.POST, 'turismo')                                       
         if valido:                          
-            viagens_caledonia_do_dia=Viagem.objects.filter(ativo=True, dt_Chegada=request.POST['dt_chegada']).count()
-            print('teste: ', viagens_caledonia_do_dia)
+            viagens_caledonia_do_dia=Viagem.objects.filter(ativo=True, dt_Chegada=request.POST['dt_chegada']).count()            
             if str(viagens_caledonia_do_dia)>=str(2):
                 format = '%Y-%m-%d'
                 dt=request.POST['dt_chegada']
@@ -165,7 +164,7 @@ def cadastrar_viagem_caledonia(request):
             'viagem': {'responsavel_viagem': request.POST['responsavel_viagem'],
                         'contato_responsavel': request.POST['contato_responsavel'],
                         'dt_Chegada2': request.POST['dt_chegada'],
-                       'dt_Saida2': request.POST['dt_saida'],
+                       'dt_Saida2': request.POST['dt_chegada'],
                     #    'estado_origem': request.POST['estado'],
                     #    'cidade_origem': request.POST['cidade'],
                        'empresa_transporte': request.POST['empresa_transporte'],
