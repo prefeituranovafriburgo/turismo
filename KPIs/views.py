@@ -41,7 +41,7 @@ def usuarios(request):
         'total_usuarios': total_usuarios,
         'total_viagens': viagens.count(),
         'total_turismo': viagem_turismo,
-        'total_compras': viagens.count()-viagem_turismo,
+        'total_compras': viagens.count()-viagem_turismo.count(),
         'date_usuarios': [0, 10, 23 , 17, 9, 11, 27],
         'date_usuarios_anual': [20, 80, 123 , 217, 19, 11, 127, 63],
         'meses': {'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -81,7 +81,7 @@ def viagens(request):
                 'viagem_turismo': viagem_turismo,
                 'total_viagens': viagens.count(),
                 'total_turismo': viagem_turismo_count,
-                'total_compras': viagens.count()-viagem_turismo,
+                'total_compras': viagens.count()-viagem_turismo.count(),
                 'soma': soma,
                 'filtrado_por': 'inclusão'
             }

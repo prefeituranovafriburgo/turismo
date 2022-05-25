@@ -59,7 +59,7 @@ def cadastrar_viagem_caledonia(request):
                 format = '%Y-%m-%d'
                 dt=request.POST['dt_chegada']
                 data=datetime.strptime(dt, format)
-                messages.error(request, 'Não é permitidos mais visitas no dia '+str(data.strftime('%d/%m/%Y'))) 
+                messages.error(request, 'Vagas esgotadas para visitação no dia '+str(data.strftime('%d/%m/%Y'))) 
             else:
                 try:
                     if request.POST['ficarao_hospedados']:
