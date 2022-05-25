@@ -11,4 +11,10 @@ class ViagemForm(ModelForm):
 
     class Meta:
         model = Viagem
-        exclude = ['user', 'dt_inclusao']
+        widget={
+            'responsavel_viagem': forms.TextInput(attrs={"onblur":"validar(event)",
+                                                         'required':'true', 
+                                                         'class':'form-control'})
+        }
+        exclude = ['user', 'dt_inclusao', 'ativo']
+

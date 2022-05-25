@@ -96,7 +96,7 @@
                     {% else %}
                     {% for t in viagem_turismo %}
                     {% if t.viagem.senha == v.senha %}
-                    <td style="border: 1px solid rgb(168, 168, 168);">{{t.nome_guia}}</td>                                    
+                    <td style=" text-transform: capitalize; border: 1px solid rgb(168, 168, 168);">{{t.nome_guia}}</td>                                    
                     {% endif %}                    
                     {% endfor %}                    
                     {% endif %}
