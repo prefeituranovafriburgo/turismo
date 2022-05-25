@@ -56,7 +56,7 @@ def cadastrar_viagem_caledonia(request):
         if valido:                          
             viagens_caledonia_do_dia=Viagem.objects.filter(ativo=True, dt_Chegada=request.POST['dt_chegada']).count()
             print('teste: ', viagens_caledonia_do_dia)
-            if viagens_caledonia_do_dia==2:
+            if str(viagens_caledonia_do_dia)>=str(2):
                 format = '%Y-%m-%d'
                 dt=request.POST['dt_chegada']
                 data=datetime.strptime(dt, format)
