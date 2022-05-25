@@ -78,7 +78,7 @@ def cadastrar_viagem_caledonia(request):
                         contato_responsavel=validation['contato_responsavel']['celular'],            
                         user=request.user, 
                         dt_Chegada=request.POST['dt_chegada'],
-                        dt_Saida=request.POST['dt_saida'],
+                        dt_Saida=request.POST['dt_chegada'],
                         ficarao_hospedados=fh,
                         hotel=request.POST['hotel'],
                         restaurante_reservado=rr,
