@@ -98,7 +98,9 @@ def cadastrar_viagem_caledonia(request):
                     telefone=validation['telefone']['telefone'],  
                     ativo=True                      
                 ) 
-                viagem_turismo.save()                
+                viagem_turismo.save() 
+                messages.success(request, 'Viagem cadastrada.')
+                return redirect('senhas:cad_transporte')               
             except Exception as E:
                 print(E)
         else:
