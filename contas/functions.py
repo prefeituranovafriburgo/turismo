@@ -129,8 +129,10 @@ def validationsViagem(request, tipo):
         validate['celular']=validateCelular(request['celular'])
         validate['telefone']=validateTelefone(request['telefone'])
         validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
-    validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
-    
+    if 'dt_saida' in request.keys():
+        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
+    else:
+        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_chegada'])
     if validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
             if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
