@@ -12,8 +12,10 @@ urlpatterns = [
     path('cad_acesso_ponto/', views.cad_acesso_ponto, name='cad_acesso_ponto'),
     
     path('cad_viagem/c/<str:tipo>', views.viagem_inclui, name='viagem_inclui'),
+    
     path('cad_viagem/caledonia', views.cadastrar_viagem_caledonia, name='caledonia'),
     path('cad_viagem/caledonia/editar/<str:id>', views.viagem_altera_caledonia, name='caledonia_editar'),
+    path('cad_viagem/caledonia/validarData', views.get_validar_caledonia, name='get_validar_caledonia'),
 
     path('viagem/<str:id>/22NF', views.viagem, name='viagem'),
     path('viagem/excluir/<str:id>/22NF', views.excluir_viagem, name='excluir_senha'),

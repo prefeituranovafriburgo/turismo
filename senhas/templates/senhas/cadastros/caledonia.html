@@ -67,7 +67,7 @@
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <div class="form-group col-md-2 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Data visitação:</label>                                                                     
-                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" onblur="validarVisitacao(event)" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
                                         <div class="invalid-feedback">
                                             {{validation.chegada_saida.msg_chegada}}
                                         </div>
@@ -306,6 +306,23 @@
                         });
                 
                     };
+                    function validarVisitacao(event){                     
+                     var url ='/cad_viagem/caledonia/validarData'
+                        date = event.target.value;   
+                        console.log(date)                     
+                        $.ajax({ 
+                            url: url,
+                            data: {
+                                'date': date,
+                            },
+                            success: function(data) {                               
+                                if(data['fail']){
+                                    alert(data['alert'])
+                                    event.target.value=''
+                                }
+                            }
+                        });
+                    }
                 
                     function leech(v){
                         v=v.replace(/o/gi,"0")
