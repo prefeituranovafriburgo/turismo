@@ -1,5 +1,5 @@
 from multiprocessing import context
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -193,6 +193,21 @@ def cadastrar_viagem_caledonia(request):
     }
     return render(request, 'senhas/cadastros/caledonia.html', context)
 
+def get_validar_caledonia(request):
+    fail=False
+    alert=''
+    viagens_caledonia_do_dia=Viagem.objects.filter(senha__contains='PC',ativo=True, dt_Chegada=request.GET.get('date')).count()            
+    if str(viagens_caledonia_do_dia)>=str(2):
+        format = '%Y-%m-%d'
+        dt=request.GET.get('date')
+        data=datetime.strptime(dt, format)
+        fail=True
+        alert='Vagas esgotadas para visitação no dia '+str(data.strftime('%d/%m/%Y')+'. Escolha outra data.')
+    return JsonResponse({
+        'fail': fail,
+        'alert': alert
+
+    })
 @login_required
 def viagem_inclui(request, tipo):
     # Essa variavel VALIDATION é iniciada aqui para não haver conflito 
