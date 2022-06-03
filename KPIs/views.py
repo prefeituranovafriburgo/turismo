@@ -26,7 +26,9 @@ def usuarios(request):
     date_cidades=[]
     cores=['#0015ff', '#00fff6', '#329787', '#0cff00', '#fff200', '#ffa100',
            '#ff0000', '#ff0077', '#ff00c3', '#ff00c0', '#b600ff', '#5000ff', 
-           '#00aeff', '#0050ff']
+           '#00aeff', '#0050ff', '#0015ff', '#00fff6', '#329787', '#0cff00', 
+           '#fff200', '#ffa100', '#ff0000', '#ff0077', '#ff00c3', '#ff00c0', 
+           '#b600ff', '#5000ff', '#00aeff']
     for i in cidades_contadas:
         cidade=Cidade.objects.get(id=i['cidade_origem'])
         try:
@@ -41,7 +43,7 @@ def usuarios(request):
         'total_usuarios': total_usuarios,
         'total_viagens': viagens.count(),
         'total_turismo': viagem_turismo,
-        'total_compras': viagens.count()-viagem_turismo.count(),
+        'total_compras': viagens.count()-viagem_turismo,
         'date_usuarios': [0, 10, 23 , 17, 9, 11, 27],
         'date_usuarios_anual': [20, 80, 123 , 217, 19, 11, 127, 63],
         'meses': {'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
