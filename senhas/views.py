@@ -704,8 +704,8 @@ def cad_acesso_ponto(request):
 def gera_senha_to_html(request, id):
 
     viagem = Viagem.objects.get(senha=id)
-    # endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + str(id)+'/22NF'
-    endereco = 'http://localhost:8000/viagem/fiscalizar/' + str(id)+'/22NF'
+    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + str(id)+'/22NF'
+    # endereco = 'http://localhost:8000/viagem/fiscalizar/' + str(id)+'/22NF'
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
@@ -732,10 +732,10 @@ def gera_senha_to_html(request, id):
 
 def gera_senha_to_pdf(request, id):
     try:
-        # url_pdf='/home/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'    
-        url_pdf='/home/eduardo/projects/turismo/senhas/static/pdf/'+id+'.pdf'    
-        # pdfkit.from_url('https://senhas.novafriburgo.rj.gov.br/gera_senha_html/'+id+'/22NF', url_pdf)        
-        pdfkit.from_url('http://localhost:8000/gera_senha_html/'+id+'/22NF', url_pdf)        
+        url_pdf='/home/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'    
+        # url_pdf='/home/eduardo/projects/turismo/senhas/static/pdf/'+id+'.pdf'    
+        pdfkit.from_url('https://senhas.novafriburgo.rj.gov.br/gera_senha_html/'+id+'/22NF', url_pdf)        
+        # pdfkit.from_url('http://localhost:8000/gera_senha_html/'+id+'/22NF', url_pdf)        
         context={
             'pdf': url_pdf 
         }
