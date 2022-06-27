@@ -11,7 +11,7 @@ from django.db.models import Count
 def index(request):
     return render(request, 'kpis/index.html')
 
-@membro_secretaria_required
+
 def usuarios(request):
     #Usuários Registrados
     ano_registro_users='2022'
