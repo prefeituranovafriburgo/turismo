@@ -134,7 +134,8 @@ def validationsViagem(request, tipo):
         validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
     else:
         validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_chegada'])
-    if validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
+    print(validate['chegada_saida'])
+    if validate['chegada_saida']['state_chegada']==True and  validate['chegada_saida']['state_saida']==True and validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
             if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
                 return validate, True    
@@ -158,12 +159,17 @@ def validateDates(chegada, saida):
         return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
         
 
-    data = datetime.now() - timedelta(1)
-    # print(chegada)
-    if chegada_ <= data:
+    data = datetime.now() - timedelta(2)
+    print(chegada_, saida_, data)
+    print(chegada_>data)
+    print(chegada_>saida_)
+    if chegada_ < data:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
-    if chegada_ > saida_:
-        return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    try:
+        if chegada_ > saida_:
+            return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    except Exception as E:
+        print(E)
     return {'state_chegada': True, 'state_saida': True, 'msg': ''}
     
     
