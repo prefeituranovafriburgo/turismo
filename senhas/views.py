@@ -624,7 +624,7 @@ def viagem_altera_caledonia(request, id):
                 viagem.contato_responsavel=validation['contato_responsavel']['celular']
                 viagem.user=request.user
                 viagem.dt_Chegada=request.POST['dt_chegada']
-                viagem.dt_Saida=request.POST['dt_saida']
+                viagem.dt_Saida=request.POST['dt_chegada']
                 viagem.ficarao_hospedados=fh
                 viagem.hotel=request.POST['hotel']
                 viagem.restaurante_reservado=rr
