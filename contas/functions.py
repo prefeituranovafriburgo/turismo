@@ -14,6 +14,7 @@ from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import time
+from datetime import datetime, timedelta 
 
 
 error_messages = {
@@ -145,16 +146,20 @@ def validateDates(chegada, saida):
     if chegada=='' and saida=='':
         return {'state_chegada': False, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.', 'msg_saida': 'Data de saida invalida.'}
     try:
-        chegada_=time.strptime(chegada, "%Y-%m-%d")
+        # chegada_=time.strptime(chegada, "%Y-%m-%d")
+        format = '%Y-%m-%d'
+        chegada_ = datetime.strptime(chegada, format)
     except:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
     try:
         saida_=time.strptime(saida, "%Y-%m-%d")
     except:
         return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
-    
-    agora = time.localtime() # get struct_time
-    if chegada_ <= agora:
+        
+
+    data = datetime.now() - timedelta(1)
+    # print(chegada)
+    if chegada_ <= data:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
     if chegada_ > saida_:
         return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
@@ -163,12 +168,12 @@ def validateDates(chegada, saida):
     
 def validateCNPJ(cnpj_):
     cnpj = [int(char) for char in cnpj_ if char.isdigit()]
-    print(cnpj)
+    # print(cnpj)
     if len(cnpj) != 14:
         return {'state': False, 'msg': 'CNPJ invalido.'}
     teste=(c * 14 for c in "1234567890")
-    for i in teste:
-        print(i)
+    # for i in teste:
+    #     print(i)
     if cnpj in (c * 14 for c in "1234567890"):
         return {'state': False, 'msg': 'CNPJ invalido.'}
 
@@ -204,7 +209,7 @@ def validateNOME(nome):
     return 'teste'
 def validateCadastur(cadastur):
     cadastur_ = [int(char) for char in cadastur if char.isdigit()]
-    print('cadastur:', cadastur)
+    # print('cadastur:', cadastur)
     if cadastur in (c * len(cadastur) for c in "1234567890"):
         return {'state': False, 'msg': 'Cadastur invalido.'}
     cadastur=''.join([str(_) for _ in cadastur_])
