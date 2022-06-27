@@ -152,7 +152,8 @@ def validateDates(chegada, saida):
     except:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
     try:
-        saida_=time.strptime(saida, "%Y-%m-%d")
+        format = '%Y-%m-%d'
+        saida_=datetime.strptime(saida, format)
     except:
         return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
         
