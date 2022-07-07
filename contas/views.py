@@ -46,17 +46,17 @@ def cadastrar(request):
 
         #Abaixo recebemos a validação da API do Google do reCAPTCHA
         ''' Begin reCAPTCHA validation '''
-        recaptcha_response = request.POST.get('h-captcha-response')
-        data = {
-            'secret': hCAPTCHA_PRIVATE_KEY,
-            'response': recaptcha_response
-        }
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        result = r.json()
-        ''' End reCAPTCHA validation '''
+        # recaptcha_response = request.POST.get('h-captcha-response')
+        # data = {
+        #     'secret': hCAPTCHA_PRIVATE_KEY,
+        #     'response': recaptcha_response
+        # }
+        # r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        # result = r.json()
+        # ''' End reCAPTCHA validation '''
         # result={'success': True}
         #Se o reCAPTCHA garantir que o usuário é um robô
-        print(result)
+        result={'success': True}
         if result['success']:
             #Se o formulario estiver com as informações preenchidas corretamente
             if form.is_valid():
