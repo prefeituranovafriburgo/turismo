@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-                    <h2>CADASTRO</h2>                    
+                    <h2>CADASTRO DE USUÁRIO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
                         {% if robo %}
