@@ -1,0 +1,13 @@
+db_name: turismo
+db_user: turismo
+db_pw: 'turismo123'
+django_secret_key: rooog4mcx6k5=f=+y4
+debug_mode: True
+email_sistema: senhas_turismo@sme.novafriburgo.rj.gov.br
+email_pw: balblabla
+hCAPTCHA_Public_Key: 6730e60d-fdfb-462a-b60e-a6478a3006f2
+hCAPTCHA_Secret_Key: '0x83eE0d7d855633562B0333b715839DA6600c0952'
+GOOGLE_OAUTH2_PUBLIC_KEY: 745294971401-qso3hr2ioa2pgqd45t6ab4dvi4ip2297.apps.googleusercontent.com
+GOOGLE_OAUTH2_SECRET_KEY: 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
+FACEBOOK_DEVELOPER_PUBLIC_KEY: 1840522456142106
+FACEBOOK_DEVELOPER_SECRET_KEY: 388ee4b6d1089ead679ff65cb6307b3
