@@ -4,7 +4,7 @@
 
 <hr>
 
-### Pré-requisitos
+### Tecnologias utilizadas
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/django.png"/>&nbsp;&nbsp;
@@ -13,15 +13,16 @@
 <img src="https://img.icons8.com/color/48/000000/maria-db.png"/>
 </p>
 
+### Pré-requisitos
 - Versão 3 ou mais recente de Python.
 - MariaDB ou MySql
 
 
 
 
-### 1. Instalação
+### 1. Instalação de dependências
 
-Para instalar as dependencias do projeto basta usar o comando:<br>
+Para instalar as dependências do projeto basta usar o comando:<br>
 `pip install -r requeriments.txt`
 
 Ou instale os módulos abaixo:
