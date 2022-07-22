@@ -2,7 +2,7 @@
 
 > Gerador de senhas para controle de transporte turístico. <br>
 
-<hr><br>
+<hr>
 
 ### Pré-requisitos
 <p>
