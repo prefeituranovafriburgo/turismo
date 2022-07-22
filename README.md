@@ -1,6 +1,6 @@
-# Controle de Turismo 
+# Controle de Turismo <br>
 
-> Gerador de senhas para controle de transporte turístico.
+> Gerador de senhas para controle de transporte turístico. <br>
 
 ### Pré-requisitos
 - Versão 3 ou mais recente de Python.
@@ -72,5 +72,7 @@ FACEBOOK_DEVELOPER_SECRET_KEY: 494d231479ff65cb6307b3
 ------------
 
 
-#### Usando o projeto
-Para tanana o projeto, você precisa criar um usuário utilizando
+### 3.Usando o projeto
+Para utilizar o projeto, você precisa criar um usuário utilizando o seguinte comando: <br>
+`python manage.py createsuperuser`  <br>
+No campo de usuário, você **deverá** informar o seu **e-mail**. As credenciais (e-mail e senha) serão utilizadas para realizar o login no site.
