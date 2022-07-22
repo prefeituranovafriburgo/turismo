@@ -14,7 +14,7 @@
 </p>
 
 - Versão 3 ou mais recente de Python.
-- MariaDB
+- MariaDB ou MySql
 
 
 
