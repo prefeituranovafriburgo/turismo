@@ -16,7 +16,7 @@
 
 ### 1. Instalação
 
-Para instalar as dependencias do projeto basta usar o comando:
+Para instalar as dependencias do projeto basta usar o comando:<br>
 `pip install -r requeriments.txt`
 
 Ou instale os módulos abaixo:
