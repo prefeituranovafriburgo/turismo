@@ -4,7 +4,7 @@
 
 <hr>
 
-### Principais tecnologias
+### 💻 Principais tecnologias
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/django.png"/>&nbsp;&nbsp;
@@ -20,7 +20,7 @@
 
 
 
-## 1. Instalação de dependências
+## 📦 1. Instalação de dependências
 
 Para instalar as dependências do projeto basta usar o comando:<br>
 `pip install -r requeriments.txt`
