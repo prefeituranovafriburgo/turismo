@@ -4,7 +4,7 @@
 
 <hr>
 
-### Principais tecnologias
+## Principais tecnologias
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/django.png"/>&nbsp;&nbsp;
@@ -13,7 +13,7 @@
 <img src="https://img.icons8.com/color/48/000000/maria-db.png"/>
 </p>
 
-### 💻 Pré-requisitos
+## 💻 Pré-requisitos
 - Versão 3 ou mais recente de Python.
 - MariaDB ou MySql
 
@@ -56,7 +56,7 @@ Ou instale os módulos abaixo:
 
 
 ## Configurações
-#### Configurando as variáveis de ambiente.
+### Configurando as variáveis de ambiente.
 
 Para criar as variáveis de ambiente crie um arquivo com o nome `.envars.yaml` na raiz do seu projeto ou no diretório **acima da pasta do seu projeto** contendo as seguintes informações conforme o modelo abaixo:
 ```
