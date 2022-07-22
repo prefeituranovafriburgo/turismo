@@ -50,7 +50,7 @@ Ou instale os módulos abaixo:
 
 
 ### 2. Configurações
-####Configurando as variáveis de ambiente.
+#### Configurando as variáveis de ambiente.
 
 Para criar as variáveis de ambiente crie um arquivo com o nome `.envars.yaml` na raiz do seu projeto ou no diretório **acima da pasta do seu projeto** contendo as seguintes informações conforme o modelo abaixo:
 ```
@@ -72,5 +72,5 @@ FACEBOOK_DEVELOPER_SECRET_KEY: 494d231479ff65cb6307b3
 ------------
 
 
-####Usando o projeto
-Para tanana o projeto, você precisa criar um usuário
+#### Usando o projeto
+Para tanana o projeto, você precisa criar um usuário utilizando
