@@ -2,7 +2,7 @@
 
 > Gerador de senhas para controle de transporte turístico.
 
-###Pré-requisitos 
+###Pré-requisitos
 - Versão 3 ou mais recente de Python.
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
