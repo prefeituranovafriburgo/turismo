@@ -4,7 +4,7 @@
 
 <hr>
 
-### Tecnologias
+### Principais tecnologias
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/django.png"/>&nbsp;&nbsp;
