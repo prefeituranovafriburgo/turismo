@@ -54,7 +54,7 @@ Ou instale os módulos abaixo:
 - urllib3==1.26.8
 
 
-## Configurações
+## 🔧 Configurações
 ### Configurando as variáveis de ambiente.
 
 Para criar as variáveis de ambiente crie um arquivo com o nome `.envars.yaml` na raiz do seu projeto ou no diretório **acima da pasta do seu projeto** contendo as seguintes informações conforme o modelo abaixo:
