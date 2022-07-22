@@ -2,6 +2,8 @@
 
 > Gerador de senhas para controle de transporte turístico. <br>
 
+<hr><br>
+
 ### Pré-requisitos
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
@@ -13,7 +15,7 @@
 - Versão 3 ou mais recente de Python.
 - MariaDB ou MySql.
 
-<hr>
+
 
 
 ### 1. Instalação
