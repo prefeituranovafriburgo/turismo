@@ -3,7 +3,6 @@
 > Gerador de senhas para controle de transporte turístico. <br>
 
 ### Pré-requisitos
-- Versão 3 ou mais recente de Python.
 <p>
 <img src="https://img.icons8.com/color/48/000000/python.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/django.png"/>&nbsp;&nbsp;
@@ -11,7 +10,10 @@
 <img src="https://img.icons8.com/windows/48/000000/font-awesome.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/maria-db.png"/>
 </p>
+- Versão 3 ou mais recente de Python.
+- MariaDB ou MySql.
 
+<hr>
 
 
 ### 1. Instalação
@@ -20,7 +22,7 @@ Para instalar as dependencias do projeto basta usar o comando:<br>
 `pip install -r requeriments.txt`
 
 Ou instale os módulos abaixo:
-```
+
 - asgiref==3.4.1
 - certifi==2021.10.8
 - cffi==1.15.0
@@ -47,7 +49,7 @@ Ou instale os módulos abaixo:
 - sqlparse==0.4.2
 - typing_extensions==4.0.1
 - urllib3==1.26.8
-```
+
 
 ### 2. Configurações
 #### Configurando as variáveis de ambiente.
