@@ -20,7 +20,7 @@ Para instalar as dependencias do projeto basta usar o comando:<br>
 `pip install -r requeriments.txt`
 
 Ou instale os módulos abaixo:
-
+```
 - asgiref==3.4.1
 - certifi==2021.10.8
 - cffi==1.15.0
@@ -47,7 +47,7 @@ Ou instale os módulos abaixo:
 - sqlparse==0.4.2
 - typing_extensions==4.0.1
 - urllib3==1.26.8
-
+```
 
 ### 2. Configurações
 #### Configurando as variáveis de ambiente.
