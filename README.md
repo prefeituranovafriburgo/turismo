@@ -12,8 +12,9 @@
 <img src="https://img.icons8.com/windows/48/000000/font-awesome.png"/>&nbsp;&nbsp;
 <img src="https://img.icons8.com/color/48/000000/maria-db.png"/>
 </p>
+
 - Versão 3 ou mais recente de Python.
-- MariaDB ou MySql.
+- MariaDB
 
 
 
