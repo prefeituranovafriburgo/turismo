@@ -1,20 +1,107 @@
+from pickle import TRUE
 from django import forms
 from django.forms import ModelForm, ValidationError
 from .models import *
 from contas.models import Estado
 from contas.functions import validate_CNPJ
 
-class ViagemForm(ModelForm):
-    dt_Chegada = forms.DateTimeField(required = False, widget=forms.SelectDateWidget(years=range(2021, 2030)))
-    dt_Saida = forms.DateTimeField(required = False, widget=forms.SelectDateWidget(years=range(2021, 2030)))
-    cnpj_empresa_transporte = forms.CharField(label='CNPJ', max_length=18, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icnpj)"}))
+class Date(forms.DateInput):
+    input_type = 'date'
 
+class Viagem_TurismoForm(ModelForm):
     class Meta:
-        model = Viagem
-        widget={
-            'responsavel_viagem': forms.TextInput(attrs={"onblur":"validar(event)",
-                                                         'required':'true', 
-                                                         'class':'form-control'})
+        model= Viagem_Turismo
+        widgets= {
+            'nome_guia': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+            'cadastur_guia': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+            'celular': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'onkeydown': 'mascara(this,icelular)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+            'telefone': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'onkeydown': 'mascara(this,itelefone)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+            'pontos_turisticos': forms.SelectMultiple(attrs={'onblur': 'validar(event)',
+                                                         'onchange': 'checkOutros(event)',   
+                                                         }),        
+            'outros': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                'required': 'true',
+                                                'class': 'form-control'}),                                     
         }
+
         exclude = ['user', 'dt_inclusao', 'ativo']
 
+
+class ViagemForm(ModelForm):
+    class Meta:
+        model = Viagem
+        widgets = {
+            'responsavel_viagem': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+
+            'contato_responsavel': forms.TextInput(attrs={'onkeydown': 'mascara(this,icelular)',
+                                                          'onblur': 'validar(event)',
+                                                          'class': 'form-control'}),
+
+            'estado_origem': forms.Select(attrs={'onkeydown': 'mascara(this,icelular)',
+                                                 'onblur': 'validar(event)',
+                                                 'onchange': 'mostracidade(event)',
+                                                 'class': 'form-control'}),
+
+            'cidade_origem': forms.Select(attrs={'onblur': 'validar(event)',
+                                                 'required': 'true',
+                                                 'class': 'form-control'}),
+
+            'dt_Chegada': Date(attrs={'onblur': 'validar(event)',
+                                                 'required': 'true',
+                                                 'class': 'form-control'}),
+
+            'dt_Saida': Date(attrs={'onblur': 'validar(event)',
+                                                 'required': 'true',
+                                                 'class': 'form-control'}),
+
+            'empresa_transporte': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+
+            'empresa_transporte': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                         'required': 'true',
+                                                         'class': 'form-control'}),
+
+            'cadastur_empresa_transporte': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                                  'required': 'true',
+                                                                  'class': 'form-control'}),
+
+            'cnpj_empresa_transporte': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                              'onkeydown': 'mascara(this,icnpj)',
+                                                              'maxlength': '18',
+                                                              'required': 'true',
+                                                              'class': 'form-control'}),
+
+            'quant_passageiros': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                                        'required': 'true',
+                                                        'class': 'form-control'}),
+
+            'hotel': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                            'required': 'true',
+                                            'class': 'form-control'}),
+
+            'restaurante': forms.TextInput(attrs={'onblur': 'validar(event)',
+                                            'required': 'true',
+                                            'class': 'form-control'}),
+
+            'tipo_veiculo': forms.Select(attrs={'onblur': 'validar(event)',
+                                                'required': 'true',
+                                                'class': 'form-control'}),
+
+            'obs': forms.Textarea(attrs={'onblur': 'validar(event)',
+                                                'required': 'true',
+                                                'class': 'form-control'})
+        }
+        exclude = ['user', 'dt_inclusao', 'ativo']

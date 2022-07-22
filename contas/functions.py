@@ -12,7 +12,7 @@ from itertools import cycle
 
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import time
 from datetime import datetime, timedelta 
 
@@ -93,7 +93,8 @@ def validate_CNPJ(value):
     new_2dv = DV_maker(new_2dv % 11)
     value = value[:-1] + str(new_2dv)
     if value[-2:] != orig_dv:
-        raise ValidationError(error_messages['invalid'])    
+        raise ValidationError(error_messages['invalid'])  
+    print(orig_value)  
     return orig_value
 
 #VALIDATIONS FOR EDUARDO SALARINI
@@ -130,11 +131,10 @@ def validationsViagem(request, tipo):
         validate['celular']=validateCelular(request['celular'])
         validate['telefone']=validateTelefone(request['telefone'])
         validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
-    if 'dt_saida' in request.keys():
-        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
+    if 'dt_Saida' in request.keys():
+        validate['chegada_saida']=validateDates(request['dt_Chegada'], request['dt_Saida'])
     else:
-        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_chegada'])
-    print(validate['chegada_saida'])
+        validate['chegada_saida']=validateDates(request['dt_Chegada'], request['dt_Chegada'])
     if validate['chegada_saida']['state_chegada']==True and  validate['chegada_saida']['state_saida']==True and validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
             if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
