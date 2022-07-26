@@ -55,7 +55,6 @@ def cadastrar_viagem_caledonia(request):
         form = ViagemForm(request.POST)
         form_turismo = Viagem_TurismoForm(request.POST)
 
-        # print(request.POST)
         # Aqui a VALIDATION toma novos valores de acordo com o FORM
         validation, valido = validationsViagem(request.POST, 'turismo')
         if valido:
@@ -197,7 +196,6 @@ def cadastrar_viagem_caledonia(request):
     form = ViagemForm()
     form_turismo = Viagem_TurismoForm()
 
-    
     veiculos = Tipo_Veiculo.objects.all()
     context = {
         'form': form,
@@ -231,6 +229,47 @@ def get_validar_caledonia(request):
 
 @login_required
 def viagem_inclui(request, tipo):
+    estados = Estado.objects.all().order_by('nome')
+    form = ViagemForm()
+    form_turismo = Viagem_TurismoForm()
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = ViagemForm(request.POST)
+        form_turismo = Viagem_TurismoForm(request.POST)
+
+        if form.is_valid():
+            if form_turismo.is_valid():
+                viagem = form.save()
+                viagem.user = request.user
+                viagem.senha='T'+get_random_string()+str(viagem.id)+get_random_string()
+                viagem.save()
+                viagem_turismo = form_turismo.save()
+                viagem_turismo.viagem = viagem
+                viagem_turismo.save()
+                print('salvou direitinho')
+            else:
+                print('n valido =/')
+                print(form_turismo.errors)
+
+        else:
+            print('n é valido mesmo =/')
+            print(form.errors)
+    
+
+
+    context = {
+        'form': form,
+        'form_turismo': form_turismo,
+        'estados': estados,
+        'tipo': tipo,
+        'titulo': 'CADASTRAR',
+    }
+    return render(request, 'senhas/viagem_inclui.html', context)
+
+
+@login_required
+def viagem_inclui_old(request, tipo):
     # Essa variavel VALIDATION é iniciada aqui para não haver conflito
     # enquanto não existir uma requisição POST
     validation = {'veiculo': {'state': True},
@@ -253,12 +292,11 @@ def viagem_inclui(request, tipo):
         form = ViagemForm(request.POST)
         form_turismo = Viagem_TurismoForm(request.POST)
 
-        # print(request.POST)
         # Aqui a VALIDATION toma novos valores de acordo com o FORM
-        validation, valido = validationsViagem(request.POST, tipo)
+        #validation, valido = validationsViagem(request.POST, tipo)
+
         if form.is_valid():
-            #if form_turismo.is_valid():
-                form.save()
+            form.save()
         else:
             print(form.errors)
             messages.error(request, 'Corrigir o erro apresentado.')
@@ -340,7 +378,6 @@ def viagem_inclui(request, tipo):
         form = ViagemForm()
         form_turismo = Viagem_TurismoForm()
 
-
     # Pegando as devidas informações para os selects do formulario abaixo
     veiculos = Tipo_Veiculo.objects.all()
     pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
@@ -398,7 +435,6 @@ def fiscalizar_viagem(request, id):
     except:
         viagem_turismo = None
         pontos_turisticos = None
-    print(request.user.groups)
     return render(request, 'senhas/viagem.html', {'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos})
 
 

@@ -4,6 +4,7 @@ from django.forms import ModelForm, ValidationError
 from .models import *
 from contas.models import Estado
 from contas.functions import validate_CNPJ
+from .validations import validate_CNPJ
 
 class Date(forms.DateInput):
     input_type = 'date'
@@ -80,7 +81,6 @@ class ViagemForm(ModelForm):
 
             'cnpj_empresa_transporte': forms.TextInput(attrs={'onblur': 'validar(event)',
                                                               'onkeydown': 'mascara(this,icnpj)',
-                                                              'maxlength': '18',
                                                               'required': 'true',
                                                               'class': 'form-control'}),
 
@@ -105,3 +105,12 @@ class ViagemForm(ModelForm):
                                                 'class': 'form-control'})
         }
         exclude = ['user', 'dt_inclusao', 'ativo']
+        
+        
+    def clean_cnpj_empresa_transporte(self):
+        print(self.cleaned_data["cnpj_empresa_transporte"])
+        cnpj = validate_CNPJ(self.cleaned_data["cnpj_empresa_transporte"])
+        cnpj = cnpj.replace('.', '')
+        cnpj = cnpj.replace('-', '')
+        print(cnpj)
+        return cnpj

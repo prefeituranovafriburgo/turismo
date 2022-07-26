@@ -62,7 +62,7 @@
                                     <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control {%if not validation.cidade.state %}is-invalid{% endif %}" onblur="validar(event)" name="cidade" required id="id_cidade">
+                                        <select class="form-control {%if not validation.cidade.state %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
@@ -489,11 +489,11 @@
                         event.target.classList.remove("is-invalid");
                     }
                     window.onload = function() {
-                        const options = document.getElementById('id_pontos_turisticos').options
+         //               const options = document.getElementById('id_pontos_turisticos').options
 
-                        for(let i = options.length-1; i >= 0; i--){
-                            options[i].value = options[i].text 
-                        }
+      //                 for(let i = options.length-1; i >= 0; i--){
+     //                       options[i].value = options[i].text 
+    //                   }
 
                         const outros = document.createElement('option')
                         outros.value = 'outros'
