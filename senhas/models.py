@@ -81,6 +81,7 @@ class Viagem(models.Model):
     estado_origem = models.ForeignKey(Estado, on_delete=models.PROTECT)
     cidade_origem = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    ativo=models.BooleanField(default=True)
 
 
 class Viagem_Turismo(models.Model):
@@ -94,10 +95,11 @@ class Viagem_Turismo(models.Model):
         return '%s' % (self.viagem)
 
     viagem = models.OneToOneField(Viagem, on_delete=models.CASCADE)
-    outros = models.CharField(default='', max_length=60, blank=True)
+    outros = models.CharField(default='', max_length=120, blank=True)
     nome_guia = models.CharField(max_length=60)
-    cadastur_guia = models.CharField(max_length=14)
+    cadastur_guia = models.CharField(max_length=18)
     celular = models.CharField(max_length=18)
     telefone = models.CharField(max_length=18, blank=True, null=True)
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    ativo=models.BooleanField(default=True)

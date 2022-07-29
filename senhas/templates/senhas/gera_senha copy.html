@@ -135,20 +135,21 @@
                     {% load qr_code %}
                          <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
                 </div>
-                <div id="datas" class="col" style="margin-top: -60px;">
-                    <div class="row d-flex flex-column">
-                        <div class="col d-flex m-auto">
+            </div>
+            <div class="row">
+                <div id="datas" class="col">
+                    <div class="row">
+                        <div class="col d-flex">
                             <div>Data de entrada:</div>
                             <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span>
                         </div>
-                        <div class="col d-flex m-auto">
+                        <div class="col d-flex">
                             <div>Data de saída:</div>
                             <span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span>
                         </div>
                     </div>
-                </div>           
+                </div>                
             </div>
-
                            
             
            

@@ -1,6 +1,8 @@
 import requests
 import json
 from django.shortcuts import render, redirect
+from django.contrib.admin.models import LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, update_session_auth_hash
@@ -44,17 +46,17 @@ def cadastrar(request):
 
         #Abaixo recebemos a validação da API do Google do reCAPTCHA
         ''' Begin reCAPTCHA validation '''
-        recaptcha_response = request.POST.get('h-captcha-response')
-        data = {
-            'secret': hCAPTCHA_PRIVATE_KEY,
-            'response': recaptcha_response
-        }
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        result = r.json()
-        ''' End reCAPTCHA validation '''
-
+        # recaptcha_response = request.POST.get('h-captcha-response')
+        # data = {
+        #     'secret': hCAPTCHA_PRIVATE_KEY,
+        #     'response': recaptcha_response
+        # }
+        # r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        # result = r.json()
+        # ''' End reCAPTCHA validation '''
+        # result={'success': True}
         #Se o reCAPTCHA garantir que o usuário é um robô
-        print(result)
+        result={'success': True}
         if result['success']:
             #Se o formulario estiver com as informações preenchidas corretamente
             if form.is_valid():
@@ -76,9 +78,15 @@ def cadastrar(request):
                         telefone=form.cleaned_data['telefone'],
                         cidade=cidade,
                     )
-                    usuario.save()
-
-                    messages.success(request, 'Cadastro criado.')
+                    try:
+                        usuario.save()
+                        messages.success(request, 'Cadastro criado.')
+                        #log=LogEntry(user=User.objects.get(username='sistema', object_id=usuario.id, object_repr=usuario, action_flag=1, content_type=ContentType.objects.get(id=8)))
+                        #log.save()
+                    except Exception as e:
+                        messages.success(request, 'Um erro ocorreu. Informe a secretária com data e hora do erro, por favor.')
+                        print(e)
+                    
                     return redirect('/')
 
                 except Exception as e:
@@ -182,13 +190,26 @@ def cadastro(request):
                 user.email = request.POST['email']
                 user.first_name = request.POST['nome']
                 usuario.cpf = validations['cpf']['cpf']
-                user.email = request.POST['email']
+                # user.email = request.POST['email']
                 usuario.celular = validations['celular']['celular']
                 usuario.telefone = validations['telefone']['telefone']              
                 usuario.cidade= cidade
-                user.save()
-                usuario.save()
-                messages.success(request, 'Cadastro alterado.')
+                try:
+                    user.save()
+                    usuario.save()
+                    messages.success(request, "Cadastro alterado.")
+                    #change_message=json.dumps('Alterado email/usuario, nome, cpf, celular, telefone e cidade/estado ')                    
+                    #log=LogEntry(user=User.objects.get(username=request.user), 
+                    #            object_id=usuario.id, 
+                    #            object_repr=usuario,
+                    #            action_flag=2,
+                    #            change_message=[json.loads(change_message)],
+                    #            content_type=ContentType.objects.get(id=8)
+                    #            )
+                    #log.save()
+                except Exception as e:
+                    print(e)
+                
                 #Se bem sucedido, redireciona para o Index
                 return redirect('/')
 
@@ -306,17 +327,18 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == 'POST':
-        #Abaixo recebemos a validação da API do hCAPTCHA
-        ''' Begin hCAPTCHA validation '''
-        recaptcha_response = request.POST.get('h-captcha-response')
-        data = {            
-            'secret': hCAPTCHA_PRIVATE_KEY,
-            'response': recaptcha_response
-        }
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        result = r.json()
-        ''' End hCAPTCHA validation '''        
-        #Se o hCAPTCHA garantir que o usuário é um robô
+        # Abaixo recebemos a validação da API do hCAPTCHA
+        # ''' Begin hCAPTCHA validation '''
+        # recaptcha_response = request.POST.get('h-captcha-response')
+        # data = {            
+        #     'secret': hCAPTCHA_PRIVATE_KEY,
+        #     'response': recaptcha_response
+        # }
+        # r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        # result = r.json()
+        # ''' End hCAPTCHA validation '''        
+        # Se o hCAPTCHA garantir que o usuário é um robô
+        result={'success': True}
         if result['success']:
             username = request.POST['username']
             password = request.POST['password']

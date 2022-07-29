@@ -14,6 +14,7 @@ from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import time
+from datetime import datetime, timedelta 
 
 
 error_messages = {
@@ -129,9 +130,12 @@ def validationsViagem(request, tipo):
         validate['celular']=validateCelular(request['celular'])
         validate['telefone']=validateTelefone(request['telefone'])
         validate['cadastur_guia']=validateCadastur(request['cadastur_guia'])
-    validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
-    
-    if validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
+    if 'dt_saida' in request.keys():
+        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_saida'])
+    else:
+        validate['chegada_saida']=validateDates(request['dt_chegada'], request['dt_chegada'])
+    print(validate['chegada_saida'])
+    if validate['chegada_saida']['state_chegada']==True and  validate['chegada_saida']['state_saida']==True and validate['empresa_transporte']['state']==True and validate['estado']['state']==True and validate['cidade']['state']==True and validate['veiculo']['state']==True and validate['quant_passageiros']['state']==True and validate['cadastur_empresa_transporte']['state']==True and validate['cnpj_empresa_transporte']['state']==True:
         if tipo=='turismo':
             if validate['nome_guia']['state']==True and validate['cadastur_guia']['state']==True and validate['celular']['state']==True and validate['telefone']['state']==True:
                 return validate, True    
@@ -143,29 +147,46 @@ def validateDates(chegada, saida):
     if chegada=='' and saida=='':
         return {'state_chegada': False, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.', 'msg_saida': 'Data de saida invalida.'}
     try:
-        chegada_=time.strptime(chegada, "%Y-%m-%d")
+        # chegada_=time.strptime(chegada, "%Y-%m-%d")
+        format = '%Y-%m-%d'
+        chegada_ = datetime.strptime(chegada, format)
     except:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
     try:
-        saida_=time.strptime(saida, "%Y-%m-%d")
+        format = '%Y-%m-%d'
+        saida_=datetime.strptime(saida, format)
     except:
         return {'state_chegada': True, 'state_saida': False, 'msg_chegada': 'Data de chegada invalida.'}
-    
-    agora = time.localtime() # get struct_time
-    if chegada_ <= agora:
+        
+
+    data = datetime.now() - timedelta(2)
+    print(chegada_, saida_, data)
+    print(chegada_>data)
+    print(chegada_>saida_)
+    if chegada_ < data:
         return {'state_chegada': False, 'state_saida': True, 'msg_chegada': 'Data de chegada invalida.'}
-    if chegada_ > saida_:
-        return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    try:
+        if chegada_ > saida_:
+            return {'state_chegada': True,'state_saida': False, 'msg_saida': 'Data de saida menor que a de chegada.'}    
+    except Exception as E:
+        print(E)
     return {'state_chegada': True, 'state_saida': True, 'msg': ''}
     
     
 def validateCNPJ(cnpj_):
     cnpj = [int(char) for char in cnpj_ if char.isdigit()]
+    # print(cnpj)
     if len(cnpj) != 14:
         return {'state': False, 'msg': 'CNPJ invalido.'}
-
+    teste=(c * 14 for c in "1234567890")
+    # for i in teste:
+    #     print(i)
     if cnpj in (c * 14 for c in "1234567890"):
         return {'state': False, 'msg': 'CNPJ invalido.'}
+
+    if cnpj==[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
+        return {'state': False, 'msg': 'CNPJ invalido.'}
+
 
     cnpj=''.join([str(_) for _ in cnpj])
     cnpj_r = cnpj[::-1]
@@ -195,6 +216,9 @@ def validateNOME(nome):
     return 'teste'
 def validateCadastur(cadastur):
     cadastur_ = [int(char) for char in cadastur if char.isdigit()]
+    # print('cadastur:', cadastur)
+    if cadastur in (c * len(cadastur) for c in "1234567890"):
+        return {'state': False, 'msg': 'Cadastur invalido.'}
     cadastur=''.join([str(_) for _ in cadastur_])
     if len(cadastur_)<8:
         return {'state': False, 'msg': 'Cadastur inválido.'}
@@ -209,6 +233,12 @@ def validateCPF(cpf_):
     #  Verifica se o CPF tem todos os números iguais, ex: 111.111.111-11
     #  Esses CPFs são considerados inválidos mas passam na validação dos dígitos
     #  Antigo código para referência: if all(cpf[i] == cpf[i+1] for i in range (0, len(cpf)-1))
+    if cpf in (c * 11 for c in "1234567890"):
+        return {'state': False, 'msg': 'CPF invalido.'}
+
+    if cpf==[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
+        return {'state': False, 'msg': 'CPF invalido.'}
+
     if cpf == cpf[::-1]:
         return {'state': False, 'msg': 'CPF inválido.'}
     #  Valida os dois dígitos verificadores

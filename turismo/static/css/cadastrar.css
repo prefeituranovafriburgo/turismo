@@ -111,9 +111,11 @@ html, body{
     }
     #header{
         width: 90%;
+        min-width: 460px;
     }
     #login-screen{
         width: 90%;
         padding: 50px 20%;
+        min-width: 460px;
     }
 }
