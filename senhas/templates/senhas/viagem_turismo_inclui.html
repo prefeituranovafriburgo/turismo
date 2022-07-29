@@ -126,54 +126,70 @@
                                     </div>                                                                                        
                                 </div>                    
                                 
-                        
+                                
+                                
+                                <div class="form-row px-3 py-3" >
+                                    <!-- Quantidade Passageiros -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_quant_passageiros">Quant. passageiros:</label>
+                                        {{form.quant_passageiros}}
+                                        <div class="invalid-feedback">
+                                            {{form.quant_passageiros.error}}
 
-                                    <div class="form-row mt-4 px-3 py-3">                                                                    
-                                        <div class="form-group col-md-2 d-flex flex-column">                        
-                                            <label for="id_quant_passageiros">Quant. passageiros:</label>
-                                            {{form.quant_passageiros}}
-                                            <div class="invalid-feedback">
-                                                {{form.quant_passageiros.error}}
-    
-                                                {{validation.quant_passageiros.msg}}
-                                            </div>
-                                        </div>  
-                                        <div class="form-group col-md-2 d-flex flex-column">                        
-                                            <label for="id_tipo_veiculo">Tipo veiculo:</label>
-                                            {{form.tipo_veiculo.error}}
-    
-                                                {{form.tipo_veiculo}}
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                {{validation.veiculo.msg}}
-                                            </div>
-                                        </div> 
-                                        <div class="form-group col pl-5 d-flex">                        
-                                            <div class="form-group col ml-5 d-flex flex-column">                        
-                                                <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
-                                                <div class="d-flex" >
-                                                    <div class="custom-control custom-switch">                                                
-                                                        <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
-                                                        <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
-                                                    </div>
-                                                        <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
-                                                        <span class="my-auto ml-2">Sim</span> -->
-                                                </div>
-                                            </div>   
-                                            <div class="form-group col ml-5 d-flex flex-column">                        
-                                                <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
-                                                <div class="d-flex" >
-                                                    <div class="custom-control custom-switch">
-                                                        <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
-                                                        <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
-                                                    </div>
-    
-                                                </div>
-                                            </div>                                 
+                                            {{validation.quant_passageiros.msg}}
                                         </div>
-                                    </div>                            
+                                    </div>  
+                                    <!-- Veiculo -->
+                                    <div class="form-group col-md-1 d-flex flex-column">                        
+                                        <label for="id_tipo_veiculo">Veiculo:</label>
+                                        {{form.tipo_veiculo}}
+                                        <div class="invalid-feedback">
+                                            {{form.veiculo.error}}
 
+                                            {{validation.veiculo.msg}}
+                                        </div>
+                                    </div> 
+                                    <!-- Nome Guia -->
+                                    <div class="form-group col-md-3 d-flex flex-column">                        
+                                        <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
+                                        {{form_turismo.nome_guia}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.nome_guia.error}}
 
+                                            {{validation.nome_guia.msg}}
+                                        </div>
+                                    </div>
+                                    <!-- Cadastur Guia -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
+                                        {{form_turismo.cadastur_guia}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.cadastur_guia.error}}
+
+                                            {{validation.cadastur_guia.msg}}
+                                        </div>
+                                    </div>
+                                    <!-- Celular -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                                                                
+                                        <label for="id_celular" class="mr-3" >Celular:</label>
+                                        {{form_turismo.celular}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.celular.error}}
+
+                                            {{validation.celular.msg}}
+                                        </div>
+                                    </div>
+                                    <!-- Telefone -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_telefone" class="mr-3">Telefone:</label>
+                                        {{form_turismo.telefone}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.telefone.error}}
+
+                                            {{validation.telefone.msg}}
+                                        </div>
+                                    </div> 
+                                </div>
                                 <div class="form-row mt-4 px-3" >
                                     <div class="form-group col-md-12 d-flex flex-column">   
                                         <label for="id_pontos_turisticos">Pontos turisticos:</label>                     

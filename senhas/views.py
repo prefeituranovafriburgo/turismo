@@ -228,7 +228,32 @@ def get_validar_caledonia(request):
 
 
 @login_required
-def viagem_inclui(request, tipo):
+def viagem_inclui(request):
+    estados = Estado.objects.all().order_by('nome')
+    form = ViagemForm()
+
+    if request.method == 'POST':
+        form = ViagemForm(request.POST)
+
+        if form.is_valid():
+            viagem = form.save()
+            viagem.user = request.user
+            viagem.senha = 'C'+get_random_string()+str(viagem.id)+get_random_string()
+            viagem.save()
+        else:
+            print('O form de viagem tem algum erro: =/')
+            print(form.errors)
+
+    context = {
+        'form': form,
+        'estados': estados,
+        'titulo': 'CADASTRAR',
+    }
+    return render(request, 'senhas/viagem_inclui.html', context)
+
+
+@login_required
+def viagem_turismo_inclui(request):
     estados = Estado.objects.all().order_by('nome')
     form = ViagemForm()
     form_turismo = Viagem_TurismoForm()
@@ -242,158 +267,154 @@ def viagem_inclui(request, tipo):
             if form_turismo.is_valid():
                 viagem = form.save()
                 viagem.user = request.user
-                viagem.senha='T'+get_random_string()+str(viagem.id)+get_random_string()
+                viagem.senha = 'T'+get_random_string()+str(viagem.id)+get_random_string()
                 viagem.save()
                 viagem_turismo = form_turismo.save()
                 viagem_turismo.viagem = viagem
                 viagem_turismo.save()
-                print('salvou direitinho')
             else:
-                print('n valido =/')
+                print('O form_turismo tem algum erro: =/')
                 print(form_turismo.errors)
 
         else:
-            print('n é valido mesmo =/')
+            print('O form de viagem tem algum erro: =/')
             print(form.errors)
-    
-
 
     context = {
         'form': form,
         'form_turismo': form_turismo,
         'estados': estados,
-        'tipo': tipo,
         'titulo': 'CADASTRAR',
     }
-    return render(request, 'senhas/viagem_inclui.html', context)
+    return render(request, 'senhas/viagem_turismo_inclui.html', context)
 
 
-@login_required
-def viagem_inclui_old(request, tipo):
-    # Essa variavel VALIDATION é iniciada aqui para não haver conflito
-    # enquanto não existir uma requisição POST
-    validation = {'veiculo': {'state': True},
-                  'quant_passageiros': {'state': True},
-                  'cnpj_empresa_transporte': {'state': True},
-                  'cadastur_empresa_transporte': {'state': True},
-                  'cadastur_guia':  {'state': True},
-                  'telefone':  {'state': True},
-                  'celular': {'state': True},
-                  'chegada_saida': {'state_chegada': True, 'state_saida': True, 'msg': ''},
-                  'cidade': {'state': True},
-                  'estado': {'state': True},
-                  'empresa_transporte': {'state': True},
-                  'nome_guia': {'state': True},
-                  'responsavel_viagem': {'state': True},
-                  'contato_responsavel': {'state': True}}
+# @login_required
+# def viagem_inclui_old(request, tipo):
+#     # Essa variavel VALIDATION é iniciada aqui para não haver conflito
+#     # enquanto não existir uma requisição POST
+#     validation = {'veiculo': {'state': True},
+#                   'quant_passageiros': {'state': True},
+#                   'cnpj_empresa_transporte': {'state': True},
+#                   'cadastur_empresa_transporte': {'state': True},
+#                   'cadastur_guia':  {'state': True},
+#                   'telefone':  {'state': True},
+#                   'celular': {'state': True},
+#                   'chegada_saida': {'state_chegada': True, 'state_saida': True, 'msg': ''},
+#                   'cidade': {'state': True},
+#                   'estado': {'state': True},
+#                   'empresa_transporte': {'state': True},
+#                   'nome_guia': {'state': True},
+#                   'responsavel_viagem': {'state': True},
+#                   'contato_responsavel': {'state': True}}
 
-    estados = Estado.objects.all().order_by('nome')
-    if request.method == 'POST':
-        form = ViagemForm(request.POST)
-        form_turismo = Viagem_TurismoForm(request.POST)
+#     estados = Estado.objects.all().order_by('nome')
+#     if request.method == 'POST':
+#         form = ViagemForm(request.POST)
+#         form_turismo = Viagem_TurismoForm(request.POST)
 
-        # Aqui a VALIDATION toma novos valores de acordo com o FORM
-        #validation, valido = validationsViagem(request.POST, tipo)
+#         # Aqui a VALIDATION toma novos valores de acordo com o FORM
+#         #validation, valido = validationsViagem(request.POST, tipo)
 
-        if form.is_valid():
-            form.save()
-        else:
-            print(form.errors)
-            messages.error(request, 'Corrigir o erro apresentado.')
-        veiculos = Tipo_Veiculo.objects.all()
-        pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
-    # Incluindo as informações coletas no contexto para uso no Template
-        viagem_turismo = False
-        if tipo == 'turismo':
-            viagem_turismo = {
-                'nome_guia': request.POST['nome_guia'],
-                'cadastur_guia': request.POST['cadastur_guia'],
-                'celular': request.POST['celular'],
-                'telefone': request.POST['telefone'],
-                'outros': request.POST['outros']
-            }
-        try:
-            estado = Estado.objects.get(id=request.POST['estado'])
-        except:
-            estado = ''
-        try:
-            cidade = Cidade.objects.get(id=request.POST['cidade'])
-        except:
-            cidade = ''
-        try:
-            if request.POST['ficarao_hospedados']:
-                ficarao_hospedados = True
-        except:
-            ficarao_hospedados = False
-        try:
-            if request.POST['restaurante_reservado']:
-                restaurante_reservado = True
-        except:
-            restaurante_reservado = False
-        try:
-            tipo_veiculo = Tipo_Veiculo.objects.get(
-                id=request.POST['tipo_veiculo'])
-        except:
-            tipo_veiculo = ''
-        pontos_selecionados = []
-        try:
-            for u in request.POST.getlist('pontos_turisticos'):
-                pontos_selecionados.append(
-                    Pontos_Turisticos.objects.get(nome=u))
-        except:
-            pass
-        context = {
-            'form': form,
-            'form_turismo': form_turismo,
-            'validation': validation,
-            'veiculos': veiculos,
-            'pontos': pontosTuristicos,
-            'tipo': tipo,
-            'titulo': 'CADASTRAR',
-            'estado_': estado,
-            'estados': estados,
-            'cidade': cidade,
-            'viagem': {'responsavel_viagem': request.POST['responsavel_viagem'],
-                       'contato_responsavel': request.POST['contato_responsavel'],
-                       'dt_Chegada2': request.POST['dt_Chegada'],
-                       'dt_Saida2': request.POST['dt_Saida'],
-                       #    'estado_origem': request.POST['estado'],
-                       #    'cidade_origem': request.POST['cidade'],
-                       'empresa_transporte': request.POST['empresa_transporte'],
-                       'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
-                       'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
-                       'quant_passageiros': request.POST['quant_passageiros'],
-                       'tipo_veiculo': tipo_veiculo,
-                       'obs': request.POST['obs'],
-                       'ficarao_hospedados': ficarao_hospedados,
-                       'restaurante_reservado': restaurante_reservado,
-                       'restaurante': request.POST['restaurante'],
-                       'hotel': request.POST['hotel']
-                       },
-            'viagem_turismo': viagem_turismo,
-            'pontos_selecionados': pontos_selecionados
-        }
-        return render(request, 'senhas/viagem_inclui.html', context)
-    else:
-        form = ViagemForm()
-        form_turismo = Viagem_TurismoForm()
+#         if form.is_valid():
+#             form.save()
+#         else:
+#             print(form.errors)
+#             messages.error(request, 'Corrigir o erro apresentado.')
+#         veiculos = Tipo_Veiculo.objects.all()
+#         pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
+#     # Incluindo as informações coletas no contexto para uso no Template
+#         viagem_turismo = False
+#         if tipo == 'turismo':
+#             viagem_turismo = {
+#                 'nome_guia': request.POST['nome_guia'],
+#                 'cadastur_guia': request.POST['cadastur_guia'],
+#                 'celular': request.POST['celular'],
+#                 'telefone': request.POST['telefone'],
+#                 'outros': request.POST['outros']
+#             }
+#         try:
+#             estado = Estado.objects.get(id=request.POST['estado'])
+#         except:
+#             estado = ''
+#         try:
+#             cidade = Cidade.objects.get(id=request.POST['cidade'])
+#         except:
+#             cidade = ''
+#         try:
+#             if request.POST['ficarao_hospedados']:
+#                 ficarao_hospedados = True
+#         except:
+#             ficarao_hospedados = False
+#         try:
+#             if request.POST['restaurante_reservado']:
+#                 restaurante_reservado = True
+#         except:
+#             restaurante_reservado = False
+#         try:
+#             tipo_veiculo = Tipo_Veiculo.objects.get(
+#                 id=request.POST['tipo_veiculo'])
+#         except:
+#             tipo_veiculo = ''
+#         pontos_selecionados = []
+#         try:
+#             for u in request.POST.getlist('pontos_turisticos'):
+#                 pontos_selecionados.append(
+#                     Pontos_Turisticos.objects.get(nome=u))
+#         except:
+#             pass
+#         context = {
+#             'form': form,
+#             'form_turismo': form_turismo,
+#             'validation': validation,
+#             'veiculos': veiculos,
+#             'pontos': pontosTuristicos,
+#             'tipo': tipo,
+#             'titulo': 'CADASTRAR',
+#             'estado_': estado,
+#             'estados': estados,
+#             'cidade': cidade,
+#             'viagem': {'responsavel_viagem': request.POST['responsavel_viagem'],
+#                        'contato_responsavel': request.POST['contato_responsavel'],
+#                        'dt_Chegada2': request.POST['dt_Chegada'],
+#                        'dt_Saida2': request.POST['dt_Saida'],
+#                        #    'estado_origem': request.POST['estado'],
+#                        #    'cidade_origem': request.POST['cidade'],
+#                        'empresa_transporte': request.POST['empresa_transporte'],
+#                        'cnpj_empresa_transporte': request.POST['cnpj_empresa_transporte'],
+#                        'cadastur_empresa_transporte': request.POST['cadastur_empresa_transporte'],
+#                        'quant_passageiros': request.POST['quant_passageiros'],
+#                        'tipo_veiculo': tipo_veiculo,
+#                        'obs': request.POST['obs'],
+#                        'ficarao_hospedados': ficarao_hospedados,
+#                        'restaurante_reservado': restaurante_reservado,
+#                        'restaurante': request.POST['restaurante'],
+#                        'hotel': request.POST['hotel']
+#                        },
+#             'viagem_turismo': viagem_turismo,
+#             'pontos_selecionados': pontos_selecionados
+#         }
+#         return render(request, 'senhas/viagem_inclui.html', context)
+#     else:
+#         form = ViagemForm()
+#         form_turismo = Viagem_TurismoForm()
 
-    # Pegando as devidas informações para os selects do formulario abaixo
-    veiculos = Tipo_Veiculo.objects.all()
-    pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
-    # Incluindo as informações coletas no contexto para uso no Template
-    context = {
-        'form': form,
-        'form_turismo': form_turismo,
-        'validation': validation,
-        'veiculos': veiculos,
-        'pontos': pontosTuristicos,
-        'tipo': tipo,
-        'titulo': 'CADASTRAR',
-        'estado_': '',
-        'estados': estados,
-    }
-    return render(request, 'senhas/viagem_inclui.html', context)
+#     # Pegando as devidas informações para os selects do formulario abaixo
+#     veiculos = Tipo_Veiculo.objects.all()
+#     pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
+#     # Incluindo as informações coletas no contexto para uso no Template
+#     context = {
+#         'form': form,
+#         'form_turismo': form_turismo,
+#         'validation': validation,
+#         'veiculos': veiculos,
+#         'pontos': pontosTuristicos,
+#         'tipo': tipo,
+#         'titulo': 'CADASTRAR',
+#         'estado_': '',
+#         'estados': estados,
+#     }
+#     return render(request, 'senhas/viagem_inclui.html', context)
 
 
 def viagem(request, id):

@@ -12,14 +12,14 @@
         </div>
     <div id="newcards" class="row hidden">
         <div class="col d-flex">
-            <a id="turismo" href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn d-flex">
+            <a id="turismo" href="{% url 'senhas:viagem_turismo_inclui' %}" class="btn d-flex">
                 <div class="w-100 h-100 d-flex flex-column">
                     <span>GRUPO PARA <br>TURISMO E COMPRAS</span>
 
                     <!-- <span class="mt-auto btn btn-primary">Cadastrar</span> -->
                 </div>
             </a>
-            <a id="compras" href="{% url 'senhas:viagem_inclui' tipo='compras' %}" class="btn d-flex">
+            <a id="compras" href="{% url 'senhas:viagem_inclui'%}" class="btn d-flex">
                 <div class="w-100 h-100 d-flex flex-column">
                     <span>GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
 
