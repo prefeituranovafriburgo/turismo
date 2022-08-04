@@ -8,7 +8,7 @@
 
                     <div class="row hidden">
                         <div class="col">
-                            <h3 class="uppercase">CADASTRAR - GRUPO DE TURISMO E COMPRAS</h3>
+                            <h3 class="uppercase">CADASTRAR - GRUPO EXCLUSIVAMENTE PARA COMPRAS</h3>
                         </div>
                 
                         <div class="col-3 text-right">
@@ -19,8 +19,10 @@
                                 CANCELAR
                             </a>                            
                         </div>
-                        
                     </div>
+
+                    {{form.errors.responsavel_viagem}}
+
                     {% include 'senhas/for_mobile/viagem_inclui.html' %}
                 
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
@@ -31,8 +33,7 @@
                                         <label for="id_responsavel_viagem">Nome do responsável pelo Grupo:</label>                                                          
                                         {{form.responsavel_viagem}}                                    
                                         <div class="invalid-feedback">
-                                            {{form.responsavel_viagem.error}}
-                                            {{validation.responsavel_viagem.msg}}
+                                            {{form.errors.responsavel_viagem}}
                                         </div>
                                     </div>
                                     <!-- Celular -->
@@ -40,35 +41,30 @@
                                         <label for="id_contato_responsavel">Celular do responsável:</label>                                                           
                                         {{form.contato_responsavel}}
                                         <div class="invalid-feedback">
-                                            {{form.contato_responsavel.error}}
-                                            {{validation.contato_responsavel.msg}}
+                                            {{form.errors.contato_responsavel}}
                                         </div>
                                     </div>
                                     <!-- Estado -->
                                     <div class="form-group col-md-2"> 
                                         <label for="id_estado">Estado de origem:</label>
-                                        <select class="form-control {%if not validation.estado.state %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                        <select class="form-control {%if form.errors.estado_origem %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                             <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                             {% for estado in estados %}
                                             <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="invalid-feedback">
-                                            {{form.estado.error}}
-
-                                            {{validation.estado.msg}}
+                                            {{form.errors.estado_origem}}
                                         </div>
                                     </div>
                                     <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control {%if not validation.cidade.state %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
+                                        <select class="form-control {%if form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
-                                            {{form.cidade.error}}
-                                            
-                                            {{validation.cidade.msg}}
+                                            {{form.errors.cidade_origem}}
                                         </div>
                                     </div>   
                                 </div>
@@ -78,9 +74,7 @@
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Data chegada:</label>                                                                     
                                         {{form.dt_Chegada}}
                                         <div class="invalid-feedback">
-                                            {{form.chegada_saida.error}}
-
-                                            {{validation.chegada_saida.msg_chegada}}
+                                            {{form.errors.chegada_saida}}
                                         </div>
                                     </div> 
                                     <!-- Data saída -->
@@ -88,9 +82,7 @@
                                         <label for="id_dt_Saida_day" class="mr-5">Data saida:</label>
                                         {{form.dt_Saida}}
                                         <div class="invalid-feedback">
-                                            {{form.chegada_saida.error}}
-
-                                            {{validation.chegada_saida.msg_saida}}
+                                            {{form.erros.chegada_saida}}
                                         </div>
                                     </div>
                                     <!-- Empresa -->
@@ -99,9 +91,7 @@
                                         {{form.empresa_transporte}}
 
                                         <div class="invalid-feedback">
-                                            {{form.empresa_transporte.error}}
-
-                                            {{validation.empresa_transporte.msg}}
+                                            {{form.erros.empresa_transporte}}
                                         </div>
                                     </div>
                                     <!-- Cadastur Empresa -->
@@ -109,9 +99,7 @@
                                         <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
                                         {{form.cadastur_empresa_transporte}}
                                         <div class="invalid-feedback">
-                                            {{form.cadastur_empresa_transporte.error}}
-
-                                            {{validation.cadastur_empresa_transporte.msg}}
+                                            {{form.errors.cadastur_empresa_transporte}}
                                         </div>
                                     </div>
                                     <!-- CNPJ -->
@@ -119,111 +107,57 @@
                                         <label for="id_cnpj_empresa_transporte">CNPJ:</label>
                                         {{form.cnpj_empresa_transporte}} 
                                         <div class="invalid-feedback">
-                                            {{form.cnpj_empresa_transporte.error}}
-
-                                                {{validation.cnpj_empresa_transporte.msg}}
-                                            </div>
+                                            {{form.erros.cnpj_empresa_transporte}}
+                                        </div>
                                     </div>                                                                                        
                                 </div>                    
                                 
-                                
-                                
-                                <div class="form-row px-3 py-3" >
-                                    <!-- Quantidade Passageiros -->
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_quant_passageiros">Quant. passageiros:</label>
-                                        {{form.quant_passageiros}}
-                                        <div class="invalid-feedback">
-                                            {{form.quant_passageiros.error}}
+                        
 
-                                            {{validation.quant_passageiros.msg}}
-                                        </div>
-                                    </div>  
-                                    <!-- Veiculo -->
-                                    <div class="form-group col-md-1 d-flex flex-column">                        
-                                        <label for="id_tipo_veiculo">Veiculo:</label>
-                                        {{form.tipo_veiculo}}
-                                        <div class="invalid-feedback">
-                                            {{form.veiculo.error}}
-
-                                            {{validation.veiculo.msg}}
-                                        </div>
-                                    </div> 
-                                    <!-- Nome Guia -->
-                                    <div class="form-group col-md-3 d-flex flex-column">                        
-                                        <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
-                                        {{form_turismo.nome_guia}}
-                                        <div class="invalid-feedback">
-                                            {{form_turismo.nome_guia.error}}
-
-                                            {{validation.nome_guia.msg}}
-                                        </div>
-                                    </div>
-                                    <!-- Cadastur Guia -->
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
-                                        {{form_turismo.cadastur_guia}}
-                                        <div class="invalid-feedback">
-                                            {{form_turismo.cadastur_guia.error}}
-
-                                            {{validation.cadastur_guia.msg}}
-                                        </div>
-                                    </div>
-                                    <!-- Celular -->
-                                    <div class="form-group col-md-2 d-flex flex-column">                                                                
-                                        <label for="id_celular" class="mr-3" >Celular:</label>
-                                        {{form_turismo.celular}}
-                                        <div class="invalid-feedback">
-                                            {{form_turismo.celular.error}}
-
-                                            {{validation.celular.msg}}
-                                        </div>
-                                    </div>
-                                    <!-- Telefone -->
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
-                                        <label for="id_telefone" class="mr-3">Telefone:</label>
-                                        {{form_turismo.telefone}}
-                                        <div class="invalid-feedback">
-                                            {{form_turismo.telefone.error}}
-
-                                            {{validation.telefone.msg}}
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="form-row mt-4 px-3" >
-                                    <div class="form-group col-md-12 d-flex flex-column">   
-                                        <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
-                                        {{form_turismo.pontos_turisticos}}
-                                        <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
-                                    </div>                                    
-                                </div>                                
-                                <div class="form-row justify-content-center mt-4 px-3" id="dOutros" >
-                                    <div class="form-group col-md-8 d-flex flex-column">   
-                                        <label for="id_outros" class="my-auto mr-3">Ponto turístico:</label>
-                                        {{form_turismo.outros}}
-                                    </div>
-                                </div>
-                                <div class="form-row justify-content-center mt-4 px-3 py-3"> 
-                                    <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
-                                        <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
-                                        <div class="d-flex" >
-                                            <div class="custom-control custom-switch">                                                
-                                                <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
-                                                <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
+                                    <div class="form-row mt-4 px-3 py-3">                                                                    
+                                        <div class="form-group col-md-2 d-flex flex-column">                        
+                                            <label for="id_quant_passageiros">Quant. passageiros:</label>
+                                            {{form.quant_passageiros}}
+                                            <div class="invalid-feedback">
+                                                {{form.erros.quant_passageiros}}
                                             </div>
-                                        </div>
-                                    </div>   
-                                    <div class="form-group col-md-3 ml-5 d-flex flex-column">                        
-                                        <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
-                                        <div class="d-flex" >
-                                            <div class="custom-control custom-switch">
-                                                <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
-                                                <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
-                                            </div>
+                                        </div>  
+                                        <div class="form-group col-md-2 d-flex flex-column">                        
+                                            <label for="id_tipo_veiculo">Tipo veiculo:</label>
+                                            {{form.tipo_veiculo}}
+    
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                {{form.erros.tipo_veiculo}}
 
+                                            </div>
+                                        </div> 
+                                        <div class="form-group col pl-5 d-flex">                        
+                                            <div class="form-group col ml-5 d-flex flex-column">                        
+                                                <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
+                                                <div class="d-flex" >
+                                                    <div class="custom-control custom-switch">                                                
+                                                        <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
+                                                        <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
+                                                    </div>
+                                                        <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
+                                                        <span class="my-auto ml-2">Sim</span> -->
+                                                </div>
+                                            </div>   
+                                            <div class="form-group col ml-5 d-flex flex-column">                        
+                                                <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
+                                                <div class="d-flex" >
+                                                    <div class="custom-control custom-switch">
+                                                        <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
+                                                        <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
+                                                    </div>
+    
+                                                </div>
+                                            </div>                                 
                                         </div>
-                                    </div>    
-                                </div>
+                                    </div>                            
+
+                        
 
                                 <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
@@ -245,7 +179,7 @@
                                 </div>      
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                       
-                                        <input class="btn btn-primary" type="submit" value="{{titulo}}">
+                                        <button class="btn btn-primary" type="submit">CADASTRAR</button>
                                     </div>
                                 </div>
                     </form>
@@ -256,6 +190,7 @@
                 
                 <!--
                 -->
+                
                 {% if viagem.ficarao_hospedados %}
                 <script>
                     document.getElementById('hospedar').style.display='flex';
@@ -442,11 +377,9 @@
                         event.target.classList.remove("is-invalid");
                     }
                     window.onload = function() {
-         //               const options = document.getElementById('id_pontos_turisticos').options
 
-      //                 for(let i = options.length-1; i >= 0; i--){
-     //                       options[i].value = options[i].text 
-    //                   }
+                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
 
                         const outros = document.createElement('option')
                         outros.value = 'outros'

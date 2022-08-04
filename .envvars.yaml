@@ -1,6 +1,6 @@
 db_name: "turismo" # Este projeto foi pensando para suportar MySql ou MariaDB
-db_user: "turismo" # Usuário do banco com todas as permissões para a base de dados
-db_pw: "turismo123" # A senha do respectivo usuário do banco
+db_user: "root" # Usuário do banco com todas as permissões para a base de dados
+db_pw: "302933" # A senha do respectivo usuário do banco
 django_secret_key: secretkey123456 # Insira sua django secret key
 debug_mode: True # Use True para DEBUG or False para PRODUCTION
 email_sistema: seu@email.com # E-mail utilizado para recuperação de senha

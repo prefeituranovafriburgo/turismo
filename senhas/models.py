@@ -64,10 +64,10 @@ class Viagem(models.Model):
 
     responsavel_viagem=models.CharField(max_length=120, default=None)
     contato_responsavel=models.CharField(max_length=18, default=None)
-    senha=models.CharField(max_length=10, blank=True)
+    senha=models.CharField(max_length=10, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     dt_Chegada = models.DateField('Data Chegada')
-    dt_Saida = models.DateField('Data Saída')
+    dt_Saida = models.DateField('Data Saída', null=True, blank=True)
     ficarao_hospedados = models.BooleanField(default=False, verbose_name='Ficarão Hospedados?')
     hotel = models.CharField(max_length=120, blank=True, null=True)
     restaurante_reservado= models.BooleanField(default=False, verbose_name='Restaurante reservado?')

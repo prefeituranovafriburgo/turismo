@@ -1,0 +1,443 @@
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block cab %}            
+            <div id="main" class="row w-100">
+                <div class="container mt-5 pt-5">
+
+                    <div class="row hidden">
+                        <div class="col">
+                            <h3 class="uppercase">CADASTRAR - GRUPO DE TURISMO E COMPRAS</h3>
+                        </div>
+                
+                        <div class="col-3 text-right">
+                            <a href="{% url 'senhas:cad_transporte' %}" class="btn btn-danger" role="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mb-1 mr-1 bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                                </svg>
+                                CANCELAR
+                            </a>                            
+                        </div>
+                        
+                    </div>
+                    {% include 'senhas/for_mobile/viagem_inclui.html' %}
+                
+                    <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
+                        {% csrf_token %}                                                   
+                                <div class="form-row mt-4  px-3 py-3">
+                                    <!-- Responsável -->
+                                    <div class="form-group col-md-3 d-flex flex-column">
+                                        <label for="id_responsavel_viagem">Nome do responsável pelo Grupo:</label>                                                          
+                                        {{form.responsavel_viagem}}                                    
+                                        <div class="invalid-feedback">
+                                            {{form.errors.responsavel_viagem}}
+                                        </div>
+                                    </div>
+                                    <!-- Celular -->
+                                    <div class="form-group col-md-3 d-flex flex-column">
+                                        <label for="id_contato_responsavel">Celular do responsável:</label>                                                           
+                                        {{form.contato_responsavel}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.contato_responsavel}}
+                                        </div>
+                                    </div>
+                                    <!-- Estado -->
+                                    <div class="form-group col-md-2"> 
+                                        <label for="id_estado">Estado de origem:</label>
+                                        <select class="form-control {%if form.errors.estado_origem %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                            <option value="" {%if estado_ == '' %}selected{% endif %}></option>
+                                            {% for estado in estados %}
+                                            <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{form.errors.estado_origem}}
+                                        </div>
+                                    </div>
+                                    <!-- Cidade -->
+                                    <div class="form-group col-md-4"> 
+                                        <label for="id_cidade">Cidade de origem:</label>
+                                        <select class="form-control {%if form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
+                                            <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{form.errors.cidade_origem}}
+                                        </div>
+                                    </div>   
+                                </div>
+                                <div class="form-row mt-4 justify-content-center px-3 py-3">
+                                    <!-- Data chegada -->
+                                    <div class="form-group col-md-2 d-flex flex-column">
+                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Data chegada:</label>                                                                     
+                                        {{form.dt_Chegada}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.chegada_saida}}
+                                        </div>
+                                    </div> 
+                                    <!-- Data saída -->
+                                    <div class="form-group col-md-2 d-flex flex-column">
+                                        <label for="id_dt_Saida_day" class="mr-5">Data saida:</label>
+                                        {{form.dt_Saida}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.chegada_saida}}
+                                        </div>
+                                    </div>
+                                    <!-- Empresa -->
+                                    <div class="form-group col-md-3 d-flex flex-column">                        
+                                        <label for="id_empresa_transporte">Empresa de transporte:</label>
+                                        {{form.empresa_transporte}}
+
+                                        <div class="invalid-feedback">
+                                            {{form.errors.empresa_transporte}}
+                                        </div>
+                                    </div>
+                                    <!-- Cadastur Empresa -->
+                                    <div class="form-group col-md-3 d-flex flex-column">                        
+                                        <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
+                                        {{form.cadastur_empresa_transporte}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.cadastur_empresa_transporte}}
+                                        </div>
+                                    </div>
+                                    <!-- CNPJ -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_cnpj_empresa_transporte">CNPJ:</label>
+                                        {{form.cnpj_empresa_transporte}} 
+                                        <div class="invalid-feedback">
+                                            {{form.errors.cnpj_empresa_transporte}}
+                                        </div>
+                                    </div>                                                                                        
+                                </div>                    
+                                
+                                
+                                
+                                <div class="form-row px-3 py-3" >
+                                    <!-- Quantidade Passageiros -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_quant_passageiros">Quant. passageiros:</label>
+                                        {{form.quant_passageiros}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.quant_passageiros}}
+                                        </div>
+                                    </div>  
+                                    <!-- Veiculo -->
+                                    <div class="form-group col-md-1 d-flex flex-column">                        
+                                        <label for="id_tipo_veiculo">Veiculo:</label>
+                                        {{form.tipo_veiculo}}
+                                        <div class="invalid-feedback">
+                                            {{form.errors.veiculo}}
+                                        </div>
+                                    </div> 
+                                    <!-- Nome Guia -->
+                                    <div class="form-group col-md-3 d-flex flex-column">                        
+                                        <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
+                                        {{form_turismo.nome_guia}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.nome_guia}}
+                                        </div>
+                                    </div>
+                                    <!-- Cadastur Guia -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
+                                        {{form_turismo.cadastur_guia}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.cadastur_guia}}
+                                        </div>
+                                    </div>
+                                    <!-- Celular -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                                                                
+                                        <label for="id_celular" class="mr-3" >Celular:</label>
+                                        {{form_turismo.celular}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.celular}}
+                                        </div>
+                                    </div>
+                                    <!-- Telefone -->
+                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                        <label for="id_telefone" class="mr-3">Telefone:</label>
+                                        {{form_turismo.telefone}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.telefone}}
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-row mt-4 px-3" >
+                                    <div class="form-group col-md-12 d-flex flex-column">   
+                                        <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
+                                        {{form_turismo.pontos_turisticos}}
+                                        <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
+                                    </div>                                    
+                                </div>                                
+                                <div class="form-row justify-content-center mt-4 px-3" id="dOutros">
+                                    <div class="form-group col-md-8 d-flex flex-column">   
+                                        <label for="id_outros" class="my-auto mr-3">Ponto turístico:</label>
+                                        {{form_turismo.outros}}
+                                    </div>
+                                </div>
+                                <div class="form-row justify-content-center mt-4 px-3 py-3"> 
+                                    <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
+                                        <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
+                                        <div class="d-flex" >
+                                            <div class="custom-control custom-switch">                                                
+                                                <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
+                                                <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <div class="form-group col-md-3 ml-5 d-flex flex-column">                        
+                                        <label class="my-auto" for="restaurante">Possui restaurante reservado?</label>
+                                        <div class="d-flex" >
+                                            <div class="custom-control custom-switch">
+                                                <input onchange="drestaurante(event)" value="false" name="restaurante_reservado" type="checkbox" class="custom-control-input" id="restaurante" {% if viagem.restaurante_reservado %}checked{% endif %}>
+                                                <label id="labelSwitch2" class="custom-control-label" for="restaurante">Não</label>                                              
+                                            </div>
+
+                                        </div>
+                                    </div>    
+                                </div>
+
+                                <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
+                                    <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
+                                        <label for="id_hotel" class="mr-3 my-auto">Hotel onde ficarão hospedados:</label>
+                                        {{form.hotel}}
+                                    </div>                                    
+                                </div>
+                                <div class="form-row pt-2 px-3 justify-content-center" id="drestaurante">                                    
+                                    <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
+                                        <label for="id_drestaurante" class="my-auto mr-3">Restaurante reservado:</label>
+                                        {{form.restaurante}}
+                                    </div>
+                                </div>                                
+                                <div class="form-row mt-4 px-3 py-3">
+                                    <div class="form-group col-md-12 d-flex flex-column"> 
+                                        <label for="id_obs">Observação:</label>
+                                        {{form.obs}}
+                                    </div>
+                                </div>      
+                                <div class="form-row mt-4 justify-content-center py-3">
+                                    <div class="form-group col-md-3 d-flex flex-column">                       
+                                        <button class="btn btn-primary" type="submit">CADASTRAR</button>
+                                    </div>
+                                </div>
+                    </form>
+                
+                
+                </div>
+                
+                
+                <!--
+                -->
+                {% if viagem.ficarao_hospedados %}
+                <script>
+                    document.getElementById('hospedar').style.display='flex';
+                    document.getElementById('customSwitch1').value='true';
+                    document.getElementById('labelSwitch').innerText='Sim';
+                </script>
+                {% endif %}
+                {% if viagem.restaurante_reservado %}
+                <script>
+                    document.getElementById('drestaurante').style.display='flex';
+                    document.getElementById('restaurante').value='true';
+                    document.getElementById('labelSwitch2').innerText='Sim';
+                </script>
+                {% endif %}
+                <script>
+                    $('.selEstado').change(function mostracidade () {
+                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        var estadoId = $(this).val();
+                            $.ajax({ 
+                                url: url,
+                                data: {
+                                    'id':estadoId,
+                                },
+                                success: function(data)
+                                {
+                                    $("#id_cidade").html(data);
+                                }
+                                });
+                    })
+                
+                </script>
+                {% if not viagem_turismo.outros == '' %}
+                <script>
+                    document.getElementById('dOutros').style.display='flex';
+                </script>
+                {% endif %}
+                
+                <SCRIPT LANGUAGE="JavaScript"> 
+
+                    function checkOutros(event){
+                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
+                            document.getElementById('dOutros').style.display='flex';
+                        }else{
+                            document.getElementById('dOutros').style.display='none';
+                            document.getElementById('id_outros').value=''
+                        }
+                    }
+                    function hospedados(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch').innerText='Não';
+                            document.getElementById('hospedar').style.display='none';                            
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch').innerText='Sim';
+                            document.getElementById('hospedar').style.display='flex';
+                        }                        
+                    }
+                    function drestaurante(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch2').innerText='Não';
+                            document.getElementById('drestaurante').style.display='none';
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch2').innerText='Sim';
+                            document.getElementById('drestaurante').style.display='flex';
+                        }                        
+                    }
+
+                    function pontosturisticos(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch2').innerText='Não';
+                            document.getElementById('pontosTuristicos').style.display='none';
+                            document.getElementById('pontosTuristicos2').style.display='none';
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch2').innerText='Sim';
+                            document.getElementById('pontosTuristicos').style.display='flex';
+                            document.getElementById('pontosTuristicos2').style.display='flex';
+                        }                        
+                    }
+                
+                    var estadoId;
+                    function mostraestado(){
+                        var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
+
+                        $.ajax({ 
+                            url: url,
+                            success: function(data) {
+                                $("#id_estado").html(data);                           
+                            }
+                        });
+                
+                    };       
+
+                    function mostracidade(event){
+                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        estadoId = event.target.value;   
+                        console.log(estadoId)                     
+                        $.ajax({ 
+                            url: url,
+                            data: {
+                                'id':estadoId,
+                            },
+                            success: function(data) {                               
+                                $("#id_cidade").html(data);
+                            }
+                        });
+                
+                    };
+                
+                    function leech(v){
+                        v=v.replace(/o/gi,"0")
+                        v=v.replace(/i/gi,"1")
+                        v=v.replace(/z/gi,"2")
+                        v=v.replace(/e/gi,"3")
+                        v=v.replace(/a/gi,"4")
+                        v=v.replace(/s/gi,"5")
+                        v=v.replace(/t/gi,"7")
+                        return v
+                    }
+                
+                    function open_popup(url){
+                        newwindow = window.open(url,'{{title}}', 'height = 400,width = 600');
+                        if(window.focus) {newwindow.focus()}
+                        return false;
+                    }
+                
+                    function data(v){
+                        v=v.replace(/\D/g,"")                //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                        v=v.replace(/(\d{2})(\d)/,"$1/$2")   //Coloca um ponto entre o terceiro e o quarto digitos
+                                                                //de novo (para o segundo bloco de numeros)
+                        return v
+                    }
+                    function icpf(v){
+                        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                                //de novo (para o segundo bloco de numeros)
+                        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+                        return v
+                    }
+                    function icnpj(v){
+                        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{2})(\d)/,"$1.$2")       //Coloca um ponto entre o segundo e terceiro digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1/$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        v=v.replace(/(\d{4})(\d)/,"$1-$2")       //Coloca um ponto entre o quinto e o sexto digitos
+                        // v=v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+                        return v
+                    }
+                    function itelefone(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function icep(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{2})(\d)/,"$1.$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function icelular(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function mascara(o,f){
+                        v_obj=o
+                        v_fun=f
+                        setTimeout("execmascara()",1)
+                    }
+                
+                    function execmascara(){
+                        v_obj.value=v_fun(v_obj.value)
+                    }
+
+                    function validar(event){
+                        event.target.classList.remove("is-invalid");
+                    }
+                    window.onload = function() {
+         //               const options = document.getElementById('id_pontos_turisticos').options
+
+      //                 for(let i = options.length-1; i >= 0; i--){
+     //                       options[i].value = options[i].text 
+    //                   }
+
+                        const outros = document.createElement('option')
+                        outros.value = 'outros'
+                        outros.text = 'Outros'
+                        outros.selected = true
+                        document.getElementById('id_pontos_turisticos').appendChild(outros)
+
+
+                        const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
+                        cnpjField.maxLength = 18
+                        cnpj=cnpjField.value                        
+                        cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+
+                        document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                    };
+                
+                </script>                
+            </div>                   
+        </div>      
+{% endblock %}
