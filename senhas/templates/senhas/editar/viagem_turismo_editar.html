@@ -418,13 +418,6 @@
                         document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
                         document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
 
-                        const outros = document.createElement('option')
-                        outros.value = 'outros'
-                        outros.text = 'Outros'
-                        outros.selected = true
-                        document.getElementById('id_pontos_turisticos').appendChild(outros)
-
-
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
                         cnpj=cnpjField.value                        

@@ -267,14 +267,6 @@
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
 
-                    function checkOutros(event){
-                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
-                            document.getElementById('dOutros').style.display='flex';
-                        }else{
-                            document.getElementById('dOutros').style.display='none';
-                            document.getElementById('id_outros').value=''
-                        }
-                    }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -295,20 +287,6 @@
                             event.target.value='true'
                             document.getElementById('labelSwitch2').innerText='Sim';
                             document.getElementById('drestaurante').style.display='flex';
-                        }                        
-                    }
-
-                    function pontosturisticos(event){
-                        if (event.target.value==='true'){
-                            event.target.value='false';
-                            document.getElementById('labelSwitch2').innerText='Não';
-                            document.getElementById('pontosTuristicos').style.display='none';
-                            document.getElementById('pontosTuristicos2').style.display='none';
-                        } else {
-                            event.target.value='true'
-                            document.getElementById('labelSwitch2').innerText='Sim';
-                            document.getElementById('pontosTuristicos').style.display='flex';
-                            document.getElementById('pontosTuristicos2').style.display='flex';
                         }                        
                     }
                 
@@ -420,11 +398,23 @@
      //                       options[i].value = options[i].text 
     //                   }
 
-                        const outros = document.createElement('option')
-                        outros.value = 'outros'
-                        outros.text = 'Outros'
-                        outros.selected = true
-                        document.getElementById('id_pontos_turisticos').appendChild(outros)
+    const outros = document.createElement('li')
+    const pontos = document.getElementById('id_pontos_turisticos')
+    const size = document.getElementById('id_pontos_turisticos').children.length
+    outros.innerHTML = `<label for="id_pontos_turisticos_value=${size}"><input type="checkbox" name="pontos_turisticos" value=${size} class="pontos_input" onblur="validar(event)" id="id_pontos_turisticos_value=${size}">
+        Outros</label>`
+    pontos.appendChild(outros)
+
+    outros.addEventListener('change', (e)=>{
+            if (e.target.checked){                            
+                document.getElementById('dOutros').style.display='flex';
+            }else{
+                document.getElementById('dOutros').style.display='none';
+                document.getElementById('id_outros').value=''
+            }
+    })
+
+     outros.dispatchEvent(new Event('change'))
 
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
@@ -432,6 +422,7 @@
                         cnpj=cnpjField.value                        
                         cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
 
+                        
                         document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")

@@ -15,13 +15,11 @@ urlpatterns = [
     path('cadastrar_viagem/turismo', views.viagem_turismo_cadastrar, name='viagem_turismo_cadastrar'),
     path('cadastrar_viagem/caledonia', views.viagem_caledonia_cadastrar, name='caledonia'),
 
-    path('editar_viagem/compras/<id>', views.viagem_compras_editar, name='viagem_compras_editar'),
-    path('editar_viagem/turismo/<id>', views.viagem_turismo_editar, name='viagem_turismo_editar'),
-    #path('editar_viagem/caledonia<id>', views.cadastrar_viagem_editar, name='caledonia'),
+    path('editar_viagem/compras/<senha>', views.viagem_compras_editar, name='viagem_compras_editar'),
+    path('editar_viagem/turismo/<senha>', views.viagem_turismo_editar, name='viagem_turismo_editar'),
+    path('editar_viagem/caledonia/<senha>', views.viagem_caledonia_editar, name='viagem_caledonia_editar'),
 
-    path('cadastrar_viagem/caledonia/validarData', views.get_validar_caledonia, name='get_validar_caledonia'),
-
-    path('viagem/<str:id>/22NF', views.viagem, name='viagem'),
+    path('viagem/<str:senha>/22NF', views.viagem, name='viagem'),
     path('viagem/excluir/<str:id>/22NF', views.excluir_viagem, name='excluir_senha'),
     path('viagem/fiscalizar/<str:id>/22NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),
     #

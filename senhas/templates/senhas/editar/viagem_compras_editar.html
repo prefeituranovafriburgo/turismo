@@ -291,7 +291,6 @@
                     function mostracidade(event){
                         var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
                         estadoId = event.target.value;   
-                        console.log(estadoId)                     
                         $.ajax({ 
                             url: url,
                             data: {
@@ -376,10 +375,31 @@
                     function validar(event){
                         event.target.classList.remove("is-invalid");
                     }
-                    window.onload = function() {
+                    window.onload = async function() {
 
                         document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
                         document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                        const estados = document.getElementById('id_estado')
+                        for (let option of estados.options){
+                            if(option.innerText == estado){
+                                estados.selectedIndex = option.value
+                            }
+                        }
+
+                       await estados.dispatchEvent(new Event('change'))
+
+                       // MUDAR PARA FETCH !!!
+                        setTimeout(()=>{
+                            const cidades = document.getElementById('id_cidade')
+
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
+                                }
+                            }
+                        }, 200)
 
                         const outros = document.createElement('option')
                         outros.value = 'outros'

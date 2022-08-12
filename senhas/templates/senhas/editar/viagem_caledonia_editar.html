@@ -8,7 +8,7 @@
 
                     <div class="row hidden">
                         <div class="col">
-                            <h3 class="uppercase">{{titulo}} - GRUPO PARA PICO DA CALEDÔNIA</h3>
+                            <h3 class="uppercase">ALTERAR - GRUPO PICO DA CALEDÔNIA</h3>
                         </div>
                 
                         <div class="col-3 text-right">
@@ -16,127 +16,144 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mb-1 mr-1 bi bi-arrow-left-circle" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                                 </svg>
-                                CANCELAR 
+                                CANCELAR
                             </a>                            
                         </div>
                         
                     </div>
-                    {% include 'senhas/for_mobile/caledonia.html' %}
-                    
+                    {% include 'senhas/for_mobile/viagem_inclui.html' %}
+                
                     <form method="POST" class="bg-light mb-5 py-5 rounded border" id="formulario"  data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}                                                   
                                 <div class="form-row mt-4  px-3 py-3">
+                                    <!-- Responsável -->
                                     <div class="form-group col-md-3 d-flex flex-column">
-                                        <label for="id_responsavel_viagem">Nome do responsável pelo Grupo:</label>        
-                                        {{form.responsavel_viagem}}                                                   
+                                        <label for="id_responsavel_viagem">Nome do responsável pelo Grupo:</label>                                                          
+                                        {{form.responsavel_viagem}}                                    
                                         <div class="invalid-feedback">
-                                            {{validation.responsavel_viagem.msg}}
+                                            {{form.errors.responsavel_viagem}}
                                         </div>
                                     </div>
+                                    <!-- Celular -->
                                     <div class="form-group col-md-3 d-flex flex-column">
                                         <label for="id_contato_responsavel">Celular do responsável:</label>                                                           
-                                        {{form.responsavel_viagem}}                                                   
+                                        {{form.contato_responsavel}}
                                         <div class="invalid-feedback">
-                                            {{validation.contato_responsavel.msg}}
+                                            {{form.errors.contato_responsavel}}
                                         </div>
                                     </div>
+                                    <!-- Estado -->
                                     <div class="form-group col-md-2"> 
                                         <label for="id_estado">Estado de origem:</label>
-                                        <select class="form-control {%if not validation.estado.state %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                        <select class="form-control {%if form.errors.estado_origem %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                             <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                             {% for estado in estados %}
                                             <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="invalid-feedback">
-                                            {{validation.estado.msg}}
+                                            {{form.errors.estado_origem}}
                                         </div>
                                     </div>
+                                    <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control {%if not validation.cidade.state %}is-invalid{% endif %}" onblur="validar(event)" name="cidade" required id="id_cidade">
+                                        <select class="form-control {%if not form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
-                                            {{validation.cidade.msg}}
+                                            {{form.errors.cidade_origem}}
                                         </div>
                                     </div>   
                                 </div>
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
+                                    <!-- Data chegada -->
                                     <div class="form-group col-md-2 d-flex flex-column">
                                         <label for="id_dt_Chegada_day" class="w-auto mr-5">Data visitação:</label>                                                                     
-                                        <input class="form-control {%if not validation.chegada_saida.state_chegada %}is-invalid{% endif %}" onblur="validarVisitacao(event)" type="date" id="dt_chegada" name="dt_chegada" value="{{viagem.dt_Chegada|date:'Y-m-d'}}{{viagem.dt_Chegada2}}">
+                                        {{form.dt_Chegada}}
                                         <div class="invalid-feedback">
-                                            {{validation.chegada_saida.msg_chegada}}
+                                            {{form.errors.chegada_saida}}
                                         </div>
-                                    </div>                                                            
-                                    
+                                    </div> 
+                                    <!-- Empresa -->
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_empresa_transporte">Empresa de transporte:</label>
                                         {{form.empresa_transporte}}
+
                                         <div class="invalid-feedback">
-                                            {{validation.empresa_transporte.msg}}
+                                            {{form.errors.empresa_transporte}}
                                         </div>
                                     </div>
+                                    <!-- Cadastur Empresa -->
                                     <div class="form-group col-md-3 d-flex flex-column">                        
-                                        <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>  
-                                        {{form.cadastur_empresa_transporte}}                                                         
+                                        <label for="id_cadastur_empresa_transporte">Cadastur empresa de transporte:</label>                                                           
+                                        {{form.cadastur_empresa_transporte}}
                                         <div class="invalid-feedback">
-                                            {{validation.cadastur_empresa_transporte.msg}}
+                                            {{form.errors.cadastur_empresa_transporte}}
                                         </div>
                                     </div>
+                                    <!-- CNPJ -->
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_cnpj_empresa_transporte">CNPJ:</label>
-                                        {{form.cnpj_empresa_transporte}}
-                                            <div class="invalid-feedback">
-                                                {{validation.cnpj_empresa_transporte.msg}}
-                                            </div>
-                                    </div>  
+                                        {{form.cnpj_empresa_transporte}} 
+                                        <div class="invalid-feedback">
+                                            {{form.errors.cnpj_empresa_transporte}}
+                                        </div>
+                                    </div>   
+                                    <!-- Quantidade Passageiros -->
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_quant_passageiros">Quant. passageiros:</label>
                                         {{form.quant_passageiros}}
                                         <div class="invalid-feedback">
-                                            {{validation.quant_passageiros.msg}}
+                                            {{form.errors.quant_passageiros}}
                                         </div>
-                                    </div>                                                                                        
-                                </div>                                                               
-                                <div class="form-row px-3 py-3" >                                    
-                                    <div class="form-group col-md-2 d-flex flex-column">                        
+                                    </div>                                                                                       
+                                </div>                    
+                                
+                                
+                                <div class="form-row px-3 py-3" >
+
+                                    <!-- Veiculo -->
+                                    <div class="form-group col-md-1 d-flex flex-column">                        
                                         <label for="id_tipo_veiculo">Veiculo:</label>
                                         {{form.tipo_veiculo}}
                                         <div class="invalid-feedback">
-                                            {{validation.veiculo.msg}}
+                                            {{form.errors.veiculo}}
                                         </div>
                                     </div> 
+                                    <!-- Nome Guia -->
                                     <div class="form-group col-md-3 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3">Nome do guia de turismo:</label>
                                         {{form_turismo.nome_guia}}
                                         <div class="invalid-feedback">
-                                            {{validation.nome_guia.msg}}
+                                            {{form_turismo.errors.nome_guia}}
                                         </div>
                                     </div>
+                                    <!-- Cadastur Guia -->
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_guia"  class=" mr-3">Cadastur do guia:</label>
                                         {{form_turismo.cadastur_guia}}
                                         <div class="invalid-feedback">
-                                            {{validation.cadastur_guia.msg}}
+                                            {{form_turismo.errors.cadastur_guia}}
                                         </div>
                                     </div>
+                                    <!-- Celular -->
                                     <div class="form-group col-md-2 d-flex flex-column">                                                                
                                         <label for="id_celular" class="mr-3" >Celular:</label>
                                         {{form_turismo.celular}}
                                         <div class="invalid-feedback">
-                                            {{validation.celular.msg}}
+                                            {{form_turismo.errors.celular}}
                                         </div>
                                     </div>
+                                    <!-- Telefone -->
                                     <div class="form-group col-md-2 d-flex flex-column">                        
                                         <label for="id_telefone" class="mr-3">Telefone:</label>
                                         {{form_turismo.telefone}}
                                         <div class="invalid-feedback">
-                                            {{validation.telefone.msg}}
+                                            {{form_turismo.errors.telefone}}
                                         </div>
                                     </div> 
-                                </div>                            
+                                </div>
                                 <div class="form-row justify-content-center mt-4 px-3 py-3"> 
                                     <div class="form-group col-md-2 ml-5 d-flex flex-column">                        
                                         <label class="my-auto" for="id_ficarao_hospedados">Ficarão Hospedados?</label>
@@ -145,8 +162,6 @@
                                                 <input onchange="hospedados(event)" value="false" name="ficarao_hospedados" type="checkbox" class="custom-control-input" id="customSwitch1" {% if viagem.ficarao_hospedados %}checked{% endif %}>
                                                 <label id="labelSwitch" class="custom-control-label" for="customSwitch1">Não</label>                                              
                                             </div>
-                                                <!-- <input type="checkbox" checked name="ficarao_hospedados" id="id_ficarao_hospedados" class="ml-4 my-auto">
-                                                <span class="my-auto ml-2">Sim</span> -->
                                         </div>
                                     </div>   
                                     <div class="form-group col-md-3 ml-5 d-flex flex-column">                        
@@ -159,7 +174,8 @@
 
                                         </div>
                                     </div>    
-                                </div>                                                                                        
+                                </div>
+
                                 <div class="form-row justify-content-center mt-4 px-3" id="hospedar">
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Hotel onde ficarão hospedados:</label>
@@ -180,7 +196,7 @@
                                 </div>      
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                       
-                                        <input class="btn btn-primary" type="submit" value="{{titulo}}">
+                                        <button class="btn btn-primary" type="submit">CADASTRAR</button>
                                     </div>
                                 </div>
                     </form>
@@ -221,15 +237,21 @@
                                 });
                     })
                 
-                </script>                
+                </script>
+                {% if not viagem_turismo.outros == '' %}
+                <script>
+                    document.getElementById('dOutros').style.display='flex';
+                </script>
+                {% endif %}
+                
                 <SCRIPT LANGUAGE="JavaScript"> 
 
                     function checkOutros(event){
-                        if (event.target.value=='outros'){                            
+                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
                             document.getElementById('dOutros').style.display='flex';
                         }else{
                             document.getElementById('dOutros').style.display='none';
-                            document.getElementById('input-outros').value=''
+                            document.getElementById('id_outros').value=''
                         }
                     }
                     function hospedados(event){
@@ -297,23 +319,6 @@
                         });
                 
                     };
-                    function validarVisitacao(event){                     
-                     var url ='/cad_viagem/caledonia/validarData'
-                        date = event.target.value;   
-                        console.log(date)                     
-                        $.ajax({ 
-                            url: url,
-                            data: {
-                                'date': date,
-                            },
-                            success: function(data) {                               
-                                if(data['fail']){
-                                    alert(data['alert'])
-                                    event.target.value=''
-                                }
-                            }
-                        });
-                    }
                 
                     function leech(v){
                         v=v.replace(/o/gi,"0")
@@ -388,10 +393,17 @@
                         event.target.classList.remove("is-invalid");
                     }
                     window.onload = function() {
-                        cnpj=document.getElementById('cnpj').value                        
-                        document.getElementById('cnpj').value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
-                        document.getElementById('telefone').value=document.getElementById('telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
-                        document.getElementById('celular').value=document.getElementById('celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+
+                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+
+                        const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
+                        cnpjField.maxLength = 18
+                        cnpj=cnpjField.value                        
+                        cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+
+                        document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
