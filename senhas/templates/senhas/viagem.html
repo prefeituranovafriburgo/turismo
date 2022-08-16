@@ -135,7 +135,13 @@
                 {{ ponto_turistico }}{% if  forloop.last %}{%else%}, {% endif %}
                 {% endfor %}
             </td>
-        </tr>        
+        </tr> 
+        {% if viagem_turismo.outros != "" and viagem_turismo.outros != 'Pico da Caledônia' %}     
+        <tr>
+            <th>Outros Pontos Turísticos</th>
+            <td>{{viagem_turismo.outros}}</td>
+        </tr>
+        {% endif %}
         {% endif %}
         {% endif %}
 

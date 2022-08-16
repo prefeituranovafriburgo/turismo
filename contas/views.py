@@ -1,5 +1,8 @@
+import re
+from this import d
 import requests
 import json
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
@@ -190,11 +193,15 @@ def cadastro(request):
 # Essa View retorna a cidade nos formularios do cliente
 # ao selecionarem o estado
 def load_cidades(request):
-    if not request.GET.get('id'):
-        return render(request, 'contas/ret_cidades.html', {})
-    estado_id = request.GET.get('id')
-    cidades = Cidade.objects.filter(estado=estado_id).order_by('nome')
-    return render(request, 'contas/ret_cidades.html', {'cidades': cidades})
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
+        if not data['id']:
+            return render(request, 'contas/ret_cidades.html', {})
+        estado_id = data['id']
+        cidades = Cidade.objects.filter(estado=estado_id).order_by('nome')
+        return render(request, 'contas/ret_cidades.html', {'cidades': cidades})
+    else:
+        raise PermissionDenied()
 
 # Essa View não é mais utilizada
 

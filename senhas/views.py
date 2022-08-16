@@ -74,7 +74,7 @@ def viagem_compras_editar(request, senha):
 def viagem_turismo_editar(request, senha):
     from datetime import date
     viagem = Viagem.objects.get(senha=senha)
-    viagem_turismo = Viagem.objects.get(senha=senha)
+    viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     estados = Estado.objects.all().order_by('nome')
 
     if date.today() > viagem.dt_Saida:
@@ -108,7 +108,7 @@ def viagem_turismo_editar(request, senha):
             print(form.errors)
 
     form = ViagemForm(instance=viagem)
-    form_turismo = Viagem_TurismoForm(instance=viagem)
+    form_turismo = Viagem_TurismoForm(instance=viagem_turismo)
 
     context = {
         'form': form,
@@ -117,7 +117,7 @@ def viagem_turismo_editar(request, senha):
         'estados': estados,
     }
 
-    return render(request, 'senhas/editar/viagem_compras_editar.html', context)
+    return render(request, 'senhas/editar/viagem_turismo_editar.html', context)
 
 @login_required
 def viagem_caledonia_editar(request, senha):
@@ -301,7 +301,6 @@ def viagem(request, senha):
         'P': 'viagem_caledonia_editar',
     }
     nome_rota = 'senhas:'+urlNames[senha[0]]
-
     rota = redirect(nome_rota, senha)
 
     context = {

@@ -303,20 +303,30 @@
                 
                     };       
 
-                    function mostracidade(event){
-                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        estadoId = event.target.value;   
-                        console.log(estadoId)                     
-                        $.ajax({ 
-                            url: url,
-                            data: {
-                                'id':estadoId,
+                    async function mostracidade(event){
+                        const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+
+                        const data = await fetch(url,{
+                            method: 'POST', 
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
                             },
-                            success: function(data) {                               
-                                $("#id_cidade").html(data);
+                            body: JSON.stringify({id: event.target.value}),
+                          })
+
+                        document.getElementById('id_cidade').innerHTML = await data.text()
+
+                        if("{{viagem.cidade_origem}}"){
+                            const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                            const cidades = document.getElementById('id_cidade')
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
+                                }
                             }
-                        });
-                
+                        }
                     };
                 
                     function leech(v){
@@ -398,23 +408,26 @@
      //                       options[i].value = options[i].text 
     //                   }
 
-    const outros = document.createElement('li')
     const pontos = document.getElementById('id_pontos_turisticos')
-    const size = document.getElementById('id_pontos_turisticos').children.length
-    outros.innerHTML = `<label for="id_pontos_turisticos_value=${size}"><input type="checkbox" name="pontos_turisticos" value=${size} class="pontos_input" onblur="validar(event)" id="id_pontos_turisticos_value=${size}">
-        Outros</label>`
-    pontos.appendChild(outros)
 
-    outros.addEventListener('change', (e)=>{
-            if (e.target.checked){                            
-                document.getElementById('dOutros').style.display='flex';
-            }else{
-                document.getElementById('dOutros').style.display='none';
-                document.getElementById('id_outros').value=''
-            }
-    })
+    for(let ponto of pontos.children){
+        
+        if(ponto.outerText.toLowerCase() == " outros"){
+            pontos.appendChild(ponto)
+            ponto.addEventListener('change', (e)=>{
+                if (e.target.checked){                            
+                    document.getElementById('dOutros').style.display='flex';
+                }else{
+                    document.getElementById('dOutros').style.display='none';
+                    document.getElementById('id_outros').value=''
+                }
+        })
+    
+         ponto.dispatchEvent(new Event('change'))
+        }
+    }
 
-     outros.dispatchEvent(new Event('change'))
+
 
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')

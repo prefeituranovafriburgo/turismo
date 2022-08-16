@@ -291,7 +291,6 @@
                         }                        
                     }
                 
-                    var estadoId;
                     function mostraestado(){
                         var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
 
@@ -304,20 +303,31 @@
                 
                     };       
 
-                    function mostracidade(event){
-                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        estadoId = event.target.value;   
-                        console.log(estadoId)                     
-                        $.ajax({ 
-                            url: url,
-                            data: {
-                                'id':estadoId,
+                    async function mostracidade(event){
+                        const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+
+                        const data = await fetch(url,{
+                            method: 'POST', 
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
                             },
-                            success: function(data) {                               
-                                $("#id_cidade").html(data);
+                            body: JSON.stringify({id: event.target.value}),
+                          })
+
+                        document.getElementById('id_cidade').innerHTML = await data.text()
+
+                        if("{{viagem.cidade_origem}}"){
+                            const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                            const cidades = document.getElementById('id_cidade')
+                            console.log(cidades.options)
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
+                                }
                             }
-                        });
-                
+                        }
                     };
                 
                     function leech(v){
@@ -392,10 +402,27 @@
                     function validar(event){
                         event.target.classList.remove("is-invalid");
                     }
-                    window.onload = function() {
+                    window.onload = async function() {
 
                         document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
                         document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                        const estados = document.getElementById('id_estado')
+                        for (let option of estados.options){
+                            if(option.innerText == estado){
+                                estados.selectedIndex = option.value
+                            }
+                        }
+
+                        estados.dispatchEvent(new Event('change'))
+
+                        const outros = document.createElement('option')
+                        outros.value = 'outros'
+                        outros.text = 'Outros'
+                        outros.selected = true
+                        document.getElementById('id_pontos_turisticos').appendChild(outros)
+
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
@@ -407,7 +434,7 @@
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
-                </script>                
+                </script>                  
             </div>                   
         </div>      
 {% endblock %}
