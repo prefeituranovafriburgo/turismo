@@ -77,6 +77,9 @@ def viagem_turismo_editar(request, senha):
     viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     estados = Estado.objects.all().order_by('nome')
 
+    form = ViagemForm(instance=viagem)
+    form_turismo = Viagem_TurismoForm(instance=viagem_turismo)
+
     if date.today() > viagem.dt_Saida:
         messages.error(
             request, 'Não é mais possível alterar viagem, já que a viagem já ocorreu.')
@@ -88,6 +91,7 @@ def viagem_turismo_editar(request, senha):
 
     if request.method == 'POST':
         form = ViagemForm(request.POST, instance=viagem)
+        form_turismo = Viagem_TurismoForm(request.POST, instance=viagem)
         if form.is_valid():
             if form_turismo.is_valid():
 
@@ -107,8 +111,7 @@ def viagem_turismo_editar(request, senha):
         else:
             print(form.errors)
 
-    form = ViagemForm(instance=viagem)
-    form_turismo = Viagem_TurismoForm(instance=viagem_turismo)
+
 
     context = {
         'form': form,
@@ -240,7 +243,6 @@ def viagem_caledonia_cadastrar(request):
     estados = Estado.objects.all().order_by('nome')
     form = Viagem_CaledoniaForm()
     form_turismo = Viagem_turismo_CaledoniaForm()
-    print(form_turismo)
     if request.method == 'POST':
         form = ViagemForm(request.POST)
         form_turismo = Viagem_CaledoniaForm(request.POST)
@@ -340,265 +342,6 @@ def fiscalizar_viagem(request, id):
         viagem_turismo = None
         pontos_turisticos = None
     return render(request, 'senhas/viagem.html', {'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos})
-
-
-@login_required
-def viagem_altera(request, id):
-    validation = {'veiculo': {'state': True}, 'quant_passageiros': {'state': True},
-                  'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True},
-                  'cadastur_guia':  {'state': True}, 'telefone':  {'state': True},
-                  'celular': {'state': True}, 'chegada_saida': {'state_chegada': True, 'state_saida': True, 'msg': ''},
-                  'cidade': {'state': True}, 'estado': {'state': True}, 'empresa_transporte': {'state': True},
-                  'nome_guia': {'state': True}, 'responsavel_viagem': {'state': True}, 'contato_responsavel': {'state': True}}
-    from datetime import date
-    tipo = ''
-    viagem = Viagem.objects.get(senha=id)
-
-    if date.today() > viagem.dt_Saida:
-        messages.error(
-            request, 'Não é mais possível alterar viagem, já que a viagem já ocorreu.')
-        return redirect('/viagem/' + str(id))
-
-    if viagem.user != request.user:
-        messages.error(request, 'Viagem não percente a usuário logado.')
-        return redirect('/viagem/' + str(id))
-
-    if request.method == 'POST':
-        form = ViagemForm(request.POST)
-        # Aqui a VALIDATION toma novos valores de acordo com o FORM
-        if viagem.senha[0] == 'T':
-            tipo = 'turismo'
-        validation, valido = validationsViagem(request.POST, tipo)
-        if valido:
-            try:
-                ViagemForm
-                if request.POST['ficarao_hospedados']:
-                    fh = True
-            except:
-                fh = False
-            try:
-                if request.POST['restaurante_reservado']:
-                    rr = True
-            except:
-                rr = False
-            try:
-                viagem.responsavel_viagem = request.POST['responsavel_viagem']
-                viagem.contato_responsavel = validation['contato_responsavel']['celular']
-                viagem.user = request.user
-                viagem.dt_Chegada = request.POST['dt_chegada']
-                viagem.dt_Saida = request.POST['dt_saida']
-                viagem.ficarao_hospedados = fh
-                viagem.hotel = request.POST['hotel']
-                viagem.restaurante_reservado = rr
-                viagem.restaurante = request.POST['restaurante']
-                viagem.tipo_veiculo = Tipo_Veiculo.objects.get(
-                    id=request.POST['tipo_veiculo'])
-                viagem.quant_passageiros = request.POST['quant_passageiros']
-                viagem.empresa_transporte = request.POST['empresa_transporte']
-                viagem.cnpj_empresa_transporte = validation['cnpj_empresa_transporte']['cnpj']
-                viagem.cadastur_empresa_transporte = request.POST['cadastur_empresa_transporte']
-                viagem.obs = request.POST['obs']
-                viagem.estado_origem = Estado.objects.get(
-                    id=request.POST['estado'])
-                viagem.cidade_origem = Cidade.objects.get(
-                    id=request.POST['cidade'])
-                viagem.save()
-
-                if viagem.senha[0] == 'T':
-                    viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
-
-                    viagem_turismo.outros = request.POST['outros']
-                    viagem_turismo.nome_guia = request.POST['nome_guia']
-                    viagem_turismo.cadastur_guia = request.POST['cadastur_guia']
-                    viagem_turismo.celular = validation['celular']['celular']
-                    viagem_turismo.telefone = validation['telefone']['telefone']
-                    viagem_turismo.pontos_turisticos.clear()
-                    viagem_turismo.save()
-
-                    if request.POST['outros'] == '':
-                        viagem_turismo.pontos_turisticos.clear()
-                        for ponto in request.POST.getlist('pontos_turisticos'):
-                            viagem_turismo.pontos_turisticos.add(
-                                Pontos_Turisticos.objects.get(nome=ponto))
-                        viagem_turismo.save()
-                messages.success(request, 'Viagem alterada.')
-                return redirect('senhas:cad_transporte')
-
-            except Exception as e:
-                print('e:', e)
-                messages.error(request, 'Corrigir o erro apresentado.')
-                # erro = str(e).split(', ')
-
-                # print('erro:', erro)
-
-                # if erro[0] == '(1062':
-                #     messages.error(request, 'Erro: Usuário já existe.')
-                # else:
-                #     # Se teve erro:
-                #     print('Erro: ', form.errors)
-                #     erro_tmp = str(form.errors)
-                #     erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
-                #     erro_tmp = erro_tmp.replace('</li>', '')
-                #     erro_tmp = erro_tmp.replace('<ul>', '')
-                #     erro_tmp = erro_tmp.replace('</ul>', '')
-                #     erro_tmp = erro_tmp.split('<li>')
-
-                #     messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
-        else:
-            messages.error(request, 'Corrigir o erro apresentado.')
-
-    form = ViagemForm(instance=viagem)
-    pontosTuristicos_selecionados_ = []
-    if viagem.senha[0] == 'T':
-        tipo = 'turismo'
-        viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
-        for u in viagem_turismo.pontos_turisticos.all():
-            pontosTuristicos_selecionados_.append(u)
-    elif viagem.senha[0] == 'C':
-        tipo = 'compras'
-        viagem_turismo = {}
-    veiculos = Tipo_Veiculo.objects.all()
-    pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
-
-    estado = viagem.estado_origem
-    estados = Estado.objects.all().order_by('nome')
-    cidade = viagem.cidade_origem
-    # Incluindo as informações coletas no contexto para uso no Template
-    # Estado.objects.get()
-    context = {
-        'form': form,
-        'validation': validation,
-        'viagem': viagem,
-        'viagem_turismo': viagem_turismo,
-        'pontos_selecionados': pontosTuristicos_selecionados_,
-        'veiculos': veiculos,
-        'pontos': pontosTuristicos,
-        'tipo': tipo,
-        'titulo': 'ALTERAR',
-        'estado_': estado,
-        'estados': estados,
-        'cidade': cidade
-    }
-
-    return render(request, 'senhas/viagem_inclui.html', context)
-
-
-@login_required
-def viagem_altera_caledonia(request, id):
-    validation = {'veiculo': {'state': True}, 'quant_passageiros': {'state': True},
-                  'cnpj_empresa_transporte': {'state': True}, 'cadastur_empresa_transporte': {'state': True},
-                  'cadastur_guia':  {'state': True}, 'telefone':  {'state': True},
-                  'celular': {'state': True}, 'chegada_saida': {'state_chegada': True, 'state_saida': True, 'msg': ''},
-                  'cidade': {'state': True}, 'estado': {'state': True}, 'empresa_transporte': {'state': True},
-                  'nome_guia': {'state': True}, 'responsavel_viagem': {'state': True}, 'contato_responsavel': {'state': True}}
-    from datetime import date
-    tipo = ''
-    viagem = Viagem.objects.get(senha=id)
-
-    if date.today() > viagem.dt_Saida:
-        messages.error(
-            request, 'Não é mais possível alterar viagem, já que a viagem já ocorreu.')
-        return redirect('/viagem/' + str(id))
-
-    if viagem.user != request.user:
-        messages.error(request, 'Viagem não percente a usuário logado.')
-        return redirect('/viagem/' + str(id))
-
-    if request.method == 'POST':
-        form = ViagemForm(request.POST)
-        # Aqui a VALIDATION toma novos valores de acordo com o FORM
-        if viagem.senha[0] == 'T':
-            tipo = 'turismo'
-        validation, valido = validationsViagem(request.POST, tipo)
-        if valido:
-            try:
-                if request.POST['ficarao_hospedados']:
-                    fh = True
-            except:
-                fh = False
-            try:
-                if request.POST['restaurante_reservado']:
-                    rr = True
-            except:
-                rr = False
-            try:
-                viagem.responsavel_viagem = request.POST['responsavel_viagem']
-                viagem.contato_responsavel = validation['contato_responsavel']['celular']
-                viagem.user = request.user
-                viagem.dt_Chegada = request.POST['dt_chegada']
-                viagem.dt_Saida = request.POST['dt_chegada']
-                viagem.ficarao_hospedados = fh
-                viagem.hotel = request.POST['hotel']
-                viagem.restaurante_reservado = rr
-                viagem.restaurante = request.POST['restaurante']
-                viagem.tipo_veiculo = Tipo_Veiculo.objects.get(
-                    id=request.POST['tipo_veiculo'])
-                viagem.quant_passageiros = request.POST['quant_passageiros']
-                viagem.empresa_transporte = request.POST['empresa_transporte']
-                viagem.cnpj_empresa_transporte = validation['cnpj_empresa_transporte']['cnpj']
-                viagem.cadastur_empresa_transporte = request.POST['cadastur_empresa_transporte']
-                viagem.obs = request.POST['obs']
-                viagem.estado_origem = Estado.objects.get(
-                    id=request.POST['estado'])
-                viagem.cidade_origem = Cidade.objects.get(
-                    id=request.POST['cidade'])
-                viagem.save()
-
-                if viagem.senha[0] == 'T':
-                    viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
-
-                    viagem_turismo.outros = 'Pico da Caledônia'
-                    viagem_turismo.nome_guia = request.POST['nome_guia']
-                    viagem_turismo.cadastur_guia = request.POST['cadastur_guia']
-                    viagem_turismo.celular = validation['celular']['celular']
-                    viagem_turismo.telefone = validation['telefone']['telefone']
-                    viagem_turismo.pontos_turisticos.clear()
-                    viagem_turismo.save()
-
-                messages.success(request, 'Viagem alterada.')
-                return redirect('senhas:cad_transporte')
-
-            except Exception as e:
-                print('e:', e)
-                messages.error(request, 'Corrigir o erro apresentado.')
-        else:
-            messages.error(request, 'Corrigir o erro apresentado.')
-
-    form = ViagemForm(instance=viagem)
-    pontosTuristicos_selecionados_ = []
-    if viagem.senha[0] == 'P':
-        tipo = 'turismo'
-        viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
-        for u in viagem_turismo.pontos_turisticos.all():
-            pontosTuristicos_selecionados_.append(u)
-    elif viagem.senha[0] == 'C':
-        tipo = 'compras'
-        viagem_turismo = {}
-    veiculos = Tipo_Veiculo.objects.all()
-    pontosTuristicos = Pontos_Turisticos.objects.filter(ativo=True)
-
-    estado = viagem.estado_origem
-    estados = Estado.objects.all().order_by('nome')
-    cidade = viagem.cidade_origem
-    # Incluindo as informações coletas no contexto para uso no Template
-    # Estado.objects.get()
-    context = {
-        'form': form,
-        'validation': validation,
-        'viagem': viagem,
-        'viagem_turismo': viagem_turismo,
-        'pontos_selecionados': pontosTuristicos_selecionados_,
-        'veiculos': veiculos,
-        'pontos': pontosTuristicos,
-        'tipo': tipo,
-        'titulo': 'ALTERAR',
-        'estado_': estado,
-        'estados': estados,
-        'cidade': cidade
-    }
-
-    return render(request, 'senhas/cadastros/caledonia.html', context)
-
 
 @login_required
 def cad_acesso_ponto(request):

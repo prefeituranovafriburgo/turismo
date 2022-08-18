@@ -45,7 +45,7 @@
                                     <!-- Estado -->
                                     <div class="form-group col-md-2"> 
                                         <label for="id_estado">Estado de origem:</label>
-                                        <select class="form-control {%if form.errors.estado_origem %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                        <select class="form-control" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                             <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                             {% for estado in estados %}
                                             <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
@@ -58,7 +58,7 @@
                                     <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control {%if form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
+                                        <select class="form-control" onblur="validar(event)" name="cidade_origem" id="id_cidade_origem" required id="id_cidade">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
@@ -267,6 +267,14 @@
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
 
+                    function checkOutros(event){
+                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
+                            document.getElementById('dOutros').style.display='flex';
+                        }else{
+                            document.getElementById('dOutros').style.display='none';
+                            document.getElementById('id_outros').value=''
+                        }
+                    }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -289,8 +297,21 @@
                             document.getElementById('drestaurante').style.display='flex';
                         }                        
                     }
+
+                    function pontosturisticos(event){
+                        if (event.target.value==='true'){
+                            event.target.value='false';
+                            document.getElementById('labelSwitch2').innerText='Não';
+                            document.getElementById('pontosTuristicos').style.display='none';
+                            document.getElementById('pontosTuristicos2').style.display='none';
+                        } else {
+                            event.target.value='true'
+                            document.getElementById('labelSwitch2').innerText='Sim';
+                            document.getElementById('pontosTuristicos').style.display='flex';
+                            document.getElementById('pontosTuristicos2').style.display='flex';
+                        }                        
+                    }
                 
-                    var estadoId;
                     function mostraestado(){
                         var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
 
@@ -305,14 +326,16 @@
 
                     async function mostracidade(event){
                         const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        const id = event.target.value
 
+                        if(id){
                         const data = await fetch(url,{
                             method: 'POST', 
                             headers: {
                                 'X-CSRFToken': '{{ csrf_token }}',
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({id: event.target.value}),
+                            body: JSON.stringify({id}),
                           })
 
                         document.getElementById('id_cidade').innerHTML = await data.text()
@@ -327,7 +350,8 @@
                                 }
                             }
                         }
-                    };
+                    }
+                };
                 
                     function leech(v){
                         v=v.replace(/o/gi,"0")
@@ -400,48 +424,90 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
+                        event.target.parentNode.lastElementChild.style.display = "none"
+
                     }
-                    window.onload = function() {
-         //               const options = document.getElementById('id_pontos_turisticos').options
 
-      //                 for(let i = options.length-1; i >= 0; i--){
-     //                       options[i].value = options[i].text 
-    //                   }
+                    window.onload = async function() {
+                        let elements=[]
 
-    const pontos = document.getElementById('id_pontos_turisticos')
+                        {% for i in form.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
 
-    for(let ponto of pontos.children){
-        
-        if(ponto.outerText.toLowerCase() == " outros"){
-            pontos.appendChild(ponto)
-            ponto.addEventListener('change', (e)=>{
-                if (e.target.checked){                            
-                    document.getElementById('dOutros').style.display='flex';
-                }else{
-                    document.getElementById('dOutros').style.display='none';
-                    document.getElementById('id_outros').value=''
-                }
-        })
-    
-         ponto.dispatchEvent(new Event('change'))
-        }
-    }
+                        {% for i in form_turismo.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+                        
+                        for(let i of elements){
+                            const element = document.getElementById(`id_${i}`)
+                            element.classList.add("is-invalid")
+                            element.parentNode.lastElementChild.style.display = "block"
 
+                        }
 
+                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
 
+                        const estados = document.getElementById('id_estado')
+                        for (let option of estados.options){
+                            if(option.innerText == estado){
+                                estados.selectedIndex = option.value
+                            }
+                        }
+
+                        estados.dispatchEvent(new Event('change'))
+
+                        const pontos = document.getElementById('id_pontos_turisticos')
+
+                        for(let ponto of pontos.children){
+                            
+                            if(ponto.outerText.toLowerCase() == " outros"){
+                                pontos.appendChild(ponto)
+                                    if("{{viagem_turismo.outros}} != ''"){
+                                        ponto.checked = true
+                                    }
+
+                                ponto.addEventListener('change', (e)=>{
+                                    if (e.target.checked){                            
+                                        document.getElementById('dOutros').style.display='flex';
+                                    }else{
+                                        document.getElementById('dOutros').style.display='none';
+                                        document.getElementById('id_outros').value=''
+                                    }
+                            })
+
+                            ponto.dispatchEvent(new Event('change'))
+
+                        
+                            }
+                        }
+
+                        if("{{viagem.ficarao_hospedados}}" != ''){
+                            hotel = document.getElementById('customSwitch1')
+                            hotel.value = false
+                            hotel.dispatchEvent(new Event('change'))
+                        }
+
+                        if("{{viagem.restaurante_reservado}}" != ''){
+                            restaurante = document.getElementById('restaurante')
+                            restaurante.value = false
+                            restaurante.dispatchEvent(new Event('change'))
+
+                        }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
                         cnpj=cnpjField.value                        
                         cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
 
-                        
                         document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
-                </script>                
+                </script>                           
             </div>                   
         </div>      
 {% endblock %}

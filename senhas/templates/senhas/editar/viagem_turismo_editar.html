@@ -58,7 +58,7 @@
                                     <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control {%if not form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
+                                        <select class="form-control {%if form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
@@ -166,13 +166,15 @@
                                     <div class="form-group col-md-12 d-flex flex-column">   
                                         <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
                                         {{form_turismo.pontos_turisticos}}
-                                        <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
                                     </div>                                    
                                 </div>                                
                                 <div class="form-row justify-content-center mt-4 px-3" id="dOutros">
                                     <div class="form-group col-md-8 d-flex flex-column">   
                                         <label for="id_outros" class="my-auto mr-3">Ponto turístico:</label>
                                         {{form_turismo.outros}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.outros}}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row justify-content-center mt-4 px-3 py-3"> 
@@ -201,12 +203,18 @@
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_hotel" class="mr-3 my-auto">Hotel onde ficarão hospedados:</label>
                                         {{form.hotel}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.hotel}}
+                                        </div>
                                     </div>                                    
                                 </div>
                                 <div class="form-row pt-2 px-3 justify-content-center" id="drestaurante">                                    
                                     <div class="form-group justify-content-center col-md-5 d-flex flex-column">                        
                                         <label for="id_drestaurante" class="my-auto mr-3">Restaurante reservado:</label>
                                         {{form.restaurante}}
+                                        <div class="invalid-feedback">
+                                            {{form_turismo.errors.restaurante}}
+                                        </div>
                                     </div>
                                 </div>                                
                                 <div class="form-row mt-4 px-3 py-3">
@@ -276,7 +284,6 @@
                         }
                     }
                     function hospedados(event){
-                        console.log(event.target.value)
                         if (event.target.value==='true'){
                             event.target.value='false';
                             document.getElementById('labelSwitch').innerText='Não';
@@ -327,14 +334,16 @@
 
                     async function mostracidade(event){
                         const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        const id = event.target.value
 
+                        if(id){
                         const data = await fetch(url,{
                             method: 'POST', 
                             headers: {
                                 'X-CSRFToken': '{{ csrf_token }}',
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({id: event.target.value}),
+                            body: JSON.stringify({id}),
                           })
 
                         document.getElementById('id_cidade').innerHTML = await data.text()
@@ -349,7 +358,8 @@
                                 }
                             }
                         }
-                    };
+                    }
+                };
                 
                     function leech(v){
                         v=v.replace(/o/gi,"0")
@@ -422,8 +432,26 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
+                        event.target.parentNode.lastElementChild.style.display = "none"
                     }
+
                     window.onload = async function() {
+                        let elements=[]
+
+                        {% for i in form.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+
+                        {% for i in form_turismo.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+                        
+                        for(let i of elements){
+                            const element = document.getElementById(`id_${i}`)
+                            element.classList.add("is-invalid")
+                            element.parentNode.lastElementChild.style.display = "block"
+
+                        }
 
                         document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
                         document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
@@ -463,18 +491,7 @@
                             }
                         }
 
-                        if("{{viagem.ficarao_hospedados}}" != ''){
-                            hotel = document.getElementById('customSwitch1')
-                            hotel.value = false
-                            hotel.dispatchEvent(new Event('change'))
-                        }
 
-                        if("{{viagem.restaurante_reservado}}" != ''){
-                            restaurante = document.getElementById('restaurante')
-                            restaurante.value = false
-                            restaurante.dispatchEvent(new Event('change'))
-
-                        }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
@@ -486,7 +503,7 @@
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
-                </script>                    
+                </script>  
             </div>                   
         </div>      
 {% endblock %}

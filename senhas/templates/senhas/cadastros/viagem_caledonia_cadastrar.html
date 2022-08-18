@@ -241,11 +241,6 @@
                     })
                 
                 </script>
-                {% if not viagem_turismo.outros == '' %}
-                <script>
-                    document.getElementById('dOutros').style.display='flex';
-                </script>
-                {% endif %}
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
 
@@ -294,7 +289,6 @@
                         }                        
                     }
                 
-                    var estadoId;
                     function mostraestado(){
                         var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
 
@@ -307,21 +301,34 @@
                 
                     };       
 
-                    function mostracidade(event){
-                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        estadoId = event.target.value;   
-                        console.log(estadoId)                     
-                        $.ajax({ 
-                            url: url,
-                            data: {
-                                'id':estadoId,
+                    async function mostracidade(event){
+                        const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        const id = event.target.value
+
+                        if(id){
+                        const data = await fetch(url,{
+                            method: 'POST', 
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
                             },
-                            success: function(data) {                               
-                                $("#id_cidade").html(data);
+                            body: JSON.stringify({id}),
+                          })
+
+                        document.getElementById('id_cidade').innerHTML = await data.text()
+
+                        if("{{viagem.cidade_origem}}"){
+                            const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                            const cidades = document.getElementById('id_cidade')
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
+                                }
                             }
-                        });
-                
-                    };
+                        }
+                    }
+                };
                 
                     function leech(v){
                         v=v.replace(/o/gi,"0")
@@ -394,22 +401,43 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
+                        event.target.parentNode.lastElementChild.style.display = "none"
+
                     }
-                    window.onload = function() {
-         //               const options = document.getElementById('id_pontos_turisticos').options
 
-      //                 for(let i = options.length-1; i >= 0; i--){
-     //                       options[i].value = options[i].text 
-    //                   }
+                    window.onload = async function() {
+                        let elements=[]
 
-                        document.querySelector('#id_dt_Chegada').parentElement.firstElementChild.innerText = "Data visitação"
+                        {% for i in form.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
 
-                        const outros = document.createElement('option')
-                        outros.value = 'outros'
-                        outros.text = 'Outros'
-                        outros.selected = true
-                        document.getElementById('id_pontos_turisticos').appendChild(outros)
+                        {% for i in form_turismo.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+                        
+                        for(let i of elements){
+                            const element = document.getElementById(`id_${i}`)
+                            element.classList.add("is-invalid")
+                            element.parentNode.lastElementChild.style.display = "block"
 
+                        }
+
+                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+
+                        if("{{viagem.ficarao_hospedados}}" != ''){
+                            hotel = document.getElementById('customSwitch1')
+                            hotel.value = false
+                            hotel.dispatchEvent(new Event('change'))
+                        }
+
+                        if("{{viagem.restaurante_reservado}}" != ''){
+                            restaurante = document.getElementById('restaurante')
+                            restaurante.value = false
+                            restaurante.dispatchEvent(new Event('change'))
+
+                        }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
@@ -421,7 +449,7 @@
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 
-                </script>                
+                </script>  
             </div>                   
         </div>      
 {% endblock %}
