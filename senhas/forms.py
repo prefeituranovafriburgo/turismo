@@ -117,7 +117,7 @@ class ViagemForm(ModelForm):
         return cnpj
 
 
-class Viagem_CaledoniaForm(ViagemForm):
+class Viagem_CaledoniaForm(ModelForm):
     class Meta:
         model = Viagem
         widgets = {
@@ -195,7 +195,7 @@ class Viagem_CaledoniaForm(ViagemForm):
         exclude = ['user', 'dt_inclusao', 'ativo', 'dt_Saida']
 
 
-class Viagem_turismo_CaledoniaForm(Viagem_TurismoForm):
+class Viagem_turismo_CaledoniaForm(ModelForm):
     class Meta:
         model = Viagem_Turismo
         widgets = {

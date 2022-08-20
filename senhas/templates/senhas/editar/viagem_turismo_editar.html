@@ -8,7 +8,7 @@
 
                     <div class="row hidden">
                         <div class="col">
-                            <h3 class="uppercase">CADASTRAR - GRUPO DE TURISMO E COMPRAS</h3>
+                            <h3 class="uppercase">ALTERAR - GRUPO DE TURISMO E COMPRAS</h3>
                         </div>
                 
                         <div class="col-3 text-right">
@@ -225,7 +225,7 @@
                                 </div>      
                                 <div class="form-row mt-4 justify-content-center py-3">
                                     <div class="form-group col-md-3 d-flex flex-column">                       
-                                        <button class="btn btn-primary" type="submit">CADASTRAR</button>
+                                        <button class="btn btn-primary" type="submit">ALTERAR</button>
                                     </div>
                                 </div>
                     </form>
@@ -267,22 +267,9 @@
                     })
                 
                 </script>
-                {% if not viagem_turismo.outros == '' %}
-                <script>
-                    document.getElementById('dOutros').style.display='flex';
-                </script>
-                {% endif %}
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
 
-                    function checkOutros(event){
-                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
-                            document.getElementById('dOutros').style.display='flex';
-                        }else{
-                            document.getElementById('dOutros').style.display='none';
-                            document.getElementById('id_outros').value=''
-                        }
-                    }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -306,20 +293,6 @@
                         }                        
                     }
 
-                    function pontosturisticos(event){
-                        if (event.target.value==='true'){
-                            event.target.value='false';
-                            document.getElementById('labelSwitch2').innerText='Não';
-                            document.getElementById('pontosTuristicos').style.display='none';
-                            document.getElementById('pontosTuristicos2').style.display='none';
-                        } else {
-                            event.target.value='true'
-                            document.getElementById('labelSwitch2').innerText='Sim';
-                            document.getElementById('pontosTuristicos').style.display='flex';
-                            document.getElementById('pontosTuristicos2').style.display='flex';
-                        }                        
-                    }
-                
                     function mostraestado(){
                         var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
 
@@ -432,7 +405,9 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
-                        event.target.parentNode.lastElementChild.style.display = "none"
+                        if(event.target.parentNode.lastElementChild.nodeName == "LABEL"){
+                            event.target.parentNode.lastElementChild.style.display = "none"
+                        }
                     }
 
                     window.onload = async function() {
@@ -472,8 +447,8 @@
                             
                             if(ponto.outerText.toLowerCase() == " outros"){
                                 pontos.appendChild(ponto)
-                                    if("{{viagem_turismo.outros}} != ''"){
-                                        ponto.checked = true
+                                    if("{{viagem_turismo.outros}}" != ''){
+                                        ponto.checked = false
                                     }
 
                                 ponto.addEventListener('change', (e)=>{
@@ -487,7 +462,6 @@
 
                             ponto.dispatchEvent(new Event('change'))
 
-                        
                             }
                         }
 

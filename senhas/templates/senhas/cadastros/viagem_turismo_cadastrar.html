@@ -58,7 +58,7 @@
                                     <!-- Cidade -->
                                     <div class="form-group col-md-4"> 
                                         <label for="id_cidade">Cidade de origem:</label>
-                                        <select class="form-control" onblur="validar(event)" name="cidade_origem" id="id_cidade_origem" required id="id_cidade">
+                                        <select class="form-control" onblur="validar(event)" name="cidade_origem" id="id_cidade_origem" required id="id_cidade_origem">
                                             <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                         </select>
                                         <div class="invalid-feedback">
@@ -166,7 +166,6 @@
                                     <div class="form-group col-md-12 d-flex flex-column">   
                                         <label for="id_pontos_turisticos">Pontos turisticos:</label>                     
                                         {{form_turismo.pontos_turisticos}}
-                                        <small id="emailHelp" class="form-text text-muted">Pressione “Control”, ou “Command” no Mac, para selecionar mais de um.</small>
                                     </div>                                    
                                 </div>                                
                                 <div class="form-row justify-content-center mt-4 px-3" id="dOutros">
@@ -242,39 +241,9 @@
                     document.getElementById('labelSwitch2').innerText='Sim';
                 </script>
                 {% endif %}
-                <script>
-                    $('.selEstado').change(function mostracidade () {
-                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        var estadoId = $(this).val();
-                            $.ajax({ 
-                                url: url,
-                                data: {
-                                    'id':estadoId,
-                                },
-                                success: function(data)
-                                {
-                                    $("#id_cidade").html(data);
-                                }
-                                });
-                    })
-                
-                </script>
-                {% if not viagem_turismo.outros == '' %}
-                <script>
-                    document.getElementById('dOutros').style.display='flex';
-                </script>
-                {% endif %}
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
 
-                    function checkOutros(event){
-                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
-                            document.getElementById('dOutros').style.display='flex';
-                        }else{
-                            document.getElementById('dOutros').style.display='none';
-                            document.getElementById('id_outros').value=''
-                        }
-                    }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -295,20 +264,6 @@
                             event.target.value='true'
                             document.getElementById('labelSwitch2').innerText='Sim';
                             document.getElementById('drestaurante').style.display='flex';
-                        }                        
-                    }
-
-                    function pontosturisticos(event){
-                        if (event.target.value==='true'){
-                            event.target.value='false';
-                            document.getElementById('labelSwitch2').innerText='Não';
-                            document.getElementById('pontosTuristicos').style.display='none';
-                            document.getElementById('pontosTuristicos2').style.display='none';
-                        } else {
-                            event.target.value='true'
-                            document.getElementById('labelSwitch2').innerText='Sim';
-                            document.getElementById('pontosTuristicos').style.display='flex';
-                            document.getElementById('pontosTuristicos2').style.display='flex';
                         }                        
                     }
                 
@@ -338,12 +293,12 @@
                             body: JSON.stringify({id}),
                           })
 
-                        document.getElementById('id_cidade').innerHTML = await data.text()
+                        document.getElementById('id_cidade_origem').innerHTML = await data.text()
 
                         if("{{viagem.cidade_origem}}"){
                             const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
 
-                            const cidades = document.getElementById('id_cidade')
+                            const cidades = document.getElementById('id_cidade_origem')
                             for (let option of cidades.options){
                                 if(option.innerText == cidade){
                                     cidades.selectedIndex = option.value
@@ -424,7 +379,9 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
-                        event.target.parentNode.lastElementChild.style.display = "none"
+                        if(event.target.parentNode.lastElementChild.nodeName == "LABEL"){
+                            event.target.parentNode.lastElementChild.style.display = "none"
+                        }
 
                     }
 
@@ -466,7 +423,7 @@
                             if(ponto.outerText.toLowerCase() == " outros"){
                                 pontos.appendChild(ponto)
                                     if("{{viagem_turismo.outros}} != ''"){
-                                        ponto.checked = true
+                                        ponto.checked = false
                                     }
 
                                 ponto.addEventListener('change', (e)=>{
@@ -479,28 +436,16 @@
                             })
 
                             ponto.dispatchEvent(new Event('change'))
-
                         
                             }
-                        }
-
-                        if("{{viagem.ficarao_hospedados}}" != ''){
-                            hotel = document.getElementById('customSwitch1')
-                            hotel.value = false
-                            hotel.dispatchEvent(new Event('change'))
-                        }
-
-                        if("{{viagem.restaurante_reservado}}" != ''){
-                            restaurante = document.getElementById('restaurante')
-                            restaurante.value = false
-                            restaurante.dispatchEvent(new Event('change'))
-
                         }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
                         cnpj=cnpjField.value                        
                         cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+
+                        document.querySelector("#id_estado").dispatchEvent(new Event('change'))
 
                         document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")

@@ -126,8 +126,11 @@ def viagem_turismo_editar(request, senha):
 def viagem_caledonia_editar(request, senha):
     from datetime import date
     viagem = Viagem.objects.get(senha=senha)
-    viagem_turismo = Viagem.objects.get(senha=senha)
+    viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     estados = Estado.objects.all().order_by('nome')
+
+    form = ViagemForm(instance=viagem)
+    form_turismo = Viagem_TurismoForm(instance=viagem_turismo)
 
     if date.today() > viagem.dt_Saida:
         messages.error(
@@ -159,10 +162,6 @@ def viagem_caledonia_editar(request, senha):
         else:
             print(form.errors)
 
-    form = ViagemForm(instance=viagem)
-    form_turismo = Viagem_TurismoForm(instance=viagem)
-
-    print(form_turismo)
     context = {
         'form': form,
         'form_turismo': form_turismo,
@@ -206,7 +205,6 @@ def viagem_turismo_cadastrar(request):
     form_turismo = Viagem_TurismoForm()
 
     if request.method == 'POST':
-        print(request.POST)
         form = ViagemForm(request.POST)
         form_turismo = Viagem_TurismoForm(request.POST)
 
@@ -243,8 +241,9 @@ def viagem_caledonia_cadastrar(request):
     estados = Estado.objects.all().order_by('nome')
     form = Viagem_CaledoniaForm()
     form_turismo = Viagem_turismo_CaledoniaForm()
+
     if request.method == 'POST':
-        form = ViagemForm(request.POST)
+        form = Viagem_CaledoniaForm(request.POST)
         form_turismo = Viagem_CaledoniaForm(request.POST)
 
         if form.is_valid():
@@ -259,6 +258,7 @@ def viagem_caledonia_cadastrar(request):
                     viagem.save()
 
                     viagem_turismo = form_turismo.save()
+                    print(viagem_turismo)
                     viagem_turismo.outros = 'Pico da Caledônia'
                     viagem_turismo.viagem = viagem
 
