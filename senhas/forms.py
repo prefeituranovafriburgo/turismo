@@ -109,12 +109,20 @@ class ViagemForm(ModelForm):
         exclude = ['user', 'dt_inclusao', 'ativo']
 
     def clean_cnpj_empresa_transporte(self):
-        print(self.cleaned_data["cnpj_empresa_transporte"])
         cnpj = validate_CNPJ(self.cleaned_data["cnpj_empresa_transporte"])
         cnpj = cnpj.replace('.', '')
         cnpj = cnpj.replace('-', '')
-        print(cnpj)
         return cnpj
+
+    def clean(self):
+        cleaned_data = super().clean()
+        data_chegada = self.cleaned_data['dt_Chegada']
+        data_saida = self.cleaned_data['dt_Saida']
+
+        if data_chegada > data_saida:
+            raise ValidationError("Data de saida menor que a de chegada")
+
+        return  cleaned_data 
 
 
 class Viagem_CaledoniaForm(ModelForm):
@@ -180,19 +188,20 @@ class Viagem_CaledoniaForm(ModelForm):
                                          'class': 'form-control'})
         }
 
-        labels = {
-            "dt_Chegada": "DATAAAAA"
-        }
-
-        def clean_cnpj_empresa_transporte(self):
-            print(self.cleaned_data["cnpj_empresa_transporte"])
-            cnpj = validate_CNPJ(self.cleaned_data["cnpj_empresa_transporte"])
-            cnpj = cnpj.replace('.', '')
-            cnpj = cnpj.replace('-', '')
-            print(cnpj)
-            return cnpj
-
         exclude = ['user', 'dt_inclusao', 'ativo', 'dt_Saida']
+
+    def clean_cnpj_empresa_transporte(self):
+        cnpj = validate_CNPJ(self.cleaned_data["cnpj_empresa_transporte"])
+        cnpj = cnpj.replace('.', '')
+        cnpj = cnpj.replace('-', '')
+        return cnpj
+
+    def clean_dt_Chegada(self):
+        data_chegada = validate_data(self.cleaned_data['dt_Chegada'])
+
+        return data_chegada
+       
+
 
 
 class Viagem_turismo_CaledoniaForm(ModelForm):
@@ -213,12 +222,6 @@ class Viagem_turismo_CaledoniaForm(ModelForm):
                                                'onkeydown': 'mascara(this,itelefone)',
                                                'required': 'true',
                                                'class': 'form-control'}),
-            'pontos_turisticos': forms.CheckboxSelectMultiple(attrs={'onblur': 'validar(event)',
-                                                                     'onchange': 'checkOutros(event)',
-                                                                     }),
-            'outros': forms.TextInput(attrs={'onblur': 'validar(event)',
-                                             'required': 'true',
-                                             'class': 'form-control'}),
         }
 
-        exclude = ['user', 'dt_inclusao', 'ativo', 'pontos_turisticos']
+        exclude = ['user', 'dt_inclusao', 'ativo', 'pontos_turisticos', 'outros']

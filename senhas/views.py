@@ -111,8 +111,6 @@ def viagem_turismo_editar(request, senha):
         else:
             print(form.errors)
 
-
-
     context = {
         'form': form,
         'form_turismo': form_turismo,
@@ -122,6 +120,7 @@ def viagem_turismo_editar(request, senha):
 
     return render(request, 'senhas/editar/viagem_turismo_editar.html', context)
 
+
 @login_required
 def viagem_caledonia_editar(request, senha):
     from datetime import date
@@ -129,8 +128,8 @@ def viagem_caledonia_editar(request, senha):
     viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     estados = Estado.objects.all().order_by('nome')
 
-    form = ViagemForm(instance=viagem)
-    form_turismo = Viagem_TurismoForm(instance=viagem_turismo)
+    form = Viagem_CaledoniaForm(instance=viagem)
+    form_turismo = Viagem_turismo_CaledoniaForm(instance=viagem_turismo)
 
     if date.today() > viagem.dt_Saida:
         messages.error(
@@ -142,7 +141,9 @@ def viagem_caledonia_editar(request, senha):
         return redirect('/viagem/' + str(senha))
 
     if request.method == 'POST':
-        form = ViagemForm(request.POST, instance=viagem)
+        form = Viagem_CaledoniaForm(request.POST, instance=viagem)
+        form_turismo = Viagem_turismo_CaledoniaForm(request.POST, instance=viagem)
+
         if form.is_valid():
             if form_turismo.is_valid():
 
@@ -170,6 +171,7 @@ def viagem_caledonia_editar(request, senha):
     }
 
     return render(request, 'senhas/editar/viagem_caledonia_editar.html', context)
+
 
 @login_required
 def viagem_compras_cadastrar(request):
@@ -244,30 +246,26 @@ def viagem_caledonia_cadastrar(request):
 
     if request.method == 'POST':
         form = Viagem_CaledoniaForm(request.POST)
-        form_turismo = Viagem_CaledoniaForm(request.POST)
+        form_turismo = Viagem_turismo_CaledoniaForm(request.POST)
 
         if form.is_valid():
             if form_turismo.is_valid():
-                try:
-                    viagem = form.save()
+                viagem = form.save()
 
-                    viagem.user = request.user
-                    viagem.senha = 'PC'+get_random_string()+str(viagem.id)+get_random_string()
-                    viagem.dt_Saida = viagem.dt_Chegada
+                viagem.user = request.user
+                viagem.senha = 'PC'+get_random_string()+str(viagem.id)+get_random_string()
+                viagem.dt_Saida = viagem.dt_Chegada
 
-                    viagem.save()
+                viagem.save()
 
-                    viagem_turismo = form_turismo.save()
-                    print(viagem_turismo)
-                    viagem_turismo.outros = 'Pico da Caledônia'
-                    viagem_turismo.viagem = viagem
+                viagem_turismo = form_turismo.save()
+                viagem_turismo.outros = 'Pico da Caledônia'
+                viagem_turismo.viagem = viagem
 
-                    viagem_turismo.save()
+                viagem_turismo.save()
 
-                    messages.success(request, 'Viagem cadastrada com sucesso!')
-                    return redirect('senhas:cad_transporte')
-                except Exception as e:
-                    print('deu ruuim', e)
+                messages.success(request, 'Viagem cadastrada com sucesso!')
+                return redirect('senhas:cad_transporte')
 
             else:
                 print('O form_turismo tem algum erro: =/')
@@ -306,11 +304,11 @@ def viagem(request, senha):
     rota = redirect(nome_rota, senha)
 
     context = {
-                'viagem': viagem, 
-                'rota': rota,
-                'viagem_turismo': viagem_turismo,
-                'pontos_turisticos': pontos_turisticos
-                }
+        'viagem': viagem,
+        'rota': rota,
+        'viagem_turismo': viagem_turismo,
+        'pontos_turisticos': pontos_turisticos
+    }
 
     return render(request, 'senhas/viagem.html', context)
 
@@ -342,6 +340,7 @@ def fiscalizar_viagem(request, id):
         viagem_turismo = None
         pontos_turisticos = None
     return render(request, 'senhas/viagem.html', {'viagem': viagem, 'viagem_turismo': viagem_turismo, 'pontos_turisticos': pontos_turisticos})
+
 
 @login_required
 def cad_acesso_ponto(request):
