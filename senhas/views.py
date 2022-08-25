@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from requests import request
 from contas.functions import validationsViagem
-
+from django.core.exceptions import PermissionDenied
+import json
 from contas.views import sair
 from contas.models import Estado, Cidade
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
@@ -142,7 +143,8 @@ def viagem_caledonia_editar(request, senha):
 
     if request.method == 'POST':
         form = Viagem_CaledoniaForm(request.POST, instance=viagem)
-        form_turismo = Viagem_turismo_CaledoniaForm(request.POST, instance=viagem)
+        form_turismo = Viagem_turismo_CaledoniaForm(
+            request.POST, instance=viagem)
 
         if form.is_valid():
             if form_turismo.is_valid():
@@ -397,3 +399,28 @@ def gera_senha_to_pdf(request, id):
     except Exception as E:
         print(E)
         return redirect('senhas:cad_transporte')
+
+
+def get_validar_caledonia(request, date):
+    fail = False
+    alert = ''
+    viagens_caledonia_do_dia = Viagem.objects.filter(
+        senha__contains='PC', ativo=True, dt_Chegada=date).count()
+
+    if request.method == 'GET':
+
+        if str(viagens_caledonia_do_dia) >= str(2):
+            format = '%Y-%m-%d'
+            dt = request.GET.get('date')
+            data = datetime.strptime(dt, format)
+            fail = True
+            alert = 'Vagas esgotadas para visitação no dia ' + \
+                str(data.strftime('%d/%m/%Y')+'. Escolha outra data.')
+                
+        return JsonResponse({
+            'fail': fail,
+            'alert': alert
+        })
+
+    else:
+        raise PermissionDenied()

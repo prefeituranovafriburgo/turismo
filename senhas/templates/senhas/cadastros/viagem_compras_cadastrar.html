@@ -363,9 +363,14 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
-                        if(event.target.parentNode.lastElementChild.nodeName == "LABEL"){
+
+                        const invalid = event.target.parentNode.querySelector('.invalid-feedback')
+
+                        if(invalid){
+                            invalid.style.display = 'none'
                             event.target.parentNode.lastElementChild.style.display = "none"
                         }
+
                     }
 
                     window.onload = async function() {
@@ -382,8 +387,12 @@
 
                         }
 
-                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
-                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        if("{{viagem.dt_Chegada}}"){
+                            document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        }
+                        if("{{viagem.dt_Saida}}"){
+                            document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        }
 
                         if("{{viagem.ficarao_hospedados}}" != ''){
                             hotel = document.getElementById('customSwitch1')

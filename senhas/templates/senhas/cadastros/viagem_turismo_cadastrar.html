@@ -5,7 +5,6 @@
 {% block cab %}            
             <div id="main" class="row w-100">
                 <div class="container mt-5 pt-5">
-
                     <div class="row hidden">
                         <div class="col">
                             <h3 class="uppercase">CADASTRAR - GRUPO DE TURISMO E COMPRAS</h3>
@@ -69,18 +68,18 @@
                                 <div class="form-row mt-4 justify-content-center px-3 py-3">
                                     <!-- Data chegada -->
                                     <div class="form-group col-md-2 d-flex flex-column">
-                                        <label for="id_dt_Chegada_day" class="w-auto mr-5">Data chegada:</label>                                                                     
+                                        <label for="id_dt_Chegada" class="w-auto mr-5">Data chegada:</label>                                                                     
                                         {{form.dt_Chegada}}
                                         <div class="invalid-feedback">
-                                            {{form.errors.chegada_saida}}
+                                            {{form.errors.dt_Chegada}}
                                         </div>
                                     </div> 
                                     <!-- Data saída -->
                                     <div class="form-group col-md-2 d-flex flex-column">
-                                        <label for="id_dt_Saida_day" class="mr-5">Data saida:</label>
+                                        <label for="id_dt_Saida" class="mr-5">Data saida:</label>
                                         {{form.dt_Saida}}
                                         <div class="invalid-feedback">
-                                            {{form.errors.chegada_saida}}
+                                            {{form.errors.dt_Saida}}
                                         </div>
                                     </div>
                                     <!-- Empresa -->
@@ -255,6 +254,7 @@
                             document.getElementById('hospedar').style.display='flex';
                         }                        
                     }
+
                     function drestaurante(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -276,7 +276,6 @@
                                 $("#id_estado").html(data);                           
                             }
                         });
-                
                     };       
 
                     async function mostracidade(event){
@@ -379,7 +378,11 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
-                        if(event.target.parentNode.lastElementChild.nodeName == "LABEL"){
+
+                        const invalid = event.target.parentNode.querySelector('.invalid-feedback')
+
+                        if(invalid){
+                            invalid.style.display = 'none'
                             event.target.parentNode.lastElementChild.style.display = "none"
                         }
 
@@ -395,7 +398,7 @@
                         {% for i in form_turismo.errors %}
                         elements.push("{{i}}")
                         {% endfor %}
-                        
+
                         for(let i of elements){
                             const element = document.getElementById(`id_${i}`)
                             element.classList.add("is-invalid")
@@ -403,8 +406,15 @@
 
                         }
 
-                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
-                        document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+
+
+                        if("{{viagem.dt_Chegada}}"){
+                            document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        }
+                        if("{{viagem.dt_Saida}}"){
+                            document.getElementById('id_dt_Saida').value = "{{viagem.dt_Saida|date:'Y-m-d'}}"
+                        }
+
                         const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
 
                         const estados = document.getElementById('id_estado')

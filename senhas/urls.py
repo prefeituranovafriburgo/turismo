@@ -19,6 +19,8 @@ urlpatterns = [
     path('editar_viagem/turismo/<senha>', views.viagem_turismo_editar, name='viagem_turismo_editar'),
     path('editar_viagem/caledonia/<senha>', views.viagem_caledonia_editar, name='viagem_caledonia_editar'),
 
+    path('cad_viagem/caledonia/validarData/<str:date>', views.get_validar_caledonia, name='get_validar_caledonia'),
+
     path('viagem/<str:senha>/22NF', views.viagem, name='viagem'),
     path('viagem/excluir/<str:id>/22NF', views.excluir_viagem, name='excluir_senha'),
     path('viagem/fiscalizar/<str:id>/22NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),

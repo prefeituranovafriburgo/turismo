@@ -381,7 +381,11 @@
 
                     function validar(event){
                         event.target.classList.remove("is-invalid");
-                        if(event.target.parentNode.lastElementChild.nodeName == "LABEL"){
+
+                        const invalid = event.target.parentNode.querySelector('.invalid-feedback')
+
+                        if(invalid){
+                            invalid.style.display = 'none'
                             event.target.parentNode.lastElementChild.style.display = "none"
                         }
 
@@ -405,7 +409,10 @@
 
                         }
 
-                        document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        if("{{viagem.dt_Chegada}}"){
+                            document.getElementById('id_dt_Chegada').value = "{{viagem.dt_Chegada|date:'Y-m-d'}}"
+                        }
+
                         const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
 
                         const estados = document.getElementById('id_estado')
@@ -416,6 +423,24 @@
                         }
 
                         estados.dispatchEvent(new Event('change'))
+
+                        async function validarVisitacao(event){  
+                            const date = event.target.value;   
+
+                            const url =`/cad_viagem/caledonia/validarData/${date}`
+    
+                            if(date){
+                                let data = await fetch(url)
+                                
+                                data = await data.json()
+    
+                                if(data.fail){
+                                    alert(data.alert)
+                                    event.target.value = ''
+                                }
+                            }
+    
+                           }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18

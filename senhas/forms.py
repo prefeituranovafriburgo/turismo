@@ -1,11 +1,12 @@
 from pickle import TRUE
+import requests
 from django import forms
 from django.forms import ModelForm, ValidationError
 from .models import *
 from contas.models import Estado
 from contas.functions import validate_CNPJ
 from .validations import validate_CNPJ
-
+import json
 
 class Date(forms.DateInput):
     input_type = 'date'
@@ -120,9 +121,9 @@ class ViagemForm(ModelForm):
         data_saida = self.cleaned_data['dt_Saida']
 
         if data_chegada > data_saida:
-            raise ValidationError("Data de saida menor que a de chegada")
+            raise ValidationError({"dt_Chegada":"Data de saida menor que a de chegada"})
 
-        return  cleaned_data 
+        return cleaned_data 
 
 
 class Viagem_CaledoniaForm(ModelForm):
@@ -147,6 +148,7 @@ class Viagem_CaledoniaForm(ModelForm):
                                                  'class': 'form-control'}),
 
             'dt_Chegada': Date(attrs={'onblur': 'validar(event)',
+                                                'onchange': 'validarVisitacao(event)',
                                                 'required': 'true',
                                                 'class': 'form-control'}),
 
@@ -198,6 +200,15 @@ class Viagem_CaledoniaForm(ModelForm):
 
     def clean_dt_Chegada(self):
         data_chegada = validate_data(self.cleaned_data['dt_Chegada'])
+
+        format = '%Y-%m-%d'
+        data_ = data_chegada.strftime(format)
+
+        data = requests.get('http://localhost:8000/cad_viagem/caledonia/validarData/' + data_)
+
+        data=json.loads(data.content)
+        if data['fail']:
+            raise ValidationError(data['alert'])   
 
         return data_chegada
        

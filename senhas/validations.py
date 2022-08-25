@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import re
 from itertools import cycle
 
@@ -11,6 +11,7 @@ error_messages = {
     'max_digits': _("Este campo requer 14 dígitos."),
 
     'invalid_date': _('Data inválida.'),
+    'invalid_date_format': _('Formato de data inválido.'),
 
     'not_a_match': _("Senhas não coincidem"),
     'invalid_min_senha_length': _('A senha precisar ter pelo menos 8 caracteres'),
@@ -133,14 +134,14 @@ def validate_senha(senha, senha2):
     raise ValidationError(error_messages['not_a_match'])
     
 def validate_data(data):
+    print('teste', data)
     try:
         format = '%Y-%m-%d'
-        data_ = datetime.strptime(data, format)
-    except:
-        raise ValidationError(error_messages['invalid_date'])
+        data_ = datetime.strptime(data.strftime(format), format)
+    except Exception as E:
+        raise ValidationError(error_messages['invalid_date_format'])
 
-    data_now = datetime.now() - datetime.timedelta(2)
-
+    data_now = datetime.now() - timedelta(2)
     if data_ < data_now:
         raise ValidationError(error_messages['invalid_date'])
     
