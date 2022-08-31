@@ -7,18 +7,18 @@
             <div id="menu_transporte" onclick="closePopUp()">
                 <div class="col d-flex">                                           
                     <div class="row mx-auto cards">
-                        <div id="card-ponto" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                        <div id="card-ponto" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_turismo_cadastrar'%}'">
                             <div class="card-context card">                                
                                 <span class="btn btn-light">GRUPO PARA <br>TURISMO E COMPRAS</span>
-                                <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
+                                <a href="{% url 'senhas:viagem_turismo_cadastrar'%}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
                             </div>
                         </div>
-                        <div id="card-bus" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                        <div id="card-bus" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_compras_cadastrar'%}'">
                             <div class="card-context card">                                
                                 <span class="btn btn-light">GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
-                                <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
+                                <a href="{% url 'senhas:viagem_compras_cadastrar' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
                             </div>
@@ -38,12 +38,12 @@
                 <div class="col d-flex flex-column mobile m-auto">                                           
                     <div id="menu-cadastro" class="col">
                         <div class="row">
-                            <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                            <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_turismo_cadastrar' %}'">
                                 <div class="context">
                                     <div>GRUPO PARA<br> TURISMO E COMPRAS</div>
                                 </div>
                             </div>   
-                            <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                            <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_compras_cadastrar'%}'">
                                 <div class="context">
                                     <div>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</div>
                                 </div>
