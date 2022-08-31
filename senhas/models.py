@@ -71,7 +71,7 @@ class Viagem(models.Model):
 
     responsavel_viagem = models.CharField(
         max_length=120, default=None, validators=[validate_nome])
-    contato_responsavel = models.CharField(max_length=18, default=None)
+    contato_responsavel = models.CharField(max_length=15, default=None)
     senha = models.CharField(max_length=10, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     dt_Chegada = models.DateField('Data Chegada', validators=[validate_data])
@@ -117,9 +117,9 @@ class Viagem_Turismo(models.Model):
     nome_guia = models.CharField(max_length=60, validators=[validate_nome])
     cadastur_guia = models.CharField(
         max_length=18, validators=[validate_Cadastur])
-    celular = models.CharField(max_length=18, validators=[validate_celular])
+    celular = models.CharField(max_length=15, validators=[validate_celular])
     telefone = models.CharField(
-        max_length=18, blank=True, null=True, validators=[validate_telefone])
+        max_length=14, blank=True, null=True, validators=[validate_telefone])
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
     dt_inclusao = models.DateTimeField(
         auto_now_add=True, verbose_name='Dt. Inclusão')

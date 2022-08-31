@@ -222,22 +222,8 @@
                     })
                 
                 </script>
-                {% if not viagem_turismo.outros == '' %}
-                <script>
-                    document.getElementById('dOutros').style.display='flex';
-                </script>
-                {% endif %}
                 
                 <SCRIPT LANGUAGE="JavaScript"> 
-
-                    function checkOutros(event){
-                        if (event.target.value=='outros' || event.target.value=='Outros'){                            
-                            document.getElementById('dOutros').style.display='flex';
-                        }else{
-                            document.getElementById('dOutros').style.display='none';
-                            document.getElementById('id_outros').value=''
-                        }
-                    }
                     function hospedados(event){
                         if (event.target.value==='true'){
                             event.target.value='false';
@@ -433,51 +419,24 @@
 
                         estados.dispatchEvent(new Event('change'))
 
-                        const pontos = document.getElementById('id_pontos_turisticos')
-
-                        for(let ponto of pontos.children){
-                            
-                            if(ponto.outerText.toLowerCase() == " outros"){
-                                pontos.appendChild(ponto)
-                                    if("{{viagem_turismo.outros}} != ''"){
-                                        ponto.checked = true
-                                    }
-
-                                ponto.addEventListener('change', (e)=>{
-                                    if (e.target.checked){                            
-                                        document.getElementById('dOutros').style.display='flex';
-                                    }else{
-                                        document.getElementById('dOutros').style.display='none';
-                                        document.getElementById('id_outros').value=''
-                                    }
-                            })
-
-                            ponto.dispatchEvent(new Event('change'))
-
-                        
-                            }
-                        }
-
-                        if("{{viagem.ficarao_hospedados}}" != ''){
+                        /*
+                        if("{{viagem.ficarao_hospedados}}" != 'False'){
+                            console.log('hi')
                             hotel = document.getElementById('customSwitch1')
                             hotel.value = false
                             hotel.dispatchEvent(new Event('change'))
                         }
-
-                        if("{{viagem.restaurante_reservado}}" != ''){
+                        if("{{viagem.restaurante_reservado}}" != 'False'){
                             restaurante = document.getElementById('restaurante')
                             restaurante.value = false
                             restaurante.dispatchEvent(new Event('change'))
-
-                        }
+                        }*/
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
                         cnpj=cnpjField.value                        
                         cnpjField.value=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
 
-                        document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
-                        document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                         document.getElementById('id_contato_responsavel').value=document.getElementById('id_contato_responsavel').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
                     };
                 

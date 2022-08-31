@@ -5,7 +5,6 @@
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
                     <h2>CADASTRO DE USUÁRIO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
@@ -59,7 +58,7 @@
                         
                             <div class="form-group col-md-2"> 
                                 <label for="id_estado">Estado de origem:</label>
-                                <select class="form-control {%if form.errors.estado_origem %}is-invalid{% endif %}" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                <select class="form-control" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                     <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                     {% for estado in estados %}
                                     <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
@@ -72,7 +71,7 @@
                             <!-- Cidade -->
                             <div class="form-group col-md-4"> 
                                 <label for="id_cidade">Cidade de origem:</label>
-                                <select class="form-control {%if form.errors.cidade_origem %}is-invalid{% endif %}" onblur="validar(event)" name="cidade_origem" required id="id_cidade">
+                                <select class="form-control" onblur="validar(event)" name="cidade_origem" id="id_cidade_origem" required id="id_cidade_origem">
                                     <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                 </select>
                                 <div class="invalid-feedback">
@@ -105,21 +104,132 @@
                     </form>
                     <a href="{% url 'login' %}">Voltar</a>                                          
                 
-                                    <script>
-                    $('.selEstado').change(function mostracidade () {
-                        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-                        var estadoId = $(this).val();
-                            $.ajax({ 
-                                url: url,
-                                data: {
-                                    'id':estadoId,
-                                },
-                                success: function(data)
-                                {
-                                    $("#id_cidade").html(data);
+                <SCRIPT LANGUAGE="JavaScript"> 
+
+                    function mostraestado(){
+                        var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
+
+                        $.ajax({ 
+                            url: url,
+                            success: function(data) {
+                                $("#id_estado").html(data);                           
+                            }
+                        });
+                    };       
+
+                    async function mostracidade(event){
+                        const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        const id = event.target.value
+
+                        if(id){
+                        const data = await fetch(url,{
+                            method: 'POST', 
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({id}),
+                          })
+
+                        document.getElementById('id_cidade_origem').innerHTML = await data.text()
+
+                        if("{{viagem.cidade_origem}}"){
+                            const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                            const cidades = document.getElementById('id_cidade_origem')
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
                                 }
-                                });
-                    })
+                            }
+                        }
+                    }
+                };
                 
-                </script>
+                    function leech(v){
+                        v=v.replace(/o/gi,"0")
+                        v=v.replace(/i/gi,"1")
+                        v=v.replace(/z/gi,"2")
+                        v=v.replace(/e/gi,"3")
+                        v=v.replace(/a/gi,"4")
+                        v=v.replace(/s/gi,"5")
+                        v=v.replace(/t/gi,"7")
+                        return v
+                    }
+                
+                    function icpf(v){
+                        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                                //de novo (para o segundo bloco de numeros)
+                        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+                        return v
+                    }
+                    function itelefone(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function icelular(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function mascara(o,f){
+                        v_obj=o
+                        v_fun=f
+                        setTimeout("execmascara()",1)
+                    }
+                
+                    function execmascara(){
+                        v_obj.value=v_fun(v_obj.value)
+                    }
+
+                    function validar(event){
+                        event.target.classList.remove("is-invalid");
+
+                        const invalid = event.target.parentNode.querySelector('.invalid-feedback')
+
+                        if(invalid){
+                            invalid.style.display = 'none'
+                            event.target.parentNode.lastElementChild.style.display = "none"
+                        }
+
+                    }
+
+                    window.onload = async function() {
+                        let elements=[]
+
+                        {% for i in form.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+
+                        for(let i of elements){
+                            const element = document.getElementById(`id_${i}`)
+                            element.classList.add("is-invalid")
+                            element.parentNode.lastElementChild.style.display = "block"
+
+                        }
+
+
+                        const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                        const estados = document.getElementById('id_estado')
+                        for (let option of estados.options){
+                            if(option.innerText == estado){
+                                estados.selectedIndex = option.value
+                            }
+                        }
+
+                        estados.dispatchEvent(new Event('change'))
+
+                        document.querySelector("#id_estado").dispatchEvent(new Event('change'))
+
+                        document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                    };
+                
+                </script>  
                 {% endblock %}

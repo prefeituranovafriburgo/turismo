@@ -408,10 +408,9 @@ def get_validar_caledonia(request, date):
         senha__contains='PC', ativo=True, dt_Chegada=date).count()
 
     if request.method == 'GET':
-
         if str(viagens_caledonia_do_dia) >= str(2):
             format = '%Y-%m-%d'
-            dt = request.GET.get('date')
+            dt = date
             data = datetime.strptime(dt, format)
             fail = True
             alert = 'Vagas esgotadas para visitação no dia ' + \

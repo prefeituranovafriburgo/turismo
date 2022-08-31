@@ -391,6 +391,24 @@
 
                     }
 
+                    async function validarVisitacao(event){  
+                        const date = event.target.value;   
+
+                        const url =`/cad_viagem/caledonia/validarData/${date}`
+
+                        if(date){
+                            let data = await fetch(url)
+                            
+                            data = await data.json()
+
+                            if(data.fail){
+                                alert(data.alert)
+                                event.target.value = ''
+                            }
+                        }
+
+                       }
+
                     window.onload = async function() {
                         let elements=[]
 
@@ -403,7 +421,9 @@
                         {% endfor %}
                         
                         for(let i of elements){
+                            console.log(i)
                             const element = document.getElementById(`id_${i}`)
+                            console.log(element)
                             element.classList.add("is-invalid")
                             element.parentNode.lastElementChild.style.display = "block"
 
@@ -424,23 +444,7 @@
 
                         estados.dispatchEvent(new Event('change'))
 
-                        async function validarVisitacao(event){  
-                            const date = event.target.value;   
 
-                            const url =`/cad_viagem/caledonia/validarData/${date}`
-    
-                            if(date){
-                                let data = await fetch(url)
-                                
-                                data = await data.json()
-    
-                                if(data.fail){
-                                    alert(data.alert)
-                                    event.target.value = ''
-                                }
-                            }
-    
-                           }
 
                         const cnpjField = document.getElementById('id_cnpj_empresa_transporte')
                         cnpjField.maxLength = 18
