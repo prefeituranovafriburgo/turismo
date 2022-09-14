@@ -663,3 +663,7 @@ footer{
 .dropdown-menu .marcar:hover{
     background-color: rgba(128, 128, 128, 0.37) !important;
 }
+
+.pontos_input{
+    list-style: none;
+}

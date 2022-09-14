@@ -5,113 +5,231 @@
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin> 
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>        
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
                     <h2>CADASTRO DE USUÁRIO</h2>                    
                     <form method="POST" id="formulario" data-estados-url="{% url 'contas:ajax_load_estados' %}" data-cidades-url="{% url 'contas:ajax_load_cidades' %}" novalidate>
                         {% csrf_token %}
-                        {% if robo %}
-                            <div class="row px-2">
-                                <div class="col d-flex bg-danger  px-5 py-2 rounded mb-3">
-                                    <div class="mx-auto text-white ">
-                                        Não aceitamos robôs por aqui.
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
+                        
                         <div class="form-row">
-                            <div class="form-group col-md-3">            
-                                <label for="id_nome">Nome:</label>
-                                <input class="form-control {% if not validations.nome.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="nome" maxlength="60" required id="id_nome" value="{{nome}}">
+                            <!-- Nome !-->
+                            <div class="form-group col-md-3">    
+                                <label for="id_nome" class="w-auto mr-5">Nome:</label>                                                                     
+                                {{form.nome}}       
                                 <div class="invalid-feedback">
-                                    {{validations.nome.msg}}
+                                    {{form.errors.nome}}
                                 </div> 
                             </div>
-                            <div class="form-group col-md-2">              
-                                <label for="id_cpf">CPF:</label>
-                                <input class="form-control {% if not validations.cpf.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="cpf" onkeydown="mascara(this,icpf)" maxlength="14" required id="id_cpf" value="{{cpf}}">            
+
+                            <!-- CPF !-->
+                            <div class="form-group col-md-2">   
+                                <label for="id_cpf" class="w-auto mr-5">CPF:</label>                                                                     
+                                {{form.cpf}}           
                                 <div class="invalid-feedback">
-                                    {{validations.cpf.msg}}
+                                    {{form.errors.cpf}}
                                 </div> 
                             </div>
+
+                            <!-- EMAIL !-->
                             <div class="form-group col-md-3"> 
-                                <label for="id_email">Email:</label>
-                                <input class="form-control {% if not validations.email.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="email" maxlength="200" required id="id_email" value="{{email}}">
+                                <label for="id_email" class="w-auto mr-5">Email:</label>                                                                     
+                                {{form.email}}
                                 <div class="invalid-feedback">
-                                    {{validations.email.msg}}
+                                    {{form.errors.email}}
+                                </div> 
+                            </div>
+
+                            <!-- Celular !-->
+                            <div class="form-group col-md-2"> 
+                                <label for="id_celular" class="w-auto mr-5">Celular:</label>                                                                     
+                                {{form.celular}}
+                                <div class="invalid-feedback">
+                                    {{form.errors.celular}}
                                 </div> 
                             </div>
                             <div class="form-group col-md-2"> 
-                                <label for="id_celular">Celular:</label>
-                                <input class="form-control {% if not validations.celular.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="celular" onkeydown="mascara(this,icelular)" onload="mascara(this,icelular)" value="{{celular}}"
-                                        maxlength="15" required id="id_celular">
+                                <label for="id_telefone" class="w-auto mr-5">Telefone:</label>                                                                     
+                                {{form.telefone}}
                                 <div class="invalid-feedback">
-                                    {{validations.celular.msg}}
-                                </div> 
-                            </div>
-                            <div class="form-group col-md-2"> 
-                                <label for="id_telefone">Telefone:</label>
-                                <input class="form-control {% if not validations.telefone.state %}is-invalid{% endif %}" onblur="validar(event)" type="text" name="telefone" onkeydown="mascara(this,itelefone)" onload="mascara(this,itelefone)"
-                                        value="{{telefone}}" maxlength="14" id="id_telefone">
-                                <div class="invalid-feedback">
-                                    {{validations.telefone.msg}}
+                                    {{form.errors.telefone}}
                                 </div> 
                             </div>
                         </div>
                         <div class="form-row">                            
                         
                             <div class="form-group col-md-2"> 
-                                <label for="id_estado">Estado:</label>
-                                <select class="form-control {% if not validations.estado.state %}is-invalid{% endif %}" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
+                                <label for="id_estado">Estado de origem:</label>
+                                <select class="form-control" onblur="validar(event)" onchange="mostracidade(event)" name="estado" class="selEstado" required id="id_estado">
                                     <option value="" {%if estado_ == '' %}selected{% endif %}></option>
                                     {% for estado in estados %}
                                     <option value="{{ estado.id }}" {% if estado.nome == estado_.nome %}selected{% endif %}>{{ estado.nome }}</option>
                                     {% endfor %}
                                 </select>
                                 <div class="invalid-feedback">
-                                    {{validations.estado.msg}}
-                                </div> 
+                                    {{form.errors.estado_origem}}
+                                </div>
                             </div>
+                            <!-- Cidade -->
                             <div class="form-group col-md-4"> 
-                                <label for="id_cidade">Cidade:</label>
-                                <select class="form-control {% if not validations.cidade.state %}is-invalid{% endif %}" name="cidade" required id="id_cidade">
-                                    <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>
+                                <label for="id_cidade">Cidade de origem:</label>
+                                <select class="form-control" onblur="validar(event)" name="cidade_origem" id="id_cidade_origem" required id="id_cidade_origem">
+                                    <option value="{{cidade.id}}" selected>{{cidade.nome}}</option>              
                                 </select>
                                 <div class="invalid-feedback">
-                                    {{validations.cidade.msg}}
-                                </div> 
-                            </div>
+                                    {{form.errors.cidade_origem}}
+                                </div>
+                            </div>  
+                            
                             <div class="form-group col-md-2">                             
                                 <label for="id_senha">Senha:</label>
-                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha" required id="id_senha">
+                                <input class="form-control {% if not form.errors.senha %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha" required id="id_senha">
                             </div>
+                            
                             <div class="form-group col-md-2">                             
                                 <label for="id_senha_confirma">Confirme senha:</label>
-                                <input class="form-control {% if not validations.senha.state %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha_confirma" required id="id_senha_confirma">
+                                <input class="form-control {% if not form.errors.senha %}is-invalid{% endif %}" onblur="validar(event)" type="password" name="senha_confirma" required id="id_senha_confirma">
                                 <div class="invalid-feedback">
-                                    {{validations.senha.msg}}
+                                    {{form.errors.senha}}
                                 </div> 
                             </div>
                         </div>
                         <div class="form-row d-flex flex-column">  
                             
                             <div class="d-flex flex-wrap">
-                                <!-- <div class="mx-auto my-3">
-                                    <a href="{% url 'social:begin' 'facebook' %}" style="cursor: pointer;width: 300px; height: 77px; background-color: blue; border-color: blue; color: white; font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
-                                        <i class="fab fa-2x fa-facebook mr-3 m-auto"></i><span class="m-auto">Cadastrar com Facebook</span>
-                                    </a>
-                                </div>
-                                <div class="mx-auto my-3">
-                                    <a href="{% url 'social:begin' 'google-oauth2' %}" style="cursor: pointer;width: 300px; height: 77px; background-color: rgb(255, 255, 255); border-color: rgba(0, 0, 0, 0.384); color: rgb(37, 37, 37); font-size: 12pt; font-weight: 700;" class="btn btn-primary d-flex pr-4">
-                                        <img style="margin: auto; height: 60px;" src="{% static 'images/google.jpg' %}" alt=""><span class="m-auto">Cadastrar com Google</span>
-                                    </a>
-                                </div> -->
                                 <div class="h-captcha m-auto" data-sitekey="{{hCAPTCHA}}"></div>                               
-                            </div>                        
-                        </table>    
+                            </div>  
                         <button class="btn btn-primary" type="submit">
                             Cadastrar
                         </button>
 
                     </form>
                     <a href="{% url 'login' %}">Voltar</a>                                          
-                </script>                  
+                
+                <SCRIPT LANGUAGE="JavaScript"> 
+
+                    function mostraestado(){
+                        var url = $("#formulario").attr("data-estados-url");  // get the url of the `load_cities` view
+
+                        $.ajax({ 
+                            url: url,
+                            success: function(data) {
+                                $("#id_estado").html(data);                           
+                            }
+                        });
+                    };       
+
+                    async function mostracidade(event){
+                        const url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
+                        const id = event.target.value
+
+                        if(id){
+                        const data = await fetch(url,{
+                            method: 'POST', 
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({id}),
+                          })
+
+                        document.getElementById('id_cidade_origem').innerHTML = await data.text()
+
+                        if("{{viagem.cidade_origem}}"){
+                            const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                            const cidades = document.getElementById('id_cidade_origem')
+                            for (let option of cidades.options){
+                                if(option.innerText == cidade){
+                                    cidades.selectedIndex = option.value
+                                }
+                            }
+                        }
+                    }
+                };
+                
+                    function leech(v){
+                        v=v.replace(/o/gi,"0")
+                        v=v.replace(/i/gi,"1")
+                        v=v.replace(/z/gi,"2")
+                        v=v.replace(/e/gi,"3")
+                        v=v.replace(/a/gi,"4")
+                        v=v.replace(/s/gi,"5")
+                        v=v.replace(/t/gi,"7")
+                        return v
+                    }
+                
+                    function icpf(v){
+                        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                                //de novo (para o segundo bloco de numeros)
+                        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+                        return v
+                    }
+                    function itelefone(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function icelular(v){
+                        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+                        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+                        v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+                        return v
+                    }
+                    function mascara(o,f){
+                        v_obj=o
+                        v_fun=f
+                        setTimeout("execmascara()",1)
+                    }
+                
+                    function execmascara(){
+                        v_obj.value=v_fun(v_obj.value)
+                    }
+
+                    function validar(event){
+                        event.target.classList.remove("is-invalid");
+
+                        const invalid = event.target.parentNode.querySelector('.invalid-feedback')
+
+                        if(invalid){
+                            invalid.style.display = 'none'
+                            event.target.parentNode.lastElementChild.style.display = "none"
+                        }
+
+                    }
+
+                    window.onload = async function() {
+                        let elements=[]
+
+                        {% for i in form.errors %}
+                        elements.push("{{i}}")
+                        {% endfor %}
+
+                        for(let i of elements){
+                            const element = document.getElementById(`id_${i}`)
+                            element.classList.add("is-invalid")
+                            element.parentNode.lastElementChild.style.display = "block"
+
+                        }
+
+
+                        const [estado, cidade] = "{{viagem.cidade_origem}}".split(" - ")
+
+                        const estados = document.getElementById('id_estado')
+                        for (let option of estados.options){
+                            if(option.innerText == estado){
+                                estados.selectedIndex = option.value
+                            }
+                        }
+
+                        estados.dispatchEvent(new Event('change'))
+
+                        document.querySelector("#id_estado").dispatchEvent(new Event('change'))
+
+                        document.getElementById('id_telefone').value=document.getElementById('id_telefone').value.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4")
+                        document.getElementById('id_celular').value=document.getElementById('id_celular').value.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2) $3-$4")
+                    };
+                
+                </script>  
                 {% endblock %}
