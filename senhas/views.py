@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,7 +7,7 @@ from contas.functions import validationsViagem
 from contas.views import sair
 from contas.models import Estado, Cidade
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
-from .models import Pontos_Turisticos
+from .models import Links_Menu, Pontos_Turisticos
 from .forms import ViagemForm
 from .functions import get_random_string
 import time
@@ -15,7 +16,10 @@ from datetime import date, timedelta
 
 @login_required
 def inicio(request):
-    return render(request, 'senhas/index.html')
+    context={
+        'links': Links_Menu.objects.all().values()
+    }
+    return render(request, 'senhas/index.html', context)
 
 
 @login_required

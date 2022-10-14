@@ -1,3 +1,4 @@
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 from contas.functions import validate_CPF, validate_CNPJ, validate_CADASTUR
@@ -101,3 +102,7 @@ class Viagem_Turismo(models.Model):
     telefone = models.CharField(max_length=18, blank=True, null=True)
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+class Links_Menu(models.Model):
+    nome = models.CharField(max_length=120, blank=True)
+    url = models.CharField(max_length=200, blank=True)
