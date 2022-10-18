@@ -48,19 +48,19 @@
                 z-index: -2;                
               } */
               table{
-                  font-size: 20pt;
+                  font-size: 15pt;
                   width: 650px;
-                  padding-top: 20px;
+                  padding-top: 50px;
               }
               table th{
                   width: 400px;
               }
               table th, td{
-                  height: 20pt; 
+                  height: 15pt; 
                   border-bottom: 1px solid rgba(0, 0, 0, 0.131);                  
               }
               table tr{
-                  line-height: 50px;
+                  line-height: 35px;
               }
               table, tr, td, th{
                   /* background: none !important; */
@@ -135,21 +135,20 @@
                     {% load qr_code %}
                          <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
                 </div>
-            </div>
-            <div class="row">
-                <div id="datas" class="col">
-                    <div class="row">
-                        <div class="col d-flex">
+                <div id="datas" class="col" style="margin-top: -60px;">
+                    <div class="row d-flex flex-column">
+                        <div class="col d-flex m-auto">
                             <div>Data de entrada:</div>
                             <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span>
                         </div>
-                        <div class="col d-flex">
+                        <div class="col d-flex m-auto">
                             <div>Data de saída:</div>
                             <span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span>
                         </div>
                     </div>
-                </div>                
+                </div>           
             </div>
+
                            
             
            
@@ -196,6 +195,10 @@
                     <th class="text-left">Cadastur do Guia:</th>
                     <td>{{ viagem_turismo.cadastur_guia }}</td>
                 </tr>
+                <tr>
+                    <th class="text-left">Obs. da viagem:</th>
+                    <td>{{ viagem.obs }}</td>
+                </tr>
                 {% endif %}
             </table>            
             <div class="row">
@@ -235,10 +238,10 @@
 
         
     }
-    window.print();
-    setTimeout(function(){
-        window.close();
-    },2000);
+    // window.print();
+    // setTimeout(function(){
+    //     window.close();
+    // },2000);
 </SCRIPT>
 </body>
 </html>

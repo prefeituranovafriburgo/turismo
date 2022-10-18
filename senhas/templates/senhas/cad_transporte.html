@@ -7,18 +7,26 @@
             <div id="menu_transporte" onclick="closePopUp()">
                 <div class="col d-flex">                                           
                     <div class="row mx-auto cards">
-                        <div id="card-ponto" class="ml-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                        <div id="card-ponto" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_turismo_cadastrar'%}'">
                             <div class="card-context card">                                
                                 <span class="btn btn-light">GRUPO PARA <br>TURISMO E COMPRAS</span>
-                                <a href="{% url 'senhas:viagem_inclui' tipo='turismo' %}" class="btn btn-primary">
+                                <a href="{% url 'senhas:viagem_turismo_cadastrar'%}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
                             </div>
                         </div>
-                        <div id="card-bus" class="mr-auto my-auto" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                        <div id="card-bus" class="m-auto" onclick="location.href = '{% url 'senhas:viagem_compras_cadastrar'%}'">
                             <div class="card-context card">                                
                                 <span class="btn btn-light">GRUPO PARA <br>EXCLUSIVAMENTE COMPRAS</span>
-                                <a href="{% url 'senhas:viagem_inclui' tipo='compra' %}" class="btn btn-primary">
+                                <a href="{% url 'senhas:viagem_compras_cadastrar' %}" class="btn btn-primary">
+                                    Cadastrar
+                                </a>
+                            </div>
+                        </div>
+                        <div id="card-caledonia" class="m-auto" onclick="location.href = '{% url 'senhas:caledonia' %}'">
+                            <div class="card-context card">                                
+                                <span class="btn btn-light">GRUPO PARA <br>PICO DA CALEDÔNIA</span>
+                                <a href="{% url 'senhas:caledonia' %}" class="btn btn-primary">
                                     Cadastrar
                                 </a>
                             </div>
@@ -30,16 +38,21 @@
                 <div class="col d-flex flex-column mobile m-auto">                                           
                     <div id="menu-cadastro" class="col">
                         <div class="row">
-                            <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='turismo' %}'">
+                            <div id="card-turismo" class="col card" onclick="location.href = '{% url 'senhas:viagem_turismo_cadastrar' %}'">
                                 <div class="context">
                                     <div>GRUPO PARA<br> TURISMO E COMPRAS</div>
                                 </div>
                             </div>   
-                            <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_inclui' tipo='compra' %}'">
+                            <div id="card-compra" class="col card" onclick="location.href = '{% url 'senhas:viagem_compras_cadastrar'%}'">
                                 <div class="context">
                                     <div>GRUPO PARA<br> EXCLUSIVAMENTE COMPRAS</div>
                                 </div>
-                            </div>     
+                            </div>    
+                            <div id="card-caledonia" class="col card" onclick="location.href = '{% url 'senhas:caledonia' %}'">
+                                <div class="context">
+                                    <div>GRUPO PARA<br> PICO DA CALEDÔNIA</div>
+                                </div>
+                            </div>  
                         </div>
                     </div>       
                 </div>
@@ -72,7 +85,7 @@
                                 <th class="text-center">Data Saída</th>
                                 <th class="text-center">Veículo</th>
                                 <th class="text-center">Data Inclusão</th>
-                                <th class="text-center">Visualizar/Editar</th>
+                                <th class="text-center">Editar/Apagar</th>
                             </tr>
                         </thead>
                 
@@ -93,7 +106,7 @@
                                     <td class="text-center">{{ v.tipo_veiculo }}</td>
                                     <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-eye m-auto"></i></a>
+                                        <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-cog m-auto"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -113,11 +126,12 @@
             }
             function openPopUpMobile(){
                 document.getElementById("menu_transporte_mobile").style.display='flex'
-                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-danger d-flex py-2' onclick='closePopUpMobile()' role='button' style='color: white'><i class='fas fa-minus-circle'></i></button>"
+                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-danger py-2' onclick='closePopUpMobile()' role='button' style='color: white'><i class='fas fa-minus-circle'></i></button>"
             }
             function closePopUpMobile(){
                 document.getElementById("menu_transporte_mobile").style.display='none'
-                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-primary d-flex py-2' onclick='openPopUpMobile()' role='button'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle-fill m-auto' viewBox='0 0 16 16'><path d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z'/></svg></button>"
+                document.getElementById("svg-button").innerHTML="<button id='svg-button' class='btn btn-primary py-2' onclick='openPopUpMobile()' role='button'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle-fill m-auto' viewBox='0 0 16 16'><path d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z'/></svg></button>"
             }
+            closePopUpMobile()
         </script>   
 {% endblock %}

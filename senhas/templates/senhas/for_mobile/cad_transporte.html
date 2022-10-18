@@ -1,13 +1,13 @@
 {% load static %}
 <div id="mobile" class="row w-100 show m-auto">                
-    <div class="col d-flex flex-column px-0">
+    <div class="col px-0" style="display: flex; flex-direction: column;">
         <div class="row">
             <div class="col pl-4">
                 <h3>Viagens registradas:</h3>
             </div>
-    
             <div id="svg-button" class="col-2 text-right">
-                <button id="svg-button" class="btn btn-primary d-flex py-2" onclick="openPopUpMobile()" role="button">
+                <button id="svg-button" class="btn btn-primary py-2" onclick="openPopUpMobile()" role="button">
+                    teste
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill m-auto" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                     </svg>                                    
@@ -19,27 +19,26 @@
     
             <thead>
                 <tr>
-                    <th class="text-center">#</th>
                     <th class="text-center">Senha</th>                                
-                    <th class="text-center">Data Inclusão</th>
-                    <th class="text-center">Ver/Editar</th>
+                    <th class="text-center">Inclusão</th>
+                    <th class="text-center">Editar/Apagar</th>
                 </tr>
             </thead>
     
             <tbody>
     
                 {% for v in viagens %}
-                    <tr>
-                        <td class="text-center">{{forloop.counter}}</td>
-                        <td class="d-flex">
+                    <tr>                    
+                        <td style="display: flex;">
                             <span class="mx-auto">{{ v.senha }}/22NF</span> 
                             <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.senha %}">
-                                <i class="fad fa-print"></i>
+                                <i class="fad fa-print ml-4"></i>
                                 <span class="tooltiptext">Imprimir documento</span>
-                            </a>                                                                                                                          
+                            </a>    
+                        </td>                                                                                                                      
                         <td class="text-center">{{ v.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                         <td class="text-center">
-                            <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-eye m-auto"></i></a>
+                            <a href="{% url 'senhas:viagem' v.senha  %}"><i class="far fa-cog m-auto"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

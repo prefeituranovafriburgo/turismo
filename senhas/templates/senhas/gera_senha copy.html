@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load template_filters %}
+    {% load static %}
+    <style type="text/css">
+            body{              
+                -webkit-print-color-adjust:exact;
+            }
+            .row{
+                width: 100%;
+                display: flex;
+            }
+            .col{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+            .watermark {
+                padding-top: 10px;
+                width: 800px;
+                height: 800px;
+                display: block;
+                position: relative;
+                /* background-image: url({% static 'marcadagua.jpg' %});
+                background-size: cover;
+                -webkit-print-color-adjust:exact; */
+              }
+              
+              .watermark::after {                
+                opacity: 1.0;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                position: absolute;
+                z-index: -1;   
+                -webkit-print-color-adjust:exact;
+              }
+              /* .marca-dagua{
+                opacity: 0.4;
+                position: absolute;             
+                width: 800px;                
+                z-index: -2;                
+              } */
+              table{
+                  font-size: 15pt;
+                  width: 650px;
+                  padding-top: 50px;
+              }
+              table th{
+                  width: 400px;
+              }
+              table th, td{
+                  height: 15pt; 
+                  border-bottom: 1px solid rgba(0, 0, 0, 0.131);                  
+              }
+              table tr{
+                  line-height: 35px;
+              }
+              table, tr, td, th{
+                  /* background: none !important; */
+                  color-adjust:exact !important;
+                  /* background-color: transparent !important; */
+                  -webkit-print-color-adjust:exact !important;
+              }
+              #qr_code{
+                 margin: auto;
+              }
+              #senha-de-acesso{
+                width: 100%;
+                text-align: center;
+                display: flex;
+              }
+              #senha-de-acesso div{
+                  margin: 0 auto;
+              }
+              #senha-de-acesso div h1{
+                  font-size: 36pt;
+                  line-height: 20pt;
+              }
+              .m-auto{
+                  margin: auto;
+              }
+              .d-flex{
+                  display: flex;
+                  flex-direction: column;
+              }
+              #datas{
+                  padding-top: 60px;
+                  font-size: 28pt;
+                  text-align: center;
+              }
+              #datas div span{
+                  font-weight: bolder;
+              }
+              .text-left{
+                  text-align: left;
+              }
+              .bg{
+                  background-color: aqua;
+              }
+              .display-1{
+                  font-size: 90pt !important;
+              }
+    </style>
+</head>
+<body>
+    <div class="row ">
+        <div class="col">
+            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>            
+        </div>
+    </div>
+    <br>
+    <div class="m-auto">
+        <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt="">
+        <div class="watermark m-auto">
+            <div class="row">
+                <div class="col">
+                    <div id="senha-de-acesso">
+                        <div>
+                         <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->                         
+                         <h1 class="text-center display-1">{{ viagem.senha}}/22NF</h1>
+                         
+                        </div>
+                     </div>     
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% load qr_code %}
+                         <img id="qr_code" src="{% qr_url_from_text endereco  %}" alt="Hello World!">
+                </div>
+            </div>
+            <div class="row">
+                <div id="datas" class="col">
+                    <div class="row">
+                        <div class="col d-flex">
+                            <div>Data de entrada:</div>
+                            <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span>
+                        </div>
+                        <div class="col d-flex">
+                            <div>Data de saída:</div>
+                            <span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+                           
+            
+           
+            <table class="table table-borderless bg-none m-auto">
+                <tr>
+                    <th class="text-left">Nome do responsável</th>
+                    <td>{{ viagem.responsavel_viagem }}</td>
+                </tr>  
+                <tr>
+                    <th class="text-left">Contato do Responsável</th>
+                    <td>{{ viagem.contato_responsavel }}</td>
+                </tr>  
+                <tr>
+                    <th class="text-left">Empresa de Transporte</th>
+                    <td>{{ viagem.empresa_transporte }}</td>
+                </tr>                
+                <tr>
+                    <th class="text-left">CNPJ da Empresa de Transporte</th>
+                    <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Cadastur da Empresa de Transporte</th>
+                    <td>{{ viagem.cadastur_empresa_transporte }}</td>
+                </tr>
+
+                <tr>
+                    <th class="text-left">Veículo</th>
+                    <td>{{ viagem.tipo_veiculo }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Quant. Passageiros</th>
+                    <td>{{ viagem.quant_passageiros }}</td>
+                </tr>
+                
+                <!-- Viatem/Turismo -->
+
+                {% if viagem_turismo %}
+
+                <tr>
+                    <th class="text-left">Nome do Guia:</th>
+                    <td>{{ viagem_turismo.nome_guia }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Cadastur do Guia:</th>
+                    <td>{{ viagem_turismo.cadastur_guia }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Obs. da viagem:</th>
+                    <td>{{ viagem.obs }}</td>
+                </tr>
+                {% endif %}
+            </table>            
+            <div class="row">
+                <div class="col">
+                    <!-- <img class="m-auto" src="/static/assinatura.png"  alt="Logo Turismo" title="Logo Pmnf" width="200" style="margin-top: 60px;"/>     -->
+                </div>
+            </div>
+        </div>        
+    </div>
+<SCRIPT LANGUAGE="JavaScript">
+    window.onload = function (){
+        document.getElementById('telefone').innerText=document.getElementById('telefone').innerText.replace(/^(\d{1})(\d{1})(\d{4})(\d{4})/, "($1$2) $3-$4");
+        document.getElementById('celular').innerText=document.getElementById('celular').innerText.replace(/^(\d{1})(\d{1})(\d{5})(\d{4})/, "($1$2)$3-$4");
+
+        pontos=document.getElementsByClassName('ponto')
+        len=Object.keys(pontos).length
+        for(ponto in pontos){
+            console.log(pontos[ponto])
+            if(len===2){
+                document.getElementById('ponto-1').innerText=pontos[0].innerText+' e'                                                  
+                break
+            }else{
+                if (ponto<len){
+                    if(ponto==len-1){
+                        document.getElementById('ponto-'+p.toString()).innerText=pontos[ponto].innerText+' e'                                                  
+                    }else{
+                        p=parseInt(ponto)+1
+                        document.getElementById('ponto-'+p.toString()).innerText=pontos[ponto].innerText+','              
+                    }
+                }
+            }
+            
+            
+            
+            
+        }        
+
+        
+    }
+    // window.print();
+    // setTimeout(function(){
+    //     window.close();
+    // },2000);
+</SCRIPT>
+</body>
+</html>
