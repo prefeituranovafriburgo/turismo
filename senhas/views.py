@@ -1,5 +1,7 @@
 from multiprocessing import context
+
 from django.http import FileResponse, Http404, JsonResponse
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,8 +12,9 @@ import json
 from contas.views import sair
 from contas.models import Estado, Cidade
 from senhas.models import Tipo_Veiculo, Viagem, Viagem_Turismo
+
 from turismo.settings import BASE_DIR
-from .models import Pontos_Turisticos
+from .models import Links_Menu, Pontos_Turisticos
 from .forms import Viagem_CaledoniaForm, Viagem_turismo_CaledoniaForm, ViagemForm, Viagem_TurismoForm
 from .functions import get_random_string
 import time
@@ -23,7 +26,10 @@ from turismo.decorators import membro_secretaria_required, membro_fiscais_requir
 
 @login_required
 def inicio(request):
-    return render(request, 'senhas/index.html')
+    context={
+        'links': Links_Menu.objects.all().values()
+    }
+    return render(request, 'senhas/index.html', context)
 
 
 @login_required

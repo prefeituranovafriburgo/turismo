@@ -1,3 +1,4 @@
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 from contas.models import Cidade, Estado
@@ -121,6 +122,8 @@ class Viagem_Turismo(models.Model):
     telefone = models.CharField(
         max_length=14, blank=True, null=True, validators=[validate_telefone])
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
-    dt_inclusao = models.DateTimeField(
-        auto_now_add=True, verbose_name='Dt. Inclusão')
-    ativo = models.BooleanField(default=True)
+    dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    
+class Links_Menu(models.Model):
+    nome = models.CharField(max_length=120, blank=True)
+    url = models.CharField(max_length=200, blank=True)

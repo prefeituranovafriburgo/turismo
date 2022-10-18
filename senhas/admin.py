@@ -33,3 +33,9 @@ class Viagem_TurismoAdmin(admin.ModelAdmin):
     search_fields = ['viagem', 'nome_guia']
 
 admin.site.register(Viagem_Turismo, Viagem_TurismoAdmin)
+
+class Links_MenuAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'url']
+    search_fields = ['nome']
+
+admin.site.register(Links_Menu, Links_MenuAdmin)
