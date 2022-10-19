@@ -198,7 +198,7 @@ def viagem_compras_cadastrar(request):
             messages.success(request, 'Viagem cadastrada com sucesso!')
             return redirect('senhas:cad_transporte')
         else:
-            print('O form de viagem tem algum erro: =/')
+            print('O form de viagem tem algum erro: somente compras')
             print(form.errors)
 
     context = {
@@ -215,6 +215,7 @@ def viagem_turismo_cadastrar(request):
     form_turismo = Viagem_TurismoForm()
 
     if request.method == 'POST':
+        print(request.POST)
         form = ViagemForm(request.POST)
         form_turismo = Viagem_TurismoForm(request.POST)
 
@@ -231,11 +232,11 @@ def viagem_turismo_cadastrar(request):
                 messages.success(request, 'Viagem cadastrada com sucesso!')
                 return redirect('senhas:cad_transporte')
             else:
-                print('O form_turismo tem algum erro: =/')
+                print('O form_turismo tem algum erro: viagem com turismo -> model viagem_turismo')
                 print(form_turismo.errors)
 
         else:
-            print('O form de viagem tem algum erro: =/')
+            print('O form de viagem tem algum erro: viagem com turismo -> model viagem')
             print(form.errors)
 
     context = {
