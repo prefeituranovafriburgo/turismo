@@ -123,6 +123,7 @@ class Viagem_Turismo(models.Model):
         max_length=14, blank=True, null=True, validators=[validate_telefone])
     pontos_turisticos = models.ManyToManyField(Pontos_Turisticos, blank=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    ativo = models.BooleanField(default=True)
     
 class Links_Menu(models.Model):
     nome = models.CharField(max_length=120, blank=True)
