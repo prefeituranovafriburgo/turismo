@@ -38,7 +38,7 @@ class Viagem_TurismoForm(ModelForm):
                                              'class': 'form-control'}),
         }
 
-        exclude = ['user', 'dt_inclusao', 'ativo']
+        exclude = ['user', 'dt_inclusao']
 
 
 class ViagemForm(ModelForm):
