@@ -8,6 +8,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 env_vars=load_envars(BASE_DIR)
 
+db_host = env_vars['db_host']
 db_name = env_vars['db_name']
 db_user = env_vars['db_user']
 db_passwd = env_vars['db_pw']
@@ -111,7 +112,7 @@ DATABASES = {
 
         'USER': db_user,
         'PASSWORD': db_passwd,
-        'HOST': '127.0.0.1',
+        'HOST': db_host,
     }
 }
 
