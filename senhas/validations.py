@@ -4,7 +4,10 @@ from itertools import cycle
 
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
+from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
+
+from .models import *
 
 error_messages = {
     'invalid_CNPJ': _("CNPJ inválido."),

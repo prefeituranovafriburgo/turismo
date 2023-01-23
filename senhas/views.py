@@ -20,7 +20,6 @@ from datetime import date, timedelta, datetime
 import pdfkit
 from turismo.decorators import membro_secretaria_required, membro_fiscais_required
 
-
 @login_required
 def inicio(request):
     return render(request, 'senhas/index.html')
@@ -401,25 +400,27 @@ def gera_senha_to_pdf(request, id):
         return redirect('senhas:cad_transporte')
 
 
-def get_validar_caledonia(request, date):
+def validate_data_caledonia(date):
     fail = False
     alert = ''
     viagens_caledonia_do_dia = Viagem.objects.filter(
         senha__contains='PC', ativo=True, dt_Chegada=date).count()
 
-    if request.method == 'GET':
-        if str(viagens_caledonia_do_dia) >= str(2):
-            format = '%Y-%m-%d'
-            dt = date
-            data = datetime.strptime(dt, format)
-            fail = True
-            alert = 'Vagas esgotadas para visitação no dia ' + \
-                str(data.strftime('%d/%m/%Y')+'. Escolha outra data.')
-                
-        return JsonResponse({
-            'fail': fail,
-            'alert': alert
-        })
+    if str(viagens_caledonia_do_dia) >= str(2):
+        format = '%Y-%m-%d'
+        dt = date
+        data = datetime.strptime(dt, format)
+        fail = True
+        alert = 'Vagas esgotadas para visitação no dia ' + \
+            str(data.strftime('%d/%m/%Y')+'. Escolha outra data.')
+            
+    return JsonResponse({
+        'fail': fail,
+        'alert': alert
+    })
 
-    else:
-        raise PermissionDenied()
+def get_validar_caledonia(request, date):
+    if request.method == 'GET':
+        return validate_data_caledonia(date)
+
+    raise PermissionDenied()
