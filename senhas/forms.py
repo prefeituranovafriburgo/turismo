@@ -1,5 +1,6 @@
+import datetime
 from pickle import TRUE
-import requests
+from django.http import JsonResponse
 from django import forms
 from django.forms import ModelForm, ValidationError
 from .models import *
@@ -125,7 +126,25 @@ class ViagemForm(ModelForm):
 
         return cleaned_data 
 
+def validate_data_caledonia(date):
+    fail = False
+    alert = ''
+    viagens_caledonia_do_dia = Viagem.objects.filter(
+        senha__contains='PC', ativo=True, dt_Chegada=date).count()
 
+    if str(viagens_caledonia_do_dia) >= str(2):
+        format = '%Y-%m-%d'
+        dt = date
+        data = datetime.strptime(dt, format)
+        fail = True
+        alert = 'Vagas esgotadas para visitação no dia ' + \
+            str(data.strftime('%d/%m/%Y')+'. Escolha outra data.')
+            
+    return JsonResponse({
+        'fail': fail,
+        'alert': alert
+    }) 
+    
 class Viagem_CaledoniaForm(ModelForm):
     class Meta:
         model = Viagem
@@ -204,7 +223,7 @@ class Viagem_CaledoniaForm(ModelForm):
         format = '%Y-%m-%d'
         data_ = data_chegada.strftime(format)
 
-        data = requests.get('http://localhost:8000/cad_viagem/caledonia/validarData/' + data_)
+        data = validate_data_caledonia(data_)
 
         data=json.loads(data.content)
         if data['fail']:
