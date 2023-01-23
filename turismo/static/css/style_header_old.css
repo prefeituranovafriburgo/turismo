@@ -22,27 +22,13 @@ html, body{
 }
 #main .cards #card-bus{
     width: 350px;
-    height: 90%;
-
+    height: 100%;
+    margin-right: 5px;
    
     border-radius: 5px;
     border: 1px solid whitesmoke;
 
     background-image: url(../images/buttons/moda_intima.jpg);
-    background-position-x: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    padding: 0;
-}
-#main .cards #card-caledonia{
-    width: 350px;
-    height: 90%;
-    margin-right: 5px;
-   
-    border-radius: 5px;
-    border: 1px solid whitesmoke;
-    background-color: aqua;
-    /* background-image: url(../images/buttons/moda_intima.jpg); */
     background-position-x: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -64,7 +50,7 @@ html, body{
 }
 #main .cards #card-ponto{
     width: 350px;
-    height: 90%;
+    height: 100%;
     margin-left: 5px;
     
     border-radius: 5px;
@@ -77,13 +63,8 @@ html, body{
     padding: 0;
 }
 .cards  .card{
-    cursor: pointer;    
+    cursor: pointer;
 }
-.mcard{
-    margin-right: auto;
-    margin-left: auto;
-}
-
 
 #main .cards .card-context{
     border-radius: 5px;
@@ -154,15 +135,10 @@ html, body{
     padding: 0;
     box-shadow: 2px 5px 4px rgb(80, 80, 80);    
 }
-.lateral .teste .col:hover{
-    transform: scale(1.2);
-    z-index: 4;
-}
 .lateral .teste .col a:hover{
     background-color: rgba(36, 34, 58, 0.342);
 }
 .lateral .teste .col a{
-    animation: 4.7s linear;
     text-decoration: none;
     width: 100%;
     height: 100%;
@@ -179,13 +155,11 @@ html, body{
 }
  .rede-social{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
+    justify-content: flex-end;
 }
 .rede-social img{
-    height: 80px;
-    margin: 20px 25px;
+    height: 50px;
+    margin: 10px 5px;
 }
 .hidden{
     display: flex;
@@ -215,7 +189,7 @@ footer{
 
 #contato{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 #contato ul{
     list-style: none;
@@ -299,30 +273,19 @@ footer{
     }
     .mobile #menu-cadastro #titulo-menu{
         vertical-align: center;        
-        margin-top: 10px;        
+        margin-top: 20px;        
     }
-    .mobile #card-none{
-        background-color: transparent;
-        border: transparent;
-        box-shadow: none;
-    }   
     .mobile #card-turismo{
         background-image: url(../images/buttons/tres_picos.jpeg);        
-        margin: 10px 5px;
+        margin-right: 5px;
     }
     .mobile #card-compra{        
         background-image: url(../images/buttons/moda_intima.jpg);        
-        margin: 10px 5px;
-    }
-    .mobile #card-caledonia{   
-        /* width: 170px !important;      */
-        background-image: url(../images/buttons/caledonia.png);           
-        margin: 10px 5px;
+        margin-left: 5px;
     }
     .mobile .card{
         border-radius: 5px;
         background-size: cover;
-        min-width: 180px;
         height: 100px;        
         border: 1px solid rgba(128, 128, 128, 0.733);    
         box-shadow: 3px 5px 5px rgba(80, 80, 80, 0.644);    
@@ -336,23 +299,17 @@ footer{
         width: 100%;        
         background-color: rgba(128, 128, 128, 0.233);          
         display: flex;  
-        padding: 10px 10px;
+        padding: 0 10px;
     }
     .mobile .card .context div{
         font-size: 10pt;
         font-weight: bold;
         color: rgba(54, 54, 54, 0.904);
-        width: 100%;
-        height: 100%;
+        padding: 8px 10px;
         margin: auto;
         background-color: rgba(255, 255, 255, 0.877);
-        display: flex;        
-        border-radius: 5px;
-    }
-    .mobile .card .context div span{
-        word-break: break-all;
         text-align: center;
-        margin: auto;
+        border-radius: 5px;
     }
     .mobile .titulo-outra-opcoes{
         margin-top: 30px;
@@ -361,7 +318,7 @@ footer{
         padding: 0px 0px 20px 0px;
     }
     .show{        
-        display: none;
+        display: flex;
     }
     .rede-social{
         justify-content: center;
@@ -422,12 +379,6 @@ footer{
     background-repeat: no-repeat;
     background-position: center;
 }
-#calendario{
-    background-image: url(../images/buttons/eventos.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
 #dropdownMenuButton{
     z-index: 1;
 }
@@ -436,14 +387,14 @@ footer{
 }
 #brasao{
     border: 1px solid rgba(0, 0, 0, 0.336);
-    height: 80px;
-    width: 80px;
+    height: 50px;
+    width: 50px;
     display: flex;
-    margin: 20px 25px;
+    margin: 10px 5px;
 }
 #brasao-img{
     margin: auto;
-    height: 80px;
+    height: 40px;
 }
 
 #hospedar{
@@ -539,20 +490,6 @@ footer{
     padding: 0;
 }
 
-#menu_transporte .cards #card-caledonia{
-    width: 350px;
-    height: 500px;
-    margin-left: 20px;
-    border-radius: 5px;
-    border: 1px solid rgba(245, 245, 245, 0.308);
-
-    background-image: url(../images/buttons/caledonia.png);
-    /* background-position-x: center;
-    background-position-y:  center; */
-    background-size: cover;
-    background-repeat: no-repeat;
-    padding: 0;
-}
 
 #menu_transporte .cards .card-context{
     border-radius: 5px;
@@ -662,8 +599,4 @@ footer{
 
 .dropdown-menu .marcar:hover{
     background-color: rgba(128, 128, 128, 0.37) !important;
-}
-
-.pontos_input{
-    list-style: none;
 }
