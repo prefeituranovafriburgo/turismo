@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from contas.views import login_view
+
 admin.site.site_header = "SECRETARIA MUNICIPAL DE TURISMO E MARKETING"
 admin.site.site_title = "PREFEITURA MUNICIPAL DE NOVA FRIBURGO"
 

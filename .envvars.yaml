@@ -4,6 +4,7 @@ db_user: turismo
 db_pw: 'turismo123'
 django_secret_key: rooog4mcx6k5=f=+y4
 debug_mode: True
+sqlite_mode: True
 email_sistema: senhas_turismo@sme.novafriburgo.rj.gov.br
 email_pw: balblabla
 hCAPTCHA_Public_Key: 6730e60d-fdfb-462a-b60e-a6478a3006f2
