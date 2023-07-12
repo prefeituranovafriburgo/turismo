@@ -389,7 +389,7 @@ def gera_senha_to_html(request, id):
 
 def gera_senha_to_pdf(request, id):
     try:
-        url_pdf = '/home/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'
+        url_pdf = '/home/sistemas/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'
         # url_pdf='/home/eduardo/projects/turismo/senhas/static/pdf/'+id+'.pdf'
         pdfkit.from_url(
             'https://senhas.novafriburgo.rj.gov.br/gera_senha_html/'+id+'/23NF', url_pdf)
