@@ -14,6 +14,7 @@ db_user = env_vars['db_user']
 db_passwd = env_vars['db_pw']
 SECRET_KEY = env_vars['django_secret_key']
 debug_mode = env_vars['debug_mode']
+sqlite_mode = env_vars['sqlite_mode']
 email_user = env_vars['email_sistema']
 email_pass = env_vars['email_pw']
 
@@ -31,15 +32,17 @@ except:
 # Application definition
 
 INSTALLED_APPS = [
-    'senhas.apps.SenhasConfig',
-    'equipamentos.apps.EquipamentosConfig',
-    'contas.apps.ContasConfig',
+    #Django apps:
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Created apps:
+    'senhas.apps.SenhasConfig',
+    'equipamentos.apps.EquipamentosConfig',
+    'contas.apps.ContasConfig',
     'qr_code',
     'guias',
     'report',
@@ -58,9 +61,11 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    #Django authentication:
+    'django.contrib.auth.backends.ModelBackend',
+    #Social media authentication:
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
 ]
 
 try:
@@ -103,12 +108,20 @@ WSGI_APPLICATION = 'turismo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
+if sqlite_mode:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': db_name + "db",
+        }
+    }
+else: 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
 
-        'NAME': db_name,
-        'PORT': '',
+            'NAME': db_name,
+            'PORT': '',
 
         'USER': db_user,
         'PASSWORD': db_passwd,
@@ -155,7 +168,6 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 LOGIN_URL='/login'
