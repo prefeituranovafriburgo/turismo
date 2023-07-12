@@ -21,10 +21,10 @@ urlpatterns = [
 
     path('cad_viagem/caledonia/validarData/<str:date>', views.get_validar_caledonia, name='get_validar_caledonia'),
 
-    path('viagem/<str:senha>/22NF', views.viagem, name='viagem'),
-    path('viagem/excluir/<str:id>/22NF', views.excluir_viagem, name='excluir_senha'),
-    path('viagem/fiscalizar/<str:id>/22NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),
+    path('viagem/<str:senha>/23NF', views.viagem, name='viagem'),
+    path('viagem/excluir/<str:id>/23NF', views.excluir_viagem, name='excluir_senha'),
+    path('viagem/fiscalizar/<str:id>/23NF', views.fiscalizar_viagem, name='fiscalizar_viagem'),
     #
-    path('gera_senha_html/<str:id>/22NF', views.gera_senha_to_html, name='gera_senha_html'),
-    path('gera_senha_pdf/<str:id>/22NF', views.gera_senha_to_pdf, name='gera_senha'),
+    path('gera_senha_html/<str:id>/23NF', views.gera_senha_to_html, name='gera_senha_html'),
+    path('gera_senha_pdf/<str:id>/23NF', views.gera_senha_to_pdf, name='gera_senha'),
 ]
