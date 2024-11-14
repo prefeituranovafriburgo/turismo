@@ -95,7 +95,7 @@
                                 <tr>
                                     <td class="text-center">{{forloop.counter}}</td>
                                     <td class="d-flex">
-                                        <span class="mx-auto">{{ v.senha }}/22NF</span> 
+                                        <span class="mx-auto">{{ v.senha }}/{{ v.dt_inclusao|date:"y" }}</span> 
                                         <a class="mx-auto" target="_blank" href="{% url 'senhas:gera_senha' v.senha %}">
                                             <i class="fad fa-print"></i>
                                             <span class="tooltiptext">Imprimir documento</span>
