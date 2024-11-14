@@ -26,12 +26,11 @@ from turismo.decorators import membro_secretaria_required, membro_fiscais_requir
 @login_required
 def inicio(request):
     context={
-        'link_1': Links_Menu.objects.get(id=1),
-        'link_2': Links_Menu.objects.get(id=2),
-        'link_3': Links_Menu.objects.get(id=3),
-        'link_4': Links_Menu.objects.get(id=4),
-        'link_5': Links_Menu.objects.get(id=5),
-        'link_6': Links_Menu.objects.get(id=6),
+        'link_1': Links_Menu.objects.get(id=1).url,
+        'link_2': Links_Menu.objects.get(id=2).url,
+        'link_3': Links_Menu.objects.get(id=3).url,
+        'link_4': Links_Menu.objects.get(id=4).url,
+        'link_5': Links_Menu.objects.get(id=5).url,        
     }
     return render(request, 'senhas/index.html', context)
 
