@@ -1,4 +1,4 @@
-from telnetlib import SE
+from telnetlib3 import SE
 from django.contrib import admin
 from .models import *
 
