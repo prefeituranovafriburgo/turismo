@@ -25,14 +25,12 @@ from turismo.decorators import membro_secretaria_required, membro_fiscais_requir
 
 @login_required
 def inicio(request):
-    context={
-        'link_1': Links_Menu.objects.get(id=1).url,
-        'link_2': Links_Menu.objects.get(id=2).url,
-        'link_3': Links_Menu.objects.get(id=3).url,
-        'link_4': Links_Menu.objects.get(id=4).url,
-        'link_5': Links_Menu.objects.get(id=5).url,        
-    }
-    return render(request, 'senhas/index.html', context)
+    links = {}
+    for i in range(1, 6):
+        link = Links_Menu.objects.filter(id=i).first()
+        links[f'link_{i}'] = link.url if link else ''
+    
+    return render(request, 'senhas/index.html', links)
 
 
 @login_required
@@ -75,6 +73,8 @@ def viagem_compras_editar(request, senha):
         'form': form,
         'viagem': viagem,
         'estados': estados,
+        'titulo': 'EDITAR -',
+        'tipo': 'compras',
     }
 
     return render(request, 'senhas/editar/viagem_compras_editar.html', context)
@@ -126,6 +126,8 @@ def viagem_turismo_editar(request, senha):
         'form_turismo': form_turismo,
         'viagem': viagem,
         'estados': estados,
+        'titulo': 'EDITAR -',
+        'tipo': 'turismo',
     }
 
     return render(request, 'senhas/editar/viagem_turismo_editar.html', context)
@@ -179,6 +181,8 @@ def viagem_caledonia_editar(request, senha):
         'form_turismo': form_turismo,
         'viagem': viagem,
         'estados': estados,
+        'titulo': 'EDITAR -',
+        'tipo': 'caledonia',
     }
 
     return render(request, 'senhas/editar/viagem_caledonia_editar.html', context)
@@ -207,6 +211,8 @@ def viagem_compras_cadastrar(request):
     context = {
         'form': form,
         'estados': estados,
+        'titulo': 'CADASTRAR -',
+        'tipo': 'compras',
     }
     return render(request, 'senhas/cadastros/viagem_compras_cadastrar.html', context)
 
@@ -246,6 +252,8 @@ def viagem_turismo_cadastrar(request):
         'form': form,
         'form_turismo': form_turismo,
         'estados': estados,
+        'titulo': 'CADASTRAR -',
+        'tipo': 'turismo',
     }
     return render(request, 'senhas/cadastros/viagem_turismo_cadastrar.html', context)
 
@@ -291,6 +299,8 @@ def viagem_caledonia_cadastrar(request):
         'form': form,
         'form_turismo': form_turismo,
         'estados': estados,
+        'titulo': 'CADASTRAR -',
+        'tipo': 'caledonia',
     }
 
     return render(request, 'senhas/cadastros/viagem_caledonia_cadastrar.html', context)
