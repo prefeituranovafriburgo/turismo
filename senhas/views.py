@@ -20,7 +20,6 @@ from .functions import get_random_string
 import time
 import pickle
 from datetime import date, timedelta, datetime
-import pdfkit
 from turismo.decorators import membro_secretaria_required, membro_fiscais_required
 
 @login_required
@@ -402,23 +401,38 @@ def gera_senha_to_html(request, id):
 
 
 def gera_senha_to_pdf(request, id):
+    """
+    Renderiza a página de senha em HTML pronto para impressão.
+    O usuário pode imprimir ou salvar como PDF usando o navegador (Ctrl+P).
+    """
+    viagem = Viagem.objects.get(senha=id)
+    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + \
+        str(id)+'/23NF'
+    
     try:
-        url_pdf = '/home/sistemas/turismo/site/turismo/senhas/static/pdf/'+id+'.pdf'
-        # url_pdf='/home/eduardo/projects/turismo/senhas/static/pdf/'+id+'.pdf'
-        pdfkit.from_url(
-            'https://senhas.novafriburgo.rj.gov.br/gera_senha_html/'+id+'/23NF', url_pdf)
-        # pdfkit.from_url('http://localhost:8000/gera_senha_html/'+id+'/22NF', url_pdf)
-        context = {
-            'pdf': url_pdf
-        }
-        try:
-            return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
-        except Exception as E:
-            print(E)
-            raise Http404()
-    except Exception as E:
-        print(E)
-        return redirect('senhas:cad_transporte')
+        viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
+    except:
+        viagem_turismo = None
+
+    pontosTuristicos_selecionados_ = []
+    if viagem.senha[0] == 'T':
+        tipo = 'turismo'
+        viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
+        for u in viagem_turismo.pontos_turisticos.all():
+            pontosTuristicos_selecionados_.append(u)
+    elif viagem.senha[0] == 'C':
+        tipo = 'compras'
+        viagem_turismo = {}
+
+    context = {
+        'viagem': viagem,
+        'viagem_turismo': viagem_turismo,
+        'pontos_turisticos': pontosTuristicos_selecionados_,
+        'endereco': endereco,
+        'print_mode': True
+    }
+
+    return render(request, 'senhas/gera_senha.html', context)
 
 
 def validate_data_caledonia(date):
