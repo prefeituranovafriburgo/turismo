@@ -15,14 +15,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Links_Menu',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(blank=True, max_length=120)),
-                ('url', models.CharField(blank=True, max_length=200)),
-            ],
-        ),
+        # 'Links_Menu' model was created in migration 0018_links_menu;
+        # remove duplicate CreateModel to avoid "table already exists" errors.
+        # (Retained below: other AlterField/RemoveField operations.)
         migrations.RemoveField(
             model_name='viagem_turismo',
             name='ativo',

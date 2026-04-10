@@ -7,6 +7,7 @@
 from django.shortcuts import render
 from .models import *
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 # from django.shortcuts import render
 # from qr_code.qrcode.utils import QRCodeOptions
 @login_required
@@ -56,7 +57,9 @@ def mostra_qrcode(request, id):
 
     equipamento = Equipamento.objects.get(id=id)
 
-    endereco = 'https://turismo.jlb.net.br/equipamentos/equipamento/' + str(id)
+    # build absolute URI so QR points to the current host and port
+    path = reverse('equipamento', args=[id])
+    endereco = request.build_absolute_uri(path)
 
     return render(request, 'mostra_qrcode.html', {'endereco': endereco, 'equipamento': equipamento})
 

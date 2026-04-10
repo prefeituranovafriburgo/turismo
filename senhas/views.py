@@ -3,6 +3,7 @@ from multiprocessing import context
 from django.http import FileResponse, Http404, JsonResponse
 
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from requests import request
@@ -372,9 +373,9 @@ def cad_acesso_ponto(request):
 def gera_senha_to_html(request, id):
 
     viagem = Viagem.objects.get(senha=id)
-    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + \
-        str(id)+'/23NF'
-    # endereco = 'http://localhost:8000/viagem/fiscalizar/' + str(id)+'/22NF'
+    # build absolute URI so QR points to current host (use request host/port)
+    path = reverse('senhas:fiscalizar_viagem', args=[id])
+    endereco = request.build_absolute_uri(path)
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
@@ -406,8 +407,8 @@ def gera_senha_to_pdf(request, id):
     O usuário pode imprimir ou salvar como PDF usando o navegador (Ctrl+P).
     """
     viagem = Viagem.objects.get(senha=id)
-    endereco = 'https://senhas.novafriburgo.rj.gov.br/viagem/fiscalizar/' + \
-        str(id)+'/23NF'
+    path = reverse('senhas:fiscalizar_viagem', args=[id])
+    endereco = request.build_absolute_uri(path)
     
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
