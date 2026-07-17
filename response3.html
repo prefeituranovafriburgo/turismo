@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    {% load template_filters %}
-    {% load static %}
+    
+    
     <style type="text/css">
             body{              
                 -webkit-print-color-adjust:exact;
@@ -26,7 +26,7 @@
                 height: 800px;
                 display: block;
                 position: relative;
-                /* background-image: url({% static 'marcadagua.jpg' %});
+                /* background-image: url(/static/marcadagua.jpg);
                 background-size: cover;
                 -webkit-print-color-adjust:exact; */
               }
@@ -141,19 +141,19 @@
     </div>
     <div class="row ">
         <div class="col">
-            <img src="{% static 'logo_turismo.png' %}"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>            
+            <img src="/static/logo_turismo.png"  alt="Logo Turismo" title="Logo Pmnf" width="800" style="margin: 28px auto 0px auto;position: relative;left: 10px;"/>            
         </div>
     </div>
     <br>
     <div class="m-auto">
-        <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="{% static 'marcadagua.jpg' %}" alt="">
+        <img style="z-index: -2; position: absolute; left: -5.0%; height: 1200px; opacity: 60%;" class="marca-dagua m-auto img-fluid" src="/static/marcadagua.jpg" alt="">
         <div class="watermark m-auto">
             <div class="row">
                 <div class="col">
                     <div id="senha-de-acesso">
                         <div>
                          <!-- <h3 class="text-center">SENHA DE ACESSO:</h3> -->                         
-                         <h1 class="text-center display-1">{{ viagem.senha}}/{{ viagem.dt_inclusao|date:"y" }}NF</h1>
+                         <h1 class="text-center display-1">C922/26NF</h1>
                          
                         </div>
                      </div>     
@@ -161,18 +161,18 @@
             </div>
             <div class="row">
                 <div class="col">
-                    {% load qr_code %}
-                         <img id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=http://192.168.0.179:8000/viagem/fiscalizar/{{ viagem.senha }}/23NF" alt="Hello World!">
+                    
+                         <img id="qr_code" src="/equipamentos/qr-code/images/serve-qr-code-image/?text=aHR0cHM6Ly9zZW5oYXMubm92YWZyaWJ1cmdvLnJqLmdvdi5ici92aWFnZW0vZmlzY2FsaXphci9DOTIyLzIzTkY%3D&cache_enabled=1&boost_error=1&encoding=utf-8&dark_color=black&light_color=white&token=m.4..svg.m.PsI86nEPldcPdlfCdWnh%3AucEYyvapVl2fYElFZSCrXD0G1H5_rJkbnXq-GpCiW4E" alt="Hello World!">
                 </div>
                 <div id="datas" class="col" style="margin-top: -60px;">
                     <div class="row d-flex flex-column">
                         <div class="col d-flex m-auto">
                             <div>Data de entrada:</div>
-                            <span>{{ viagem.dt_Chegada | date:"SHORT_DATE_FORMAT" }}</span>
+                            <span>10/04/2026</span>
                         </div>
                         <div class="col d-flex m-auto">
                             <div>Data de saída:</div>
-                            <span>{{ viagem.dt_Saida | date:"SHORT_DATE_FORMAT" }}</span>
+                            <span>29/04/2026</span>
                         </div>
                     </div>
                 </div>           
@@ -184,51 +184,37 @@
             <table class="table table-borderless bg-none m-auto">
                 <tr>
                     <th class="text-left">Nome do responsável</th>
-                    <td>{{ viagem.responsavel_viagem }}</td>
+                    <td>José</td>
                 </tr>  
                 <tr>
                     <th class="text-left">Contato do Responsável</th>
-                    <td>{{ viagem.contato_responsavel }}</td>
+                    <td>(22) 21232-1321</td>
                 </tr>  
                 <tr>
                     <th class="text-left">Empresa de Transporte</th>
-                    <td>{{ viagem.empresa_transporte }}</td>
+                    <td>Carro</td>
                 </tr>                
                 <tr>
                     <th class="text-left">CNPJ da Empresa de Transporte</th>
-                    <td>{{ viagem.cnpj_empresa_transporte | formata_cnpj }}</td>
+                    <td>21.907.206/0001-70</td>
                 </tr>
                 <tr>
                     <th class="text-left">Cadastur da Empresa de Transporte</th>
-                    <td>{{ viagem.cadastur_empresa_transporte }}</td>
+                    <td>21907206000170</td>
                 </tr>
 
                 <tr>
                     <th class="text-left">Veículo</th>
-                    <td>{{ viagem.tipo_veiculo }}</td>
+                    <td>Carro</td>
                 </tr>
                 <tr>
                     <th class="text-left">Quant. Passageiros</th>
-                    <td>{{ viagem.quant_passageiros }}</td>
+                    <td>5</td>
                 </tr>
                 
                 <!-- Viatem/Turismo -->
 
-                {% if viagem_turismo %}
-
-                <tr>
-                    <th class="text-left">Nome do Guia:</th>
-                    <td>{{ viagem_turismo.nome_guia }}</td>
-                </tr>
-                <tr>
-                    <th class="text-left">Cadastur do Guia:</th>
-                    <td>{{ viagem_turismo.cadastur_guia }}</td>
-                </tr>
-                <tr>
-                    <th class="text-left">Obs. da viagem:</th>
-                    <td>{{ viagem.obs }}</td>
-                </tr>
-                {% endif %}
+                
             </table>            
             <div class="row">
                 <div class="col">

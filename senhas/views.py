@@ -375,7 +375,9 @@ def gera_senha_to_html(request, id):
     viagem = Viagem.objects.get(senha=id)
     # build absolute URI so QR points to current host (use request host/port)
     path = reverse('senhas:fiscalizar_viagem', args=[id])
-    endereco = request.build_absolute_uri(path)
+    # force QR URL to point to local IP (use port 8000)
+    endereco = f'http://192.168.0.179:8000{path}'
+    print('DEBUG gera_senha_to_html endereco:', endereco)
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)
     except:
@@ -408,7 +410,9 @@ def gera_senha_to_pdf(request, id):
     """
     viagem = Viagem.objects.get(senha=id)
     path = reverse('senhas:fiscalizar_viagem', args=[id])
-    endereco = request.build_absolute_uri(path)
+    # force QR URL to point to local IP (use port 8000)
+    endereco = f'http://192.168.0.179:8000{path}'
+    print('DEBUG gera_senha_to_pdf endereco:', endereco)
     
     try:
         viagem_turismo = Viagem_Turismo.objects.get(viagem=viagem)

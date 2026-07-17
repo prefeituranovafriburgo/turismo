@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'guias',
     'report',
     'social_django',
+    'django_bootstrap5',
     'KPIs'
 ]
 
